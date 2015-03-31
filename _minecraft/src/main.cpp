@@ -17,7 +17,7 @@
 
 #include "world.h"
 #include "avatar.h"
-#include "AnimauxBase.h"
+#include "IABase.h"
 
 NYWorld * g_world;
 
@@ -51,7 +51,7 @@ float g_mn_coucher = 19.0f * 60.0f;
 float g_tweak_time = 0;
 bool g_fast_time = false;
 
-AnimauxBase *lapin;
+IABase *lapin;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -631,7 +631,7 @@ int main(int argc, char* argv[])
 	avatar = new NYAvatar(g_renderer->_Camera,g_world);
 	avatar->Speed = NYVert3Df(60,60,60);
 	//Init application
-	lapin = new AnimauxBase();
+	lapin = new IABase();
 
 
 	//Init Timer

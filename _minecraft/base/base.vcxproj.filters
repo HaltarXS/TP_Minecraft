@@ -11,7 +11,15 @@
     <ClCompile Include="..\src\chunk.cpp" />
     <ClCompile Include="..\src\tex_manager.cpp" />
     <ClCompile Include="..\src\ny_utils.cpp" />
-    <ClCompile Include="..\src\AnimauxBase.cpp" />
+    <ClCompile Include="..\src\IABase.cpp">
+      <Filter>IA</Filter>
+    </ClCompile>
+    <ClCompile Include="Ressource.cpp">
+      <Filter>Ressources</Filter>
+    </ClCompile>
+    <ClCompile Include="Herbe.cpp">
+      <Filter>Ressources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -22,6 +30,12 @@
     </Filter>
     <Filter Include="engine\log">
       <UniqueIdentifier>{0a822301-530a-4ea3-9539-50b080a3d8da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IA">
+      <UniqueIdentifier>{f5e28dea-77c4-4a6f-9a06-6d6ba9c0e54d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ressources">
+      <UniqueIdentifier>{be9cd8f5-74e1-4f2d-9791-f5c133938c16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +62,14 @@
     <ClInclude Include="..\src\tex_manager.h" />
     <ClInclude Include="..\src\ny_utils.h" />
     <ClInclude Include="..\src\types.h" />
-    <ClInclude Include="..\src\AnimauxBase.h" />
+    <ClInclude Include="..\src\IABase.h">
+      <Filter>IA</Filter>
+    </ClInclude>
+    <ClInclude Include="Ressource.h">
+      <Filter>Ressources</Filter>
+    </ClInclude>
+    <ClInclude Include="Herbe.h">
+      <Filter>Ressources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -49,7 +49,7 @@ public :
 		//glutSolidCube(Width/2);
 		glPopMatrix();
 
-		glDisable(GL_LIGHTING);
+		/*glDisable(GL_LIGHTING);
 		glBegin(GL_LINES);
 		//glColor3d(1,0,0);
 		NYVert3Df B = Position;
@@ -70,7 +70,7 @@ public :
 				//World->deleteCube(x, y, z);
 				//World->updateCube(x,y,z);
 			}
-		}
+		}*/
 	}
 
 	void update(float elapsed)
