@@ -5,9 +5,36 @@ Le but est de mettre en place un github (en partant de mon projet, désolé ahah
 En gros, on aurait juste un système d'héritage/interface à mettre en place pour faire nos propre IA qu'on mettra dans un dossier a notre nom ou autre !
 
 <h1>TO DO</h1>
-- Fabrique Ressource (Je commence ce soir - 31/03)
+- RessourceManager (Je commence ce soir - 31/03)
+- Fabrique Ressource ( "   "   "   "   "   "   " )
 - IAManager
-- Fabrique Animaux
-- Définir AnimauxBase
+- Fabrique IA
+- Définir IABase
 - Système d'états
 
+<h2>RessourceManager</h2>
+Créer au lancement du programme, c'est lui qui va connaitre l'ensemble des ressources du jeu.
+Il va faire appel à une fabrique pour créer les différentes Ressources qui seront présentes dans le jeux.
+Il pourrait par exemple fournir à une IA l'emplacement le plus proche d'une ressource particulière.
+
+<h2>Fabrique Ressource</h2>
+Appeller par le RessourceManager pour instancier les ressources.
+
+<h2>IAManager</h2>
+Créer au lancement du programme, c'est lui qui va connaitre l'ensemble des IAs du jeu.
+Il va faire appel à une fabrique pour créer les différentes IAs qui seront présentes dans le jeux.
+Il va à chaque frame appeller faire l'Update() d'un nombre limité d'IA afin de répartir limiter la charge de traitement.
+
+<h2>Frabrique IA</h2>
+Appeller par le IAManager pour instancier les IAs.
+
+<h2>IABase</2>
+La classe mère des IAs. Il est nécessaire que chaque IA hérite d'elle ou d'une de ses filles afin d'assurer le bon fonctionnement de l'ensemble des IAs.
+Elle va posser les attributs et méthodes de bases nécessaire à sa survie.
+Elle aurat également un système d'état afin de définir le comportement qu'elle devra suivre.
+
+<h2>Système d'états</h2>
+La mise en place d'un système d'états me parait le plus intéressant (mais peut tout à faire etre modifier).
+Le principe serait qu'une IA sera à un moment T dans un état (ex: AllerManger). Cette état serait appeler à l'Update() de l'IA et prendrait en paramètre l'IA appelante afin de déterminer s'il faut continuer cette état ou en changer (ex: Ai je faim ? Non => Determiner nouvel état; Oui => Ressource en vue ? Oui => Aller et manger; Non => Aller plus loin/ demander au ressource manager)
+
+N'hésitez pas à faire vos retour sur le groupe facebook.
