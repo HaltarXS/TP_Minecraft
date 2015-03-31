@@ -28,7 +28,7 @@ Il va à chaque frame appeller faire l'Update() d'un nombre limité d'IA afin de
 <h2>Frabrique IA</h2>
 Appeller par le IAManager pour instancier les IAs.
 
-<h2>IABase</2>
+<h2>IABase</h2>
 La classe mère des IAs. Il est nécessaire que chaque IA hérite d'elle ou d'une de ses filles afin d'assurer le bon fonctionnement de l'ensemble des IAs.
 Elle va posser les attributs et méthodes de bases nécessaire à sa survie.
 Elle aurat également un système d'état afin de définir le comportement qu'elle devra suivre.
