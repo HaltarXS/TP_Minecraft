@@ -25,8 +25,8 @@ typedef uint8 NYAxis;
 #define NY_AXIS_Y 0x02
 #define NY_AXIS_Z 0x04
 
-#define MAT_SIZE 8 //en nombre de chunks
-#define MAT_HEIGHT 2 //en nombre de chunks
+#define MAT_SIZE 4 //en nombre de chunks
+#define MAT_HEIGHT 1 //en nombre de chunks
 #define MAT_SIZE_CUBES (MAT_SIZE * NYChunk::CHUNK_SIZE)
 #define MAT_HEIGHT_CUBES (MAT_HEIGHT * NYChunk::CHUNK_SIZE)
 
@@ -653,7 +653,7 @@ public :
 					NYCube* c = getCube(x,y,z);
 					if(c->_Draw)
 					{
-						glTranslatef((float)(x),(float)(y),(float)(z));
+						glTranslatef((float)(x)*10,(float)(y)*10,(float)(z)*10);
 						GLfloat materialDiffuse[] = {139.f/255.f,69.f/255.f, 19.f/255.f,1.0};
 						GLfloat materialAmbient[] = {1, 1, 1, 0.2};
 						switch(c->_Type)
@@ -679,7 +679,7 @@ public :
 
 						glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
 						if(c->_Type != CUBE_AIR)
-							glutSolidCube(1);
+							glutSolidCube(10);
 					}
 					glPopMatrix();
 				}

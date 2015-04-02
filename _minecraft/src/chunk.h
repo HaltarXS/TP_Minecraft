@@ -11,7 +11,7 @@ class NYChunk
 {
 	public :
 
-		static const int CHUNK_SIZE = 24; ///< Taille d'un chunk en nombre de cubes (n*n*n)
+		static const int CHUNK_SIZE = 16; ///< Taille d'un chunk en nombre de cubes (n*n*n)
 		NYCube _Cubes[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE]; ///< Cubes contenus dans le chunk
 
 		GLuint _BufWorld; ///< Identifiant du VBO pour le monde

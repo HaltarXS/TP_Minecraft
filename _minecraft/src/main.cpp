@@ -18,6 +18,8 @@
 #include "world.h"
 #include "avatar.h"
 #include "IABase.h"
+#include "Herbe.h"
+#include "RessourcesManager.h"
 
 NYWorld * g_world;
 
@@ -52,7 +54,9 @@ float g_tweak_time = 0;
 bool g_fast_time = false;
 
 IABase *lapin;
-
+Herbe *herbe;
+Herbe *herbe2;
+RessourcesManager *ressourceManager;
 
 //////////////////////////////////////////////////////////////////////////
 // GESTION APPLICATION
@@ -76,13 +80,11 @@ void update(void)
 	angleRad +=M_PI_4*elapsed;
 	g_renderer->render(elapsed);
 	avatar->update(elapsed);
+
+
 	lapin->update(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
-	std::cout << "Faim du lapin : " << lapin->Faim << ", Saciété : " << lapin->Saciete << endl;
-	if (lapin->Faim >= 100)
-	{
-		lapin->manger();
-		std::cout << "Lapin mange." << endl;
-	}
+	herbe->Update(NYRenderer::_DeltaTime);
+
 }
 
 
@@ -107,6 +109,7 @@ void renderObjects(void)
 	glEnd();
 
 	glColor3d(1,1,1);
+
 	//Active la lumière
 	glEnable(GL_LIGHTING);
 	glShadeModel ( GL_SMOOTH );
@@ -159,6 +162,9 @@ void renderObjects(void)
 	glPopMatrix();
 	glUseProgram(0);
 	avatar->render();
+
+	herbe->Render();
+	herbe2->Render();
 
 }
 
@@ -545,8 +551,8 @@ int main(int argc, char* argv[])
 	*
 	*
 	*/
-	g_renderer->initialise(true);
-	g_program = g_renderer->createProgram("shaders/psbase.glsl","shaders/vsbase.glsl");
+	//g_renderer->initialise(true);
+	//g_program = g_renderer->createProgram("shaders/psbase.glsl","shaders/vsbase.glsl");
 
 
 	///
@@ -632,6 +638,9 @@ int main(int argc, char* argv[])
 	avatar->Speed = NYVert3Df(60,60,60);
 	//Init application
 	lapin = new IABase();
+	
+	herbe = new Herbe(NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
+	herbe2 = new Herbe(NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
 
 
 	//Init Timer

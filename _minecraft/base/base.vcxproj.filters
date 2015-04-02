@@ -14,10 +14,13 @@
     <ClCompile Include="..\src\IABase.cpp">
       <Filter>IA</Filter>
     </ClCompile>
-    <ClCompile Include="Ressource.cpp">
+    <ClCompile Include="..\src\Ressource.cpp">
       <Filter>Ressources</Filter>
     </ClCompile>
-    <ClCompile Include="Herbe.cpp">
+    <ClCompile Include="..\src\Herbe.cpp">
+      <Filter>Ressources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RessourcesManager.cpp">
       <Filter>Ressources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,11 +68,12 @@
     <ClInclude Include="..\src\IABase.h">
       <Filter>IA</Filter>
     </ClInclude>
-    <ClInclude Include="Ressource.h">
+    <ClInclude Include="..\src\Ressource.h">
       <Filter>Ressources</Filter>
     </ClInclude>
-    <ClInclude Include="Herbe.h">
+    <ClInclude Include="..\src\Herbe.h">
       <Filter>Ressources</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\RessourcesManager.h" />
   </ItemGroup>
 </Project>

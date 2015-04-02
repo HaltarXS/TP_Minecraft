@@ -28,7 +28,7 @@ public :
 
 	NYAvatar(NYCamera * cam,NYWorld * world)
 	{
-		Position = NYVert3Df(1100,1100,(world->_MatriceHeights[110][110]*NYCube::CUBE_SIZE));
+		Position = NYVert3Df(110,110,(world->_MatriceHeights[11][11]*NYCube::CUBE_SIZE));
 		Height = 10;
 		Width = 3;
 		Cam = cam;
