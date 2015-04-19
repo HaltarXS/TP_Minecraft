@@ -21,6 +21,12 @@
 #include "Herbe.h"
 #include "RessourcesManager.h"
 
+//State Machine
+#include "FSM.h"
+
+//State Machine Test
+#include "TestStateMachine.h"
+
 NYWorld * g_world;
 
 NYRenderer * g_renderer = NULL;
@@ -58,6 +64,13 @@ Herbe *herbe;
 Herbe *herbe2;
 RessourcesManager *ressourceManager;
 
+//State Machine
+FSM * master_FSM;
+
+//State Machine Test
+TestStateMachine * entityTest1;
+TestStateMachine * entityTest2;
+
 //////////////////////////////////////////////////////////////////////////
 // GESTION APPLICATION
 //////////////////////////////////////////////////////////////////////////
@@ -84,6 +97,10 @@ void update(void)
 
 	lapin->update(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
 	herbe->Update(NYRenderer::_DeltaTime);
+
+	//Update STate Machine
+	entityTest1->UpdateEntity();
+	entityTest2->UpdateEntity();
 
 }
 
@@ -646,10 +663,23 @@ int main(int argc, char* argv[])
 	//Init Timer
 	g_timer = new NYTimer();
 
+	//Init FSM
+	FSM * master_FSM = FSM::getSingleton();
+
+	//Init Test State Machine
+	entityTest1 = new TestStateMachine();
+	entityTest2 = new TestStateMachine();
+
+	entityTest1->SetEntityToCommunicateWith(entityTest2->GetID());
+	entityTest2->SetEntityToCommunicateWith(entityTest1->GetID());
+
 	//On start
 	g_timer->start();
 
 	glutMainLoop(); 
+
+	delete(entityTest1);
+	delete(entityTest2);
 
 	return 0;
 }
