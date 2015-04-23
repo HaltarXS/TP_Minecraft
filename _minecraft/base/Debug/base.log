@@ -146,15 +146,15 @@ e:\documents\github\tp_minecraft\_minecraft\src\world.h(781): warning C4244: 'ar
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(782): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(783): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\avatar.h(31): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\path.h(42): warning C4018: '<' : incompatibilité signed/unsigned
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(95): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(96): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(171): warning C4305: 'argument' : troncation de 'double' à 'GLfloat'
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(216): warning C4305: '*=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(224): warning C4305: '*=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(252): warning C4305: 'argument' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(254): warning C4305: 'argument' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(385): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(662): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(663): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\path.h(43): warning C4018: '<' : incompatibilité signed/unsigned
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(98): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(99): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(176): warning C4305: 'argument' : troncation de 'double' à 'GLfloat'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(223): warning C4305: '*=' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(231): warning C4305: '*=' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(259): warning C4305: 'argument' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(261): warning C4305: 'argument' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(392): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(669): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(670): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
   base.vcxproj -> E:\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe

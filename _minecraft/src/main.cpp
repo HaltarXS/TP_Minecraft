@@ -74,6 +74,9 @@ FSM * master_FSM;
 TestStateMachine * entityTest1;
 TestStateMachine * entityTest2;
 
+//PathFinding
+Path returnPath;
+
 //////////////////////////////////////////////////////////////////////////
 // GESTION APPLICATION
 //////////////////////////////////////////////////////////////////////////
@@ -104,6 +107,8 @@ void update(void)
 	//Update State Machine example
 	//entityTest1->UpdateEntity();
 	//entityTest2->UpdateEntity();
+
+	
 
 }
 
@@ -185,6 +190,8 @@ void renderObjects(void)
 
 	herbe->Render();
 	herbe2->Render();
+
+	returnPath.drawPath();
 
 }
 
@@ -680,9 +687,14 @@ int main(int argc, char* argv[])
 	Pathfinding * pf = Pathfinding::GetSingleton();
 	pf->SetWorld(g_world);
 
-	Path returnPath;
-	
-	if (pf->FindPath(NYVert3Df(12,4,12), NYVert3Df(12, 8, 12), CUBE_AIR, returnPath))
+	//Example Pathfinding
+	NYVert3Df depart  = avatar->Position/NYCube::CUBE_SIZE;
+	depart.Z += 0;
+	NYVert3Df arrivee = avatar->Position/NYCube::CUBE_SIZE;
+	arrivee.Z += 5;
+	arrivee.X += 30;
+	arrivee.Y += 30;
+	if (pf->FindPath(depart, arrivee, CUBE_AIR, returnPath))
 	{
 		returnPath.printPath();
 	}

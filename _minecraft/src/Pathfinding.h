@@ -50,7 +50,9 @@
 
 		//Node actuelle
 		NYVert3Df m_actualNode;
-		Node m_realActualNode;
+		Node *m_realActualNode;
+		Node *m_nodeToAnalyse;
+		Node *m_betterNode;
 
 		//Manhattan Distance
 		int DistanceManhattan(const NYVert3Df & a, const NYVert3Df & b);
@@ -61,6 +63,8 @@
 		void InitializeNodes();
 
 		void ClearNodes();
+
+
 
 		Pathfinding();
 

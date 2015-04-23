@@ -39,10 +39,16 @@ public:
 
 	inline void drawPath()
 	{
-		for (int i = 1; i < m_wayPoints.size() - 1; ++i)
+		
+		for (int i = 1; i < m_wayPoints.size(); ++i)
 		{
-			//glLine
+			glBegin(GL_LINES);
+			glColor3d(1, 0, 0);
+			glVertex3d(m_wayPoints[i - 1].X, m_wayPoints[i - 1].Y, m_wayPoints[i - 1].Z);
+			glVertex3d(m_wayPoints[i].X, m_wayPoints[i].Y, m_wayPoints[i].Z);
+			glEnd();
 		}
+		
 	}
 };
 

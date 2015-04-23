@@ -25,8 +25,8 @@ typedef uint8 NYAxis;
 #define NY_AXIS_Y 0x02
 #define NY_AXIS_Z 0x04
 
-#define MAT_SIZE 1 //en nombre de chunks
-#define MAT_HEIGHT 1 //en nombre de chunks
+#define MAT_SIZE 5 //en nombre de chunks
+#define MAT_HEIGHT 3 //en nombre de chunks
 #define MAT_SIZE_CUBES (MAT_SIZE * NYChunk::CHUNK_SIZE)
 #define MAT_HEIGHT_CUBES (MAT_HEIGHT * NYChunk::CHUNK_SIZE)
 
