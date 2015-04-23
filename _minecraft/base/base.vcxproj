@@ -29,6 +29,8 @@
     <ClCompile Include="..\src\TestStateMachine.cpp" />
     <ClCompile Include="..\src\tex_manager.cpp" />
     <ClCompile Include="..\src\timeFSM.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
@@ -59,6 +61,8 @@
     <ClInclude Include="..\src\timeFSM.h" />
     <ClInclude Include="..\src\types.h" />
     <ClInclude Include="..\src\world.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="Pathfinding.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

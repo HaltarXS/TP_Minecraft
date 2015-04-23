@@ -1,120 +1,28 @@
-﻿  TestStateMachine.cpp
-e:\documents\github\tp_minecraft\_engine\src\engine\utils\ny_utils.h(25): warning C4005: 'NAN' : redéfinition de macro
-          c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(106) : voir la définition précédente de 'NAN'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(46): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(51): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(58): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(63): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(66): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(70): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(71): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(78): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(79): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(83): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(90): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(91): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(98): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(107): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(109): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(111): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(113): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(120): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(122): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(136): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(143): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(148): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(151): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(155): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(156): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(160): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(162): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(164): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(165): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(166): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(168): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(169): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(172): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(174): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(176): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(177): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(180): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(185): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(186): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(187): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(190): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(191): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(194): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(197): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(198): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(199): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(202): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(205): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(206): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(215): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(218): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(219): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(221): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(222): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(223): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(227): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(229): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(230): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(231): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(233): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(235): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(436): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(441): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(443): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(444): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(448): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(449): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(451): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(458): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(459): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(460): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(461): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(462): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(465): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(466): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(467): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(469): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(473): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(474): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(475): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(476): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(477): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(480): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(481): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(482): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(484): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(490): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(492): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(493): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(497): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(498): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(500): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(505): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(506): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(507): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(508): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(509): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(512): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(513): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(514): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(516): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(521): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(522): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(523): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(524): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(525): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(528): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(529): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(530): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(532): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(537): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(538): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(539): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(540): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(544): warning C4305: '=' : troncation de 'double' à 'float'
-e:\documents\github\tp_minecraft\_minecraft\src\cube.h(545): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-  base.vcxproj -> E:\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe
+﻿Build started 23/04/2015 10:00:08.
+     1>Project "C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\base\base.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe" /INCREMENTAL /NOLOGO /LIBPATH:../lib /LIBPATH:../../_engine/lib libpng16.lib libcurl.lib openal32.lib winmm.lib alut_d.lib glew32.lib freeglut.lib Kernel32.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.lib" /MACHINE:X86 /SAFESEH Debug\log.obj
+         Debug\renderer.obj
+         Debug\database.obj
+         Debug\debuglog.obj
+         Debug\gameobject.obj
+         Debug\Herbe.obj
+         Debug\IABase.obj
+         Debug\chunk.obj
+         Debug\main.obj
+         Debug\msg.obj
+         Debug\msgroute.obj
+         Debug\ny_utils.obj
+         Debug\Ressource.obj
+         Debug\RessourcesManager.obj
+         Debug\statemch.obj
+         Debug\TestStateMachine.obj
+         Debug\tex_manager.obj
+         Debug\timeFSM.obj
+     1>log.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+         base.vcxproj -> C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe
+     1>Done Building Project "C:\Users\guillaume.pastor\Documents\GitHub\TP_Minecraft\_minecraft\base\base.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.90
