@@ -551,6 +551,13 @@ class NYVert3Df
 				return true;
 			return false;
 		}
+
+		bool operator!= (const NYVert3Df & vertex)
+		{
+			if (X != vertex.X || Y != vertex.Y || Z != vertex.Z)
+				return true;
+			return false;
+		}
 		
 		float getSize(void)
 		{

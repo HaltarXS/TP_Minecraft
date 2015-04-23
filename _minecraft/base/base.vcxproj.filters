@@ -47,8 +47,12 @@
     <ClCompile Include="..\src\TestStateMachine.cpp">
       <Filter>Guillaume Pastor\State Machine Test</Filter>
     </ClCompile>
-    <ClCompile Include="Pathfinding.cpp" />
-    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="..\src\Pathfinding.cpp">
+      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Path.cpp">
+      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -146,7 +150,11 @@
     <ClInclude Include="..\src\TestStateMachine.h">
       <Filter>Guillaume Pastor\State Machine Test</Filter>
     </ClInclude>
-    <ClInclude Include="Pathfinding.h" />
-    <ClInclude Include="Path.h" />
+    <ClInclude Include="..\src\Path.h">
+      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Pathfinding.h">
+      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

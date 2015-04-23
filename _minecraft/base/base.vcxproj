@@ -23,14 +23,14 @@
     <ClCompile Include="..\src\msg.cpp" />
     <ClCompile Include="..\src\msgroute.cpp" />
     <ClCompile Include="..\src\ny_utils.cpp" />
+    <ClCompile Include="..\src\Path.cpp" />
+    <ClCompile Include="..\src\Pathfinding.cpp" />
     <ClCompile Include="..\src\Ressource.cpp" />
     <ClCompile Include="..\src\RessourcesManager.cpp" />
     <ClCompile Include="..\src\statemch.cpp" />
     <ClCompile Include="..\src\TestStateMachine.cpp" />
     <ClCompile Include="..\src\tex_manager.cpp" />
     <ClCompile Include="..\src\timeFSM.cpp" />
-    <ClCompile Include="Path.cpp" />
-    <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
@@ -52,6 +52,8 @@
     <ClInclude Include="..\src\msgroute.h" />
     <ClInclude Include="..\src\my_physics.h" />
     <ClInclude Include="..\src\ny_utils.h" />
+    <ClInclude Include="..\src\Path.h" />
+    <ClInclude Include="..\src\Pathfinding.h" />
     <ClInclude Include="..\src\Ressource.h" />
     <ClInclude Include="..\src\RessourcesManager.h" />
     <ClInclude Include="..\src\singleton.h" />
@@ -61,8 +63,6 @@
     <ClInclude Include="..\src\timeFSM.h" />
     <ClInclude Include="..\src\types.h" />
     <ClInclude Include="..\src\world.h" />
-    <ClInclude Include="Path.h" />
-    <ClInclude Include="Pathfinding.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

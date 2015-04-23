@@ -27,6 +27,9 @@
 //State Machine Test
 #include "TestStateMachine.h"
 
+//PF
+#include "Pathfinding.h"
+
 NYWorld * g_world;
 
 NYRenderer * g_renderer = NULL;
@@ -672,6 +675,9 @@ int main(int argc, char* argv[])
 
 	entityTest1->SetEntityToCommunicateWith(entityTest2->GetID());
 	entityTest2->SetEntityToCommunicateWith(entityTest1->GetID());
+
+	//Init PF
+	Pathfinding::GetInstance()->SetWorld(g_world);
 
 	//On start
 	g_timer->start();
