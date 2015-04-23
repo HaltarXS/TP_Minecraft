@@ -9,7 +9,7 @@
 #include "my_physics.h"
 #include "engine/render/graph/tex_manager.h"
 
-NYTexFile * _TexGrass;
+
 
 typedef uint8 NYCollision;
 #define NY_COLLIDE_UP     0x01
@@ -25,7 +25,7 @@ typedef uint8 NYAxis;
 #define NY_AXIS_Y 0x02
 #define NY_AXIS_Z 0x04
 
-#define MAT_SIZE 4 //en nombre de chunks
+#define MAT_SIZE 1 //en nombre de chunks
 #define MAT_HEIGHT 1 //en nombre de chunks
 #define MAT_SIZE_CUBES (MAT_SIZE * NYChunk::CHUNK_SIZE)
 #define MAT_HEIGHT_CUBES (MAT_HEIGHT * NYChunk::CHUNK_SIZE)
@@ -37,6 +37,8 @@ public :
 	NYChunk * _Chunks[MAT_SIZE][MAT_SIZE][MAT_HEIGHT];
 	int _MatriceHeights[MAT_SIZE_CUBES][MAT_SIZE_CUBES];
 	float _FacteurGeneration;
+
+	NYTexFile * _TexGrass;
 
 	NYWorld()
 	{

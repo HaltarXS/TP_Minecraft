@@ -19,6 +19,7 @@ public:
 
 	inline void setPath(const std::vector<NYVert3Df> & _ThePath)
 	{
+		m_wayPoints.clear();
 		m_wayPoints = _ThePath;
 	}
 
@@ -26,6 +27,22 @@ public:
 	inline std::vector<NYVert3Df> getPath()
 	{
 		return m_wayPoints;
+	}
+
+	inline void printPath()
+	{
+		for (std::vector<NYVert3Df>::iterator it = m_wayPoints.begin(); it != m_wayPoints.end(); ++it)
+		{
+			std::cout << it->X << "," << it->Y << "," << it->Z << endl;
+		}
+	}
+
+	inline void drawPath()
+	{
+		for (int i = 1; i < m_wayPoints.size() - 1; ++i)
+		{
+			//glLine
+		}
 	}
 };
 

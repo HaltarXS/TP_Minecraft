@@ -101,9 +101,9 @@ void update(void)
 	lapin->update(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
 	herbe->Update(NYRenderer::_DeltaTime);
 
-	//Update STate Machine
-	entityTest1->UpdateEntity();
-	entityTest2->UpdateEntity();
+	//Update State Machine example
+	//entityTest1->UpdateEntity();
+	//entityTest2->UpdateEntity();
 
 }
 
@@ -677,7 +677,15 @@ int main(int argc, char* argv[])
 	entityTest2->SetEntityToCommunicateWith(entityTest1->GetID());
 
 	//Init PF
-	Pathfinding::GetInstance()->SetWorld(g_world);
+	Pathfinding * pf = Pathfinding::GetSingleton();
+	pf->SetWorld(g_world);
+
+	Path returnPath;
+	
+	if (pf->FindPath(NYVert3Df(12,4,12), NYVert3Df(12, 8, 12), CUBE_AIR, returnPath))
+	{
+		returnPath.printPath();
+	}
 
 	//On start
 	g_timer->start();

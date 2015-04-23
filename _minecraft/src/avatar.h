@@ -191,6 +191,8 @@ public :
 		posCam.Z +=NYCube::CUBE_SIZE/2;
 		
 		Cam->moveTo(posCam);
+
+		cout << "Current Cube : " << Position.X / NYCube::CUBE_SIZE << "," << Position.Y / NYCube::CUBE_SIZE << "," << Position.Z / NYCube::CUBE_SIZE << endl;
 	}
 };
 
