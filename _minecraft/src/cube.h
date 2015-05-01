@@ -4,12 +4,17 @@
 
 enum NYCubeType
 {
-	CUBE_HERBE,
-	CUBE_TERRE,
-	CUBE_NEIGE,
-	CUBE_EAU,
-	CUBE_AIR
-};
+	CUBE_HERBE = 1,
+	CUBE_TERRE = 2,
+	CUBE_NEIGE = 4,
+	CUBE_EAU = 8,
+	CUBE_AIR = 16
+	/*CUBE_HERBE  ,
+	CUBE_TERRE ,
+	CUBE_NEIGE ,
+	CUBE_EAU ,
+	CUBE_AIR */
+};//Multiple de 2 pour faire des champs de bits pour le pf
 
 class NYCube
 {
@@ -433,7 +438,26 @@ public:
 	float* getTextures(float *textures, int start)
 	{
 		
-		float coef = 0.25*_Type;
+		float coef = 0.0f;// 0.25*_Type;
+		switch (_Type)
+		{
+		case CUBE_HERBE:
+			coef = 0.0f;
+			break;
+		case CUBE_TERRE:
+			coef = 0.25f;
+			break;
+		case CUBE_NEIGE:
+			coef = 0.50f;
+			break;
+		case CUBE_EAU:
+			coef = 0.75f;
+			break;
+		case CUBE_AIR:
+			break;
+		default:
+			break;
+		}
 		if(_Type == CUBE_EAU)
 		{
 			textures[start ] = coef + 0;

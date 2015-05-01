@@ -37,4 +37,18 @@ Elle aurat également un système d'état afin de définir le comportement qu'el
 La mise en place d'un système d'états me parait le plus intéressant (mais peut tout à faire etre modifier).
 Le principe serait qu'une IA sera à un moment T dans un état (ex: AllerManger). Cette état serait appeler à l'Update() de l'IA et prendrait en paramètre l'IA appelante afin de déterminer s'il faut continuer cette état ou en changer (ex: Ai je faim ? Non => Determiner nouvel état; Oui => Ressource en vue ? Oui => Aller et manger; Non => Aller plus loin/ demander au ressource manager)
 
+<h1>States Machines avec Messages - Guillaume Pastor</h1>
+Système de machines à états avec des messages pour que les entités puisse communiquer entre elles. 
+Exemple d'entité commenté utilisant toutes les fonctionnalités des states machines dans GuillaumePastor/StateMachineTest/TestStateMachine.cpp
+Les futures entités à créer devront hériter de StateMachine et devront surcharger la méthode States() pour utiliser les states machines et les messages.
+
+<h1>Pathfinding - Guillaume Pastor</h1>
+Pathfinding. La classe est un singleton. 
+Il y a deux fonctions FindPath() : 
+*La première permet de trouver un chemin dans des types de cubes donnés en paramètre. 
+Elle prend en compte les champs de bits pour la recherche dans plusieurs types de cubes. Voir l'exemple dans main.cpp.
+*La deuxième permet de trouver un chemin sur le sol elle prend en paramètre une step (taille de cube franchissable).
+L'entité va trouver un chemin passant sur n'importe quel type de cube sauf l'eau, sauf si le dernier paramètre est à true.
+Voir Pathfinding.cpp et les exemples d'utilisation dans main.cpp
+
 N'hésitez pas à faire vos retour sur le groupe facebook.

@@ -407,6 +407,13 @@ class NYVert2Df
 
 			return *this;
 		}
+
+		bool operator== (const NYVert2Df & vertex)
+		{
+			if (X == vertex.X && Y == vertex.Y)
+				return true;
+			return false;
+		}
 };
 
 /** Un point, 4 floats

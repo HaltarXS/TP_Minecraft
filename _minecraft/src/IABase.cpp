@@ -19,7 +19,7 @@ IABase::~IABase()
 {
 }
 
-void IABase::update(float elapsed, float totalTime)
+void IABase::updateHunger(float elapsed, float totalTime)
 {
 	if (Saciete > 0.0)
 	{

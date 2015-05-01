@@ -1,12 +1,12 @@
 #pragma once
+#include "statemch.h"
 #include <math.h>
-
 #include "engine/utils/types_3d.h"
 #include "cube.h"
 
 using namespace std;
 
-class IABase
+class IABase//: public StateMachine
 {
 private:
 	float A;
@@ -24,8 +24,9 @@ public:
 	IABase();
 	~IABase();
 
-	void update(float elapsed, float totalTime);
+	void updateHunger(float elapsed, float totalTime);
 	void manger();
 	void moveTo(NYVert3Df destinationCube, NYCube* cubes);
+
 };
 

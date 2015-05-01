@@ -1,4 +1,4 @@
-//BY Guillaume Pastor & Brahim Berkati
+//BY Guillaume Pastor
 //Class Path pour le Pathfinding
 #pragma once
 #include <vector>

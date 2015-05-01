@@ -62,7 +62,7 @@ float g_mn_coucher = 19.0f * 60.0f;
 float g_tweak_time = 0;
 bool g_fast_time = false;
 
-IABase *lapin;
+//IABase *lapin;
 Herbe *herbe;
 Herbe *herbe2;
 RessourcesManager *ressourceManager;
@@ -101,7 +101,7 @@ void update(void)
 	avatar->update(elapsed);
 
 
-	lapin->update(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
+	//lapin->updateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
 	herbe->Update(NYRenderer::_DeltaTime);
 
 	//Update State Machine example
@@ -664,7 +664,7 @@ int main(int argc, char* argv[])
 	avatar = new NYAvatar(g_renderer->_Camera,g_world);
 	avatar->Speed = NYVert3Df(60,60,60);
 	//Init application
-	lapin = new IABase();
+	//lapin = new IABase();
 	
 	herbe = new Herbe(NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
 	herbe2 = new Herbe(NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
@@ -689,14 +689,20 @@ int main(int argc, char* argv[])
 
 	//Example Pathfinding
 	NYVert3Df depart  = avatar->Position/NYCube::CUBE_SIZE;
-	depart.Z += 0;
+	depart.Z += -5;
 	NYVert3Df arrivee = avatar->Position/NYCube::CUBE_SIZE;
-	arrivee.Z += 5;
-	arrivee.X += 30;
-	arrivee.Y += 30;
-	if (pf->FindPath(depart, arrivee, CUBE_AIR, returnPath))
+	arrivee.Z += 3;
+	arrivee.X += 60;
+	arrivee.Y += 60;
+
+	/*if (pf->FindPath(depart, arrivee, (int)CUBE_AIR | (int)CUBE_TERRE |(int)CUBE_HERBE, returnPath))
 	{
-		returnPath.printPath();
+		//returnPath.printPath();
+	}*/
+
+	if (pf->FindPath(NYVert2Df(depart.X, depart.Y), NYVert2Df(arrivee.X, arrivee.Y), 1 ,returnPath))
+	{
+		//returnPath.printPath();
 	}
 
 	//On start

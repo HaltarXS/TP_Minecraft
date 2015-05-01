@@ -49,28 +49,26 @@ public :
 		//glutSolidCube(Width/2);
 		glPopMatrix();
 
-		/*glDisable(GL_LIGHTING);
-		glBegin(GL_LINES);
-		//glColor3d(1,0,0);
-		NYVert3Df B = Position;
-		B.X += Cam->_Direction.X*NYCube::CUBE_SIZE*8;
-		B.Y += Cam->_Direction.Y*NYCube::CUBE_SIZE*8;
-		B.Z += Cam->_Direction.Z*NYCube::CUBE_SIZE*8;
-		//glVertex3d(Position.X,Position.Y,Position.Z);
-		//glVertex3d(B.X-5,B.Y,B.Z-5);
-		
-		
-		glEnd();
-		glEnable(GL_LIGHTING);
-		if (Destroying) {
-			NYVert3Df sp = NYVert3Df(0, 0, 0);
-			int x, y, z;
-			if (World->getRayCollision(Position, B, sp, x, y, z))
-			{
-				//World->deleteCube(x, y, z);
-				//World->updateCube(x,y,z);
-			}
-		}*/
+		////glDisable(GL_LIGHTING);
+		////glBegin(GL_LINES);
+		//////glColor3d(1,0,0);
+		////NYVert3Df B = Position;
+		////B.X += Cam->_Direction.X*NYCube::CUBE_SIZE*8;
+		////B.Y += Cam->_Direction.Y*NYCube::CUBE_SIZE*8;
+		////B.Z += Cam->_Direction.Z*NYCube::CUBE_SIZE*8;
+		//////glVertex3d(Position.X,Position.Y,Position.Z);
+		//////glVertex3d(B.X-5,B.Y,B.Z-5);
+		////glEnd();
+		//glEnable(GL_LIGHTING);
+		//if (Destroying) {
+		//	NYVert3Df sp = NYVert3Df(0, 0, 0);
+		//	int x, y, z;
+		//	if (World->getRayCollision(Position, B, sp, x, y, z))
+		//	{
+		//		World->deleteCube(x, y, z);
+		//		World->updateCube(x,y,z);
+		//	}
+		//}
 	}
 
 	void update(float elapsed)

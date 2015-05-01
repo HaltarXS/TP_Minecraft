@@ -1,3 +1,4 @@
+//BY Guillaume Pastor
 #pragma once
 
 #include <iostream>
@@ -54,11 +55,16 @@
 		Node *m_nodeToAnalyse;
 		Node *m_betterNode;
 
+		//Tableau des nodes adjacente pour appliquer un facteur au cout pour les diagonales
+		int TabAdj[3][3][3];
+
 		//Manhattan Distance
 		int DistanceManhattan(const NYVert3Df & a, const NYVert3Df & b);
 
+
 		//Analyse des nodes adjacentes
-		bool AnalyseAdjacentNodes(NYCubeType _cubeType);
+		bool AnalyseAdjacentNodes(int _cubeType);
+		bool AnalyseAdjacentNodes2(int _step, bool _walkOnWater);
 
 		void InitializeNodes();
 
@@ -73,5 +79,10 @@
 		~Pathfinding();
 
 		void SetWorld(NYWorld * _world);
-		bool FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition, NYCubeType _cubeType, Path & _outPath);
+
+
+		bool FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition, int _cubeType, Path & _outPath);
+
+		//Trouve un chemin depuis la position x,y du terrain jusqu'à la position x',y' d'arrivée en prenant en compte une hauteur de cube franchissable
+		bool FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition, unsigned _step, Path & _outPath, bool _walkOnWater = false);
 	};

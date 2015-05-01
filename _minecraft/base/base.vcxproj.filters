@@ -24,34 +24,34 @@
       <Filter>Ressources</Filter>
     </ClCompile>
     <ClCompile Include="..\src\msgroute.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\statemch.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\timeFSM.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\database.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\debuglog.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gameobject.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\msg.cpp">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\TestStateMachine.cpp">
       <Filter>Guillaume Pastor\State Machine Test</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Pathfinding.cpp">
-      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Path.cpp">
-      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+      <Filter>Guillaume Pastor\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Pathfinding.cpp">
+      <Filter>Guillaume Pastor\Pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,17 +70,17 @@
     <Filter Include="Ressources">
       <UniqueIdentifier>{be9cd8f5-74e1-4f2d-9791-f5c133938c16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State Machine">
-      <UniqueIdentifier>{d6dc5524-0037-4990-ab97-d8f7dd1d36a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Guillaume Pastor">
       <UniqueIdentifier>{42fe86da-c0e0-4a46-a755-f3161815ebbc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Guillaume Pastor\State Machine Test">
       <UniqueIdentifier>{44aa1227-40b4-4f58-879f-887b5438ceaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Guillaume Pastor &amp; Brahim Berkati">
-      <UniqueIdentifier>{fbb52670-07cd-490b-83a9-96274bdf132a}</UniqueIdentifier>
+    <Filter Include="Guillaume Pastor\Pathfinding">
+      <UniqueIdentifier>{7101207b-25e9-488c-8d2f-e49a630ca0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillaume Pastor\State Machine">
+      <UniqueIdentifier>{d6dc5524-0037-4990-ab97-d8f7dd1d36a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,43 +118,43 @@
     </ClInclude>
     <ClInclude Include="..\src\RessourcesManager.h" />
     <ClInclude Include="..\src\msg.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\msgroute.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\singleton.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\statemch.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\timeFSM.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\database.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\debuglog.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FSM.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\gameobject.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\global.h">
-      <Filter>State Machine</Filter>
+      <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TestStateMachine.h">
       <Filter>Guillaume Pastor\State Machine Test</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Path.h">
-      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+      <Filter>Guillaume Pastor\Pathfinding</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Pathfinding.h">
-      <Filter>Guillaume Pastor &amp; Brahim Berkati</Filter>
+      <Filter>Guillaume Pastor\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
