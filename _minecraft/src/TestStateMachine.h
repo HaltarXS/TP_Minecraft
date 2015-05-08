@@ -5,7 +5,7 @@
 #include "IABase.h"
 #include <random>
 
-class TestStateMachine :public StateMachine, public IABase
+class TestStateMachine : public IABase
 {
 private:
 	//Add here your custom variables
@@ -23,17 +23,15 @@ public:
 	TestStateMachine();
 	~TestStateMachine();
 
-	//Get the Object ID. Useful to send messages to other entities !
-	inline objectID GetID()
-	{
-		return this->GetOwner()->GetID();
-	}
+	
+	//The method from the IABase class to override
+	virtual void UpdateIA();
 
-	void UpdateEntity();
+	virtual void Draw();
 
-	void SetEntityToCommunicateWith(objectID OtherEntity);
+	void SetEntityToCommunicateWith(objectID OtherEntity);//TEST ONLY
 
 	//The method from the StateMachine class to override
-	bool States(StateMachineEvent event, MSG_Object * msg, int state);
+	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state);
 };
 

@@ -105,8 +105,8 @@ void update(void)
 	herbe->Update(NYRenderer::_DeltaTime);
 
 	//Update State Machine example
-	//entityTest1->UpdateEntity();
-	//entityTest2->UpdateEntity();
+	//entityTest1->UpdateIA();
+	//entityTest2->UpdateIA();
 
 	
 
@@ -120,7 +120,7 @@ void render2d(void)
 
 void renderObjects(void)
 {
-	glDisable(GL_LIGHTING);
+	/*glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
 	glColor3d(1,0,0);
 	glVertex3d(0,0,0);
@@ -131,7 +131,7 @@ void renderObjects(void)
 	glColor3d(0,0,1);
 	glVertex3d(0,0,0);
 	glVertex3d(0,0,10000);
-	glEnd();
+	glEnd();*/
 
 	glColor3d(1,1,1);
 

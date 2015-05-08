@@ -2,10 +2,13 @@
 #include "TestStateMachine.h"
 
 TestStateMachine::TestStateMachine() :
-StateMachine()
+IABase()
 {
-	//State Machine Initialisation. Important !
+	//State Machine Initialisation. Important ! A faire ici, pas dans IABase
 	Initialize();
+
+	//On initialise le type
+	type = TEST_STATEMACHINE;
 }
 
 //Destructor
@@ -14,8 +17,13 @@ TestStateMachine::~TestStateMachine()
 
 }
 
+void TestStateMachine::Draw()
+{
+
+}
+
 //It hase to be called every frame
-void TestStateMachine::UpdateEntity()
+void TestStateMachine::UpdateIA()
 {
 	this->Update();//Update the state machine ("State" method)
 

@@ -9,7 +9,8 @@
 
 
 
-enum TypeRessource{
+enum TypeRessource
+{
 	NONE,
 	HERBE
 };

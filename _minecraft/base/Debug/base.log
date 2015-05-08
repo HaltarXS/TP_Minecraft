@@ -145,7 +145,7 @@ e:\documents\github\tp_minecraft\_minecraft\src\world.h(781): warning C4244: 'ar
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(782): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(783): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\avatar.h(31): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\path.h(43): warning C4018: '<' : incompatibilité signed/unsigned
+e:\documents\github\tp_minecraft\_minecraft\src\path.h(53): warning C4018: '<' : incompatibilité signed/unsigned
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(98): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(99): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(176): warning C4305: 'argument' : troncation de 'double' à 'GLfloat'
@@ -156,7 +156,4 @@ e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(261): warning C4305: 'a
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(392): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(669): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(670): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-  Génération de code en cours...
-  Ignoré... (aucune modification pertinente détectée)
-  Pathfinding.cpp
   base.vcxproj -> E:\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe

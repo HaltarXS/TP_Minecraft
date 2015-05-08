@@ -6,7 +6,15 @@
 
 using namespace std;
 
-class IABase//: public StateMachine
+enum eTypeCreature
+{
+	BASE,
+	TEST_STATEMACHINE,
+	WASTEDOSAURE
+};
+
+//Les créatures vont devoir hériter de cette classe
+class IABase: public StateMachine
 {
 private:
 	float A;
@@ -15,18 +23,36 @@ private:
 	float Saciete_Time = 10.0;
 	
 public:
-	NYVert3Df Position;
-	NYVert3Df PositionCube;
-	NYVert3Df Direction;
-	NYVert3Df Speed;
-	float Faim;
-	float Saciete;
 	IABase();
 	~IABase();
 
+	NYVert3Df position;
+	NYVert3Df positionCube;
+	NYVert3Df direction;
+	NYVert3Df speed;
+	float faim;
+	float saciete;
+
+	//Useful to know the type of the entity !
+	eTypeCreature type;
+
 	void updateHunger(float elapsed, float totalTime);
 	void manger();
-	void moveTo(NYVert3Df destinationCube, NYCube* cubes);
+
+	//Get the Object ID. Useful to send messages to other entities !
+	inline objectID GetID()
+	{
+		return this->GetOwner()->GetID();
+	}
+
+	//Override this method !
+	virtual void UpdateIA() = 0;
+
+	//Override this method !
+	virtual void Draw() = 0;
+
+	//Override this method !
+	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state) = 0;
 
 };
 

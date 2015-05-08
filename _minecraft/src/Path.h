@@ -37,6 +37,16 @@ public:
 		}
 	}
 
+	inline const NYVert3Df & getWaypoint(const int index)
+	{
+		return m_wayPoints[index];
+	}
+
+	inline int getSize()
+	{
+		return m_wayPoints.size();
+	}
+
 	inline void drawPath()
 	{
 		
@@ -48,7 +58,7 @@ public:
 			glVertex3d(m_wayPoints[i].X, m_wayPoints[i].Y, m_wayPoints[i].Z);
 			glEnd();
 		}
-		
 	}
+
 };
 
