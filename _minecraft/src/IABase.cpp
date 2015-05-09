@@ -1,7 +1,7 @@
 #include "IABase.h"
 
 
-IABase::IABase():
+IABase::IABase(NYWorld * world):
 StateMachine()
 {
 	A = 5;
@@ -15,6 +15,8 @@ StateMachine()
 	speed = NYVert3Df(0, 0, 0);
 
 	type = BASE;
+
+	m_world = world;
 }
 
 
@@ -22,7 +24,7 @@ IABase::~IABase()
 {
 }
 
-void IABase::updateHunger(float elapsed, float totalTime)
+void IABase::UpdateHunger(float elapsed, float totalTime)
 {
 	if (saciete > 0.0)
 	{
@@ -35,9 +37,9 @@ void IABase::updateHunger(float elapsed, float totalTime)
 	this->faim = A*t + B*t*(cos(totalTime) + 1);
 }
 
-void IABase::manger()
+void IABase::Manger()
 {
-	saciete = Saciete_Time;
+	saciete = m_saciete_Time;
 	t = 0;
 }
 

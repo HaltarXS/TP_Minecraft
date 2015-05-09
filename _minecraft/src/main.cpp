@@ -30,6 +30,9 @@
 //PF
 #include "Pathfinding.h"
 
+//Creatures
+#include "Wastedosaure.h"
+
 NYWorld * g_world;
 
 NYRenderer * g_renderer = NULL;
@@ -77,6 +80,9 @@ TestStateMachine * entityTest2;
 //PathFinding
 Path returnPath;
 
+//Vecteur de Creatures
+static std::vector<IABase*> g_Creatures;
+
 //////////////////////////////////////////////////////////////////////////
 // GESTION APPLICATION
 //////////////////////////////////////////////////////////////////////////
@@ -101,15 +107,17 @@ void update(void)
 	avatar->update(elapsed);
 
 
-	//lapin->updateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
+	//lapin->UpdateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
 	herbe->Update(NYRenderer::_DeltaTime);
 
 	//Update State Machine example
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
 
-	
-
+	for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
+	{
+		(*it)->UpdateIA();
+	}
 }
 
 
@@ -191,7 +199,13 @@ void renderObjects(void)
 	herbe->Render();
 	herbe2->Render();
 
-	returnPath.drawPath();
+	returnPath.DrawPath();
+
+	//Rendu des créatures
+	for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
+	{
+		(*it)->Draw();
+	}
 
 }
 
@@ -310,6 +324,8 @@ void specialDownFunction(int key, int p1, int p2)
 	{
 	}
 
+	
+
 }
 
 void specialUpFunction(int key, int p1, int p2)
@@ -361,6 +377,8 @@ void keyboardDownFunction(unsigned char key, int p1, int p2)
 	{
 		avatar->Jump = true;
 	}
+
+	
 }
 
 void keyboardUpFunction(unsigned char key, int p1, int p2)
@@ -697,13 +715,16 @@ int main(int argc, char* argv[])
 
 	/*if (pf->FindPath(depart, arrivee, (int)CUBE_AIR | (int)CUBE_TERRE |(int)CUBE_HERBE, returnPath))
 	{
-		//returnPath.printPath();
+		//returnPath.PrintPath();
 	}*/
 
 	if (pf->FindPath(NYVert2Df(depart.X, depart.Y), NYVert2Df(arrivee.X, arrivee.Y), 1 ,returnPath))
 	{
-		//returnPath.printPath();
+		//returnPath.PrintPath();
 	}
+
+	//Ajout des créatures
+	g_Creatures.push_back(new Wastedosaure(g_world,NYVert2Df(3,3)));
 
 	//On start
 	g_timer->start();

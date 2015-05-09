@@ -53,6 +53,9 @@
     <ClCompile Include="..\src\Pathfinding.cpp">
       <Filter>Guillaume Pastor\Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Wastedosaure.cpp">
+      <Filter>Guillaume Pastor\Wastedosaure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -81,6 +84,9 @@
     </Filter>
     <Filter Include="Guillaume Pastor\State Machine">
       <UniqueIdentifier>{d6dc5524-0037-4990-ab97-d8f7dd1d36a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillaume Pastor\Wastedosaure">
+      <UniqueIdentifier>{c0a45a7b-92f6-4cbd-86ff-6c89f63e1971}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Pathfinding.h">
       <Filter>Guillaume Pastor\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Wastedosaure.h">
+      <Filter>Guillaume Pastor\Wastedosaure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

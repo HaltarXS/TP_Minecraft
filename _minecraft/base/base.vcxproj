@@ -31,6 +31,7 @@
     <ClCompile Include="..\src\TestStateMachine.cpp" />
     <ClCompile Include="..\src\tex_manager.cpp" />
     <ClCompile Include="..\src\timeFSM.cpp" />
+    <ClCompile Include="..\src\Wastedosaure.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="..\src\tex_manager.h" />
     <ClInclude Include="..\src\timeFSM.h" />
     <ClInclude Include="..\src\types.h" />
+    <ClInclude Include="..\src\Wastedosaure.h" />
     <ClInclude Include="..\src\world.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -2,7 +2,7 @@
 #include "TestStateMachine.h"
 
 TestStateMachine::TestStateMachine() :
-IABase()
+IABase(NULL)
 {
 	//State Machine Initialisation. Important ! A faire ici, pas dans IABase
 	Initialize();

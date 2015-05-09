@@ -3,6 +3,7 @@
 #include <math.h>
 #include "engine/utils/types_3d.h"
 #include "cube.h"
+#include "world.h"
 
 using namespace std;
 
@@ -20,10 +21,12 @@ private:
 	float A;
 	float B;
 	float t;
-	float Saciete_Time = 10.0;
+	float m_saciete_Time = 10.0f;
+
+	NYWorld * m_world;
 	
 public:
-	IABase();
+	IABase(NYWorld * world);
 	~IABase();
 
 	NYVert3Df position;
@@ -36,8 +39,8 @@ public:
 	//Useful to know the type of the entity !
 	eTypeCreature type;
 
-	void updateHunger(float elapsed, float totalTime);
-	void manger();
+	void UpdateHunger(float elapsed, float totalTime);
+	void Manger();
 
 	//Get the Object ID. Useful to send messages to other entities !
 	inline objectID GetID()

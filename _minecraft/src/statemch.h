@@ -42,7 +42,8 @@ enum States_FSM
 	STATE_Move,
 	STATE_Sleep,
 	STATE_Eat,
-	STATE_Dead
+	STATE_Dead,
+	STATE_Egg,
 
 };
 

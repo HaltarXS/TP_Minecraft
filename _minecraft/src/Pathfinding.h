@@ -39,7 +39,7 @@
 	{
 		friend class Path;
 	private:
-
+		//Vraiables
 		NYWorld * m_world;
 
 		std::vector<NYVert3Df> m_tempPath;
@@ -60,11 +60,12 @@
 		Node *m_betterNode; //Pointeur sur une meilleure node si on en a trouvé une. Elle deviendra la realActualNdoe
 
 		//Tableau des nodes adjacente pour appliquer un facteur au cout pour les diagonales
-		int TabAdj[3][3][3];
+		int m_tabAdj[3][3][3];
 
+		//-----------------------------------------------
+		//Methodes
 		//Manhattan Distance
-		int DistanceManhattan(const NYVert3Df & a, const NYVert3Df & b);
-
+		int DistanceManhattan(const NYVert3Df & _a, const NYVert3Df & _b);
 
 		//Analyse des nodes adjacentes
 		bool AnalyseAdjacentNodes(int _cubeType);//Pour le premier type de PF

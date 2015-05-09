@@ -20,43 +20,43 @@ Pathfinding::Pathfinding()
 	//Init Tableau des nodes adjacentes
 	int offset = 1;
 	//Rangée du bas
-	TabAdj[offset - 1][offset - 1][offset - 1] = 2.4f;
-	TabAdj[offset - 0][offset - 1][offset - 1] = 1.4f;
-	TabAdj[offset + 1][offset - 1][offset - 1] = 2.4f;
+	m_tabAdj[offset - 1][offset - 1][offset - 1] = 2.4f;
+	m_tabAdj[offset - 0][offset - 1][offset - 1] = 1.4f;
+	m_tabAdj[offset + 1][offset - 1][offset - 1] = 2.4f;
 
-	TabAdj[offset - 1][offset - 0][offset - 1] = 1.4f;
-	TabAdj[offset - 0][offset - 0][offset - 1] = 1.0f;
-	TabAdj[offset + 1][offset - 0][offset - 1] = 1.4f;
+	m_tabAdj[offset - 1][offset - 0][offset - 1] = 1.4f;
+	m_tabAdj[offset - 0][offset - 0][offset - 1] = 1.0f;
+	m_tabAdj[offset + 1][offset - 0][offset - 1] = 1.4f;
 
-	TabAdj[offset - 1][offset + 1][offset - 1] = 2.4f;
-	TabAdj[offset - 0][offset + 1][offset - 1] = 1.4f;
-	TabAdj[offset + 1][offset + 1][offset - 1] = 2.4f;
+	m_tabAdj[offset - 1][offset + 1][offset - 1] = 2.4f;
+	m_tabAdj[offset - 0][offset + 1][offset - 1] = 1.4f;
+	m_tabAdj[offset + 1][offset + 1][offset - 1] = 2.4f;
 
 	//Rangée milieu
-	TabAdj[offset - 1][offset - 1][offset - 0] = 1.4f;
-	TabAdj[offset - 0][offset - 1][offset - 0] = 1.0f;
-	TabAdj[offset + 1][offset - 1][offset - 0] = 1.4f;
+	m_tabAdj[offset - 1][offset - 1][offset - 0] = 1.4f;
+	m_tabAdj[offset - 0][offset - 1][offset - 0] = 1.0f;
+	m_tabAdj[offset + 1][offset - 1][offset - 0] = 1.4f;
 
-	TabAdj[offset - 1][offset - 0][offset - 0] = 1.0f;
-	TabAdj[offset - 0][offset - 0][offset - 0] = 0;
-	TabAdj[offset + 1][offset - 0][offset - 0] = 1.0f;
+	m_tabAdj[offset - 1][offset - 0][offset - 0] = 1.0f;
+	m_tabAdj[offset - 0][offset - 0][offset - 0] = 0;
+	m_tabAdj[offset + 1][offset - 0][offset - 0] = 1.0f;
 
-	TabAdj[offset - 1][offset + 1][offset - 0] = 1.4f;
-	TabAdj[offset - 0][offset + 1][offset - 0] = 1.0f;
-	TabAdj[offset + 1][offset + 1][offset - 0] = 1.4f;
+	m_tabAdj[offset - 1][offset + 1][offset - 0] = 1.4f;
+	m_tabAdj[offset - 0][offset + 1][offset - 0] = 1.0f;
+	m_tabAdj[offset + 1][offset + 1][offset - 0] = 1.4f;
 
 	//Rangée du haut
-	TabAdj[offset - 1][offset - 1][offset + 1] = 2.4f;
-	TabAdj[offset - 0][offset - 1][offset + 1] = 1.4f;
-	TabAdj[offset + 1][offset - 1][offset + 1] = 2.4f;
+	m_tabAdj[offset - 1][offset - 1][offset + 1] = 2.4f;
+	m_tabAdj[offset - 0][offset - 1][offset + 1] = 1.4f;
+	m_tabAdj[offset + 1][offset - 1][offset + 1] = 2.4f;
 
-	TabAdj[offset - 1][offset - 0][offset + 1] = 1.4f;
-	TabAdj[offset - 0][offset - 0][offset + 1] = 1.0f;
-	TabAdj[offset + 1][offset - 0][offset + 1] = 1.4f;
+	m_tabAdj[offset - 1][offset - 0][offset + 1] = 1.4f;
+	m_tabAdj[offset - 0][offset - 0][offset + 1] = 1.0f;
+	m_tabAdj[offset + 1][offset - 0][offset + 1] = 1.4f;
 
-	TabAdj[offset - 1][offset + 1][offset + 1] = 2.4f;
-	TabAdj[offset - 0][offset + 1][offset + 1] = 1.4f;
-	TabAdj[offset + 1][offset + 1][offset + 1] = 2.4f;
+	m_tabAdj[offset - 1][offset + 1][offset + 1] = 2.4f;
+	m_tabAdj[offset - 0][offset + 1][offset + 1] = 1.4f;
+	m_tabAdj[offset + 1][offset + 1][offset + 1] = 2.4f;
 
 
 }
@@ -120,9 +120,9 @@ void Pathfinding::SetWorld(NYWorld * _world)
 	std::cout << "Graph for Pathfinding Initialized" << std::endl;
 }
 
-int Pathfinding::DistanceManhattan(const NYVert3Df & a, const NYVert3Df & b)
+int Pathfinding::DistanceManhattan(const NYVert3Df & _a, const NYVert3Df & _b)
 {
-	return (abs(b.X - a.X) + abs(b.Y - a.Y) + abs(b.Z - a.Z)) * 10;
+	return (abs(_b.X - _a.X) + abs(_b.Y - _a.Y) + abs(_b.Z - _a.Z)) * 10;
 }
 
 
@@ -166,17 +166,17 @@ bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 						//On calcul la distance Manhattan en vue de Calculer son cout F
 						m_nodeToAnalyse->H = DistanceManhattan(m_nodeToAnalyse->Position, m_arrivalPosition);
 						//Calcul du poid du déplacement
-						m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + z]; //* factorWeight;
+						m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + z]; //* factorWeight;
 						//Calcul du nouveau Cout
 						m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 						//On met la node dans l'open List
 						m_nodeToAnalyse->List = OPEN_LIST;
 						m_openList.insert(std::pair<int, Node*>(m_nodeToAnalyse->F, m_nodeToAnalyse));//On l'insère dans la liste ouverte
 					}
-					else if (m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + z]))//Sinon si il est déjà dans l'open List
+					else if (m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + z]))//Sinon si il est déjà dans l'open List
 					{
 						m_nodeToAnalyse->Parent = m_realActualNode;
-						m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + z];
+						m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + z];
 						m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 					}
 
@@ -261,7 +261,7 @@ bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition,
 		}
 
 		std::reverse(m_tempPath.begin(), m_tempPath.end());
-		_outPath.setPath(m_tempPath);
+		_outPath.SetPath(m_tempPath);
 	}
 	else
 	{
@@ -333,17 +333,17 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 					m_nodeToAnalyse->H = DistanceManhattan(m_nodeToAnalyse->Position, m_arrivalPosition);
 					//Calcul du poid du déplacement
 					
-					m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + (int)((step / _step))]; //* factorWeight;
+					m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + (int)((step / _step))]; //* factorWeight;
 					//Calcul du nouveau Cout
 					m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 					//On met la node dans l'open List
 					m_nodeToAnalyse->List = OPEN_LIST;
 					m_openList.insert(std::pair<int, Node*>(m_nodeToAnalyse->F, m_nodeToAnalyse));//On l'insère dans la liste ouverte
 				}
-				else if (m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + (int)((step / _step))]))//Sinon si il est déjà dans l'open List
+				else if (m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + (int)((step / _step))]))//Sinon si il est déjà dans l'open List
 				{
 					m_nodeToAnalyse->Parent = m_realActualNode;
-					m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * TabAdj[1 + x][1 + y][1 + (int)((step / _step))];
+					m_nodeToAnalyse->G = m_realActualNode->G + m_realActualNode->Weight * m_tabAdj[1 + x][1 + y][1 + (int)((step / _step))];
 					m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 				}
 
@@ -430,7 +430,7 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 		}
 
 		std::reverse(m_tempPath.begin(), m_tempPath.end());
-		_outPath.setPath(m_tempPath);
+		_outPath.SetPath(m_tempPath);
 	}
 	else
 	{

@@ -17,19 +17,19 @@ public:
 	Path();
 	~Path();
 
-	inline void setPath(const std::vector<NYVert3Df> & _ThePath)
+	inline void SetPath(const std::vector<NYVert3Df> & _ThePath)
 	{
 		m_wayPoints.clear();
 		m_wayPoints = _ThePath;
 	}
 
 
-	inline std::vector<NYVert3Df> getPath()
+	inline std::vector<NYVert3Df> GetPath()
 	{
 		return m_wayPoints;
 	}
 
-	inline void printPath()
+	inline void PrintPath()
 	{
 		for (std::vector<NYVert3Df>::iterator it = m_wayPoints.begin(); it != m_wayPoints.end(); ++it)
 		{
@@ -37,17 +37,17 @@ public:
 		}
 	}
 
-	inline const NYVert3Df & getWaypoint(const int index)
+	inline const NYVert3Df & GetWaypoint(const int index)
 	{
 		return m_wayPoints[index];
 	}
 
-	inline int getSize()
+	inline int GetSize()
 	{
 		return m_wayPoints.size();
 	}
 
-	inline void drawPath()
+	inline void DrawPath()
 	{
 		
 		for (int i = 1; i < m_wayPoints.size(); ++i)
