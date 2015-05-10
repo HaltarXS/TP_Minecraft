@@ -56,6 +56,9 @@
     <ClCompile Include="..\src\Wastedosaure.cpp">
       <Filter>Guillaume Pastor\Wastedosaure</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Viewcone.cpp">
+      <Filter>Paul Gerst</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -87,6 +90,9 @@
     </Filter>
     <Filter Include="Guillaume Pastor\Wastedosaure">
       <UniqueIdentifier>{c0a45a7b-92f6-4cbd-86ff-6c89f63e1971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Paul Gerst">
+      <UniqueIdentifier>{d818dbd5-96bb-45f5-96ec-cb8291fd8e4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Wastedosaure.h">
       <Filter>Guillaume Pastor\Wastedosaure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Viewcone.h">
+      <Filter>Paul Gerst</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
