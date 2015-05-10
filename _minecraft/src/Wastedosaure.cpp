@@ -129,7 +129,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnEnter
 	
 	OnUpdate
-	if (m_currentIndex < m_path.GetSize())
+	if (m_currentIndex < m_path.GetSize()-groupPosition)
 	{
 		//On récupère la direction
 		NYVert3Df currentDirection = m_path.GetWaypoint(m_currentIndex) - position;
