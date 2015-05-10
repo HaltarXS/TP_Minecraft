@@ -422,7 +422,7 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 
 	if (!PathNotFound)
 	{
-		std::cout << "=====Path found=====\n";
+		//std::cout << "=====Path found=====\n";
 		//On "déplie" les nodes pour connaitre le chemin
 		m_tempPath.clear();
 		Node * TempNode = &m_nodes[(int)m_arrivalPosition.X][(int)m_arrivalPosition.Y][(int)m_arrivalPosition.Z];
@@ -438,7 +438,7 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 	}
 	else
 	{
-		std::cout << "=====Path not found=====\n";
+		//std::cout << "=====Path not found=====\n";
 	}
 
 

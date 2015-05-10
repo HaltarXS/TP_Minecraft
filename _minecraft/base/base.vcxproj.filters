@@ -59,6 +59,9 @@
     <ClCompile Include="..\src\Viewcone.cpp">
       <Filter>Paul Gerst</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WastedosaureManager.cpp">
+      <Filter>Guillaume Pastor\Wastedosaure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Viewcone.h">
       <Filter>Paul Gerst</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WastedosaureManager.h">
+      <Filter>Guillaume Pastor\Wastedosaure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

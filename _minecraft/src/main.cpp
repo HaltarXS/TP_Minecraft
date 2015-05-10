@@ -726,8 +726,12 @@ int main(int argc, char* argv[])
 	srand(time(NULL));
 
 	//Ajout des créatures
-	g_Creatures.push_back(new Wastedosaure(g_world,NYVert2Df(3,3)));
-
+	//Wastedosaure
+	for (int i = 0; i < 15; ++i)
+	{
+		g_Creatures.push_back(new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i)));
+	}
+	
 	//On start
 	g_timer->start();
 

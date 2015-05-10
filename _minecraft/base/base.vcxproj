@@ -33,6 +33,7 @@
     <ClCompile Include="..\src\timeFSM.cpp" />
     <ClCompile Include="..\src\Viewcone.cpp" />
     <ClCompile Include="..\src\Wastedosaure.cpp" />
+    <ClCompile Include="..\src\WastedosaureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
@@ -66,6 +67,7 @@
     <ClInclude Include="..\src\types.h" />
     <ClInclude Include="..\src\Viewcone.h" />
     <ClInclude Include="..\src\Wastedosaure.h" />
+    <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
