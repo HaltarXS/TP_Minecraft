@@ -36,6 +36,8 @@ public:
 	float faim;
 	float saciete;
 
+	int life = 100;
+
 	//Useful to know the type of the entity !
 	eTypeCreature type;
 

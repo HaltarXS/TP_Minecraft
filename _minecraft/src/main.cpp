@@ -718,10 +718,12 @@ int main(int argc, char* argv[])
 		//returnPath.PrintPath();
 	}*/
 
-	if (pf->FindPath(NYVert2Df(depart.X, depart.Y), NYVert2Df(arrivee.X, arrivee.Y), 1 ,returnPath))
-	{
-		//returnPath.PrintPath();
-	}
+	//if (pf->FindPath(NYVert2Df(depart.X, depart.Y), NYVert2Df(arrivee.X, arrivee.Y), 1 ,returnPath))
+	//{
+	//	//returnPath.PrintPath();
+	//}
+
+	srand(time(NULL));
 
 	//Ajout des créatures
 	g_Creatures.push_back(new Wastedosaure(g_world,NYVert2Df(3,3)));

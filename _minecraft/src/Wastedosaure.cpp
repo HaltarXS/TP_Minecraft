@@ -14,6 +14,11 @@ Wastedosaure::~Wastedosaure()
 
 }
 
+bool Wastedosaure::HasAPath()
+{
+	return m_path.GetSize() > 0;
+}
+
 void Wastedosaure::UpdateIA()
 {
 	Update();//Update the state machine
@@ -35,6 +40,7 @@ void Wastedosaure::Draw()
 	}
 
 	glPopMatrix();
+	m_path.DrawPath();
 }
 
 
@@ -42,18 +48,68 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 {
 	BeginStateMachine
 
+	//Initialize
 	State(STATE_Initialize)
 	OnEnter
 	PushState(STATE_Egg);
 
 
-	//Move
+	//Egg
 	State(STATE_Egg)
 	OnEnter
-		
+	m_timerEgg = 0.0f;
 	OnUpdate
-		
+
+	if (m_timerEgg >= m_timeEgg)
+	{
+		PushState(STATE_FindPath);
+	}
+	m_timerEgg += NYRenderer::_DeltaTime;
 	OnExit
+
+		
+	State(STATE_FindPath)
+	OnEnter
+	m_path.Clear();
+	m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES), 1, m_path);
+	cout << position.X << "," << position.Y << "," << position.Z << endl;
+	m_path.PrintPath();
+	m_currentIndex = 0;
+	OnUpdate
+	if (HasAPath())
+	{
+		PushState(STATE_Move);
+	}
+	OnExit
+
+	//Move
+	State(STATE_Move)
+	OnEnter
+	
+	OnUpdate
+	if (m_currentIndex < m_path.GetSize())
+	{
+		//On récupère la direction
+		NYVert3Df currentDirection = m_path.GetWaypoint(m_currentIndex) - position;
+		float lenght = currentDirection.getSize();
+		currentDirection.normalize();
+
+		if (lenght < 1.0f)
+		{
+			++m_currentIndex;
+		}
+		else
+		{
+			position += currentDirection * m_speed;
+		}
+	}
+	else
+	{
+		PushState(STATE_FindPath);
+	}
+
+	OnExit
+	
 
 
 	//Dead

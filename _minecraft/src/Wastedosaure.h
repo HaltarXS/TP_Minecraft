@@ -15,11 +15,27 @@
 
 #include "world.h"
 
+#include "Pathfinding.h"
+
 using namespace std;
 
 class Wastedosaure:public IABase
 {
 private:
+
+	float m_speed = 1.0f;
+
+	float m_timeEgg = 3.0f;
+	float m_timerEgg = 0.0f;
+
+	//Path fo PF
+	Pathfinding * m_pf = Pathfinding::GetSingleton();
+	Path m_path;
+	int m_currentIndex = 0;
+
+	
+
+	bool HasAPath();
 
 
 public:

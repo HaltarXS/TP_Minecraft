@@ -144,4 +144,6 @@ e:\documents\github\tp_minecraft\_minecraft\src\world.h(780): warning C4244: 'ar
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(781): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(782): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(783): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\path.h(53): warning C4018: '<' : incompatibilité signed/unsigned
+e:\documents\github\tp_minecraft\_minecraft\src\wastedosaure.cpp(75): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
   base.vcxproj -> E:\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe

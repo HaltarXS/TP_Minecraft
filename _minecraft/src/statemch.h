@@ -44,6 +44,7 @@ enum States_FSM
 	STATE_Eat,
 	STATE_Dead,
 	STATE_Egg,
+	STATE_FindPath,
 
 };
 

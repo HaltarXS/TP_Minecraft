@@ -106,6 +106,10 @@ void Pathfinding::ClearNodes()
 		{
 			for (int k = 0; k<MAT_HEIGHT_CUBES; k++)
 			{
+				m_nodes[i][j][k].G = 0;
+				m_nodes[i][j][k].F = 0;
+				m_nodes[i][j][k].H = 0;
+				m_nodes[i][j][k].Parent = NULL;
 				m_nodes[i][j][k].Weight = 10;
 				m_nodes[i][j][k].List = NO_LIST;
 			}
