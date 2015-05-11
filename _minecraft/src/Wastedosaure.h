@@ -20,6 +20,8 @@
 
 #include "WastedosaureManager.h"
 
+#include "Viewcone.h"
+
 //using namespace std;
 
 class Wastedosaure :public IABase
@@ -44,6 +46,16 @@ private:
 
 	int FindClosestWaypoint(Path _path);
 
+	Viewcone m_cone;
+
+	std::vector<IABase*> * m_entities;
+
+	std::vector<IABase*> m_creaturesInSight;
+
+	void GetCreaturesInSight();
+
+	bool m_debugDraw = true;
+
 	//WastedosaureManager * m_wm = WastedosaureManager::GetSingleton();
 
 public:
@@ -52,6 +64,8 @@ public:
 
 	Wastedosaure * leader = NULL;
 	int groupPosition = 0;
+
+	void SetEntities(std::vector<IABase*> * entities);
 
 	Path GetPath();
 

@@ -727,9 +727,11 @@ int main(int argc, char* argv[])
 
 	//Ajout des créatures
 	//Wastedosaure
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 11; ++i)
 	{
-		g_Creatures.push_back(new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i)));
+		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i));
+		w->SetEntities(&g_Creatures);
+		g_Creatures.push_back(w);
 	}
 	
 	//On start

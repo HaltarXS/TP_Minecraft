@@ -2,7 +2,7 @@
 
 
 Wastedosaure::Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale):
-IABase(_world)
+IABase(_world), m_cone(90.0f,100)
 {
 	Initialize();
 	type = WASTEDOSAURE;
@@ -13,6 +13,23 @@ IABase(_world)
 Wastedosaure::~Wastedosaure()
 {
 
+}
+
+void Wastedosaure::SetEntities(std::vector<IABase*> * entities)
+{
+	m_entities = entities;
+}
+
+void Wastedosaure::GetCreaturesInSight()
+{
+	m_creaturesInSight.clear();
+	for (int i = 0; i < m_entities->size(); ++i)
+	{
+		if (m_cone.IsInSight((*m_entities)[i]->position))
+		{
+			m_creaturesInSight.push_back((*m_entities)[i]);
+		}
+	}
 }
 
 Path Wastedosaure::GetPath()
@@ -27,6 +44,17 @@ bool Wastedosaure::HasAPath()
 
 void Wastedosaure::UpdateIA()
 {
+	//Update Cone de vision
+	m_cone.SetPosition(position);
+	m_cone.SetOrientation(direction);
+
+	GetCreaturesInSight();
+
+	/*for (int i = 0; i < m_creaturesInSight.size(); ++i)
+	{
+		cout << "Type " << m_creaturesInSight[i]->type << " ID : " << m_creaturesInSight[i]->GetID() << ".\n";
+	}*/
+
 	Update();//Update the state machine
 }
 
@@ -62,8 +90,15 @@ void Wastedosaure::Draw()
 		glutSolidCube(8);
 	}
 
+	
 	glPopMatrix();
-	m_path.DrawPath();
+
+	if (m_debugDraw)
+	{
+		m_cone.DebugDraw();
+		m_path.DrawPath();
+	}
+	
 }
 
 
@@ -132,9 +167,9 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	if (m_currentIndex < m_path.GetSize()-groupPosition)
 	{
 		//On récupère la direction
-		NYVert3Df currentDirection = m_path.GetWaypoint(m_currentIndex) - position;
-		float lenght = currentDirection.getSize();
-		currentDirection.normalize();
+		direction = m_path.GetWaypoint(m_currentIndex) - position;
+		float lenght = direction.getSize();
+		direction.normalize();
 
 		if (lenght < 1.0f)
 		{
@@ -142,7 +177,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 		else
 		{
-			position += currentDirection * m_speed;
+			position += direction * m_speed;
 		}
 	}
 	else

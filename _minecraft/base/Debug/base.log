@@ -1,4 +1,4 @@
-﻿  Wastedosaure.cpp
+﻿  main.cpp
 e:\documents\github\tp_minecraft\_engine\src\engine\utils\ny_utils.h(25): warning C4005: 'NAN' : redéfinition de macro
           c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(106) : voir la définition précédente de 'NAN'
 e:\documents\github\tp_minecraft\_minecraft\src\cube.h(51): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
@@ -144,8 +144,18 @@ e:\documents\github\tp_minecraft\_minecraft\src\world.h(780): warning C4244: 'ar
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(781): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(782): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\world.h(783): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\avatar.h(31): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 e:\documents\github\tp_minecraft\_minecraft\src\path.h(53): warning C4018: '<' : incompatibilité signed/unsigned
-e:\documents\github\tp_minecraft\_minecraft\src\wastedosaure.cpp(43): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-e:\documents\github\tp_minecraft\_minecraft\src\wastedosaure.cpp(101): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-cl : Ligne de commande warning D9028: échec de la régénération minimale, passage à la génération normale
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(104): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(105): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(184): warning C4305: 'argument' : troncation de 'double' à 'GLfloat'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(237): warning C4305: '*=' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(245): warning C4305: '*=' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(273): warning C4305: 'argument' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(275): warning C4305: 'argument' : troncation de 'double' à 'float'
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(410): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(687): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(688): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(726): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+e:\documents\github\tp_minecraft\_minecraft\src\main.cpp(732): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
   base.vcxproj -> E:\Documents\GitHub\TP_Minecraft\_minecraft\Debug\base.exe
