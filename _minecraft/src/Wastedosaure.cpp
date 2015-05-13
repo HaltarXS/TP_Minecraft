@@ -25,7 +25,7 @@ void Wastedosaure::GetCreaturesInSight()
 	m_creaturesInSight.clear();
 	for (int i = 0; i < m_entities->size(); ++i)
 	{
-		if (m_cone.IsInSight((*m_entities)[i]->position))
+		if (m_cone.IsInSight((*m_entities)[i]->position) && (*m_entities)[i]->GetID() != this->GetID())
 		{
 			m_creaturesInSight.push_back((*m_entities)[i]);
 		}
