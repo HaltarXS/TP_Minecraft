@@ -48,12 +48,8 @@ void Wastedosaure::UpdateIA()
 	m_cone.SetPosition(position);
 	m_cone.SetOrientation(direction);
 
+	//Update Creatures in sight
 	GetCreaturesInSight();
-
-	/*for (int i = 0; i < m_creaturesInSight.size(); ++i)
-	{
-		cout << "Type " << m_creaturesInSight[i]->type << " ID : " << m_creaturesInSight[i]->GetID() << ".\n";
-	}*/
 
 	Update();//Update the state machine
 }

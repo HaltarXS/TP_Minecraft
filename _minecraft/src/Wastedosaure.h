@@ -48,21 +48,22 @@ private:
 
 	Viewcone m_cone;
 
-	std::vector<IABase*> * m_entities;
+	std::vector<IABase*> * m_entities;//Toutes les creatures du jeu
 
-	std::vector<IABase*> m_creaturesInSight;
+	std::vector<IABase*> m_creaturesInSight;//Les créatures dans le champ visuel
 
 	void GetCreaturesInSight();
 
 	bool m_debugDraw = true;
 
-	//WastedosaureManager * m_wm = WastedosaureManager::GetSingleton();
+	bool m_isMale = false;
 
 public:
 	Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale);
 	~Wastedosaure();
 
-	Wastedosaure * leader = NULL;
+	Wastedosaure * leader = NULL;//Leader d'un groupe
+	Wastedosaure * partner = NULL; //Partenaire du wastedosaure
 	int groupPosition = 0;
 
 	void SetEntities(std::vector<IABase*> * entities);

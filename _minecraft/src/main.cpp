@@ -727,7 +727,7 @@ int main(int argc, char* argv[])
 
 	//Ajout des créatures
 	//Wastedosaure
-	for (int i = 0; i < 11; ++i)
+	for (int i = 0; i < 12; ++i)
 	{
 		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i));
 		w->SetEntities(&g_Creatures);
