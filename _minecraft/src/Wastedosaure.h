@@ -58,8 +58,8 @@ private:
 
 	bool m_isMale = false;
 
-	NYCube * m_cubeWater = NULL;
-	void FindCubeWater();
+	NYCube * m_cubeWater = NULL;//Sert juste dans FindClosestCubeWater. A delete
+	NYCube * FindClosestCubeWater();
 	
 
 public:
@@ -69,6 +69,8 @@ public:
 	Wastedosaure * leader = NULL;//Leader d'un groupe
 	Wastedosaure * partner = NULL; //Partenaire du wastedosaure
 	int groupPosition = 0;
+
+	IABase * target= NULL; //Cible du Wastedosaure
 
 	void SetEntities(std::vector<IABase*> * entities);
 

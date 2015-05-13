@@ -42,21 +42,34 @@ bool Wastedosaure::HasAPath()
 	return m_path.GetSize() > 0;
 }
 
-void Wastedosaure::FindCubeWater()
+NYCube * Wastedosaure::FindClosestCubeWater()
 {
+	NYVert3Df offset;
+	float lenght = 10000000.0f;
+	float tmpLenght = 0.0f;
+	NYCube * tmpCube = NULL;
 	for (int x = 0; x<MAT_SIZE_CUBES; x++)
 	{
 		for (int y = 0; y<MAT_SIZE_CUBES; y++)
 		{
 			for (int z = 0; z<MAT_HEIGHT_CUBES; z++)
 			{
-				if (m_world->getCube(x, y, z)->_Type == CUBE_EAU)
+				tmpCube = m_world->getCube(x, y, z);
+				if (tmpCube->_Type == CUBE_EAU)
 				{
-					m_cubeWater = m_world->getCube(x, y, z);
+					offset = position - NYVert3Df(x, y, z)*NYCube::CUBE_SIZE;
+					tmpLenght = offset.getMagnitude();
+					if (tmpLenght < lenght)
+					{
+						lenght = tmpLenght;
+						m_cubeWater = tmpCube;
+					}
 				}
 			}
 		}
 	}
+
+	return m_cubeWater;
 }
 
 void Wastedosaure::UpdateIA()
