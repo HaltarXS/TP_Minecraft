@@ -42,6 +42,23 @@ bool Wastedosaure::HasAPath()
 	return m_path.GetSize() > 0;
 }
 
+void Wastedosaure::FindCubeWater()
+{
+	for (int x = 0; x<MAT_SIZE_CUBES; x++)
+	{
+		for (int y = 0; y<MAT_SIZE_CUBES; y++)
+		{
+			for (int z = 0; z<MAT_HEIGHT_CUBES; z++)
+			{
+				if (m_world->getCube(x, y, z)->_Type == CUBE_EAU)
+				{
+					m_cubeWater = m_world->getCube(x, y, z);
+				}
+			}
+		}
+	}
+}
+
 void Wastedosaure::UpdateIA()
 {
 	//Update Cone de vision
@@ -106,12 +123,13 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	State(STATE_Initialize)
 	OnEnter
 	PushState(STATE_Egg);
-
+	
 
 	//Egg
 	State(STATE_Egg)
 	OnEnter
 	m_timerEgg = 0.0f;
+	WastedosaureManager::GetSingleton()->AddWastedosaure(this);
 	OnUpdate
 
 	if (m_timerEgg >= m_timeEgg)

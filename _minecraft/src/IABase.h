@@ -23,7 +23,7 @@ private:
 	float t;
 	float m_saciete_Time = 10.0f;
 
-	NYWorld * m_world;
+	
 	
 public:
 	IABase(NYWorld * world);
@@ -37,6 +37,8 @@ public:
 	float saciete;
 
 	int life = 100;
+
+	NYWorld * m_world;
 
 	//Useful to know the type of the entity !
 	eTypeCreature type;

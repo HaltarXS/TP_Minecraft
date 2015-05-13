@@ -58,6 +58,10 @@ private:
 
 	bool m_isMale = false;
 
+	NYCube * m_cubeWater = NULL;
+	void FindCubeWater();
+	
+
 public:
 	Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale);
 	~Wastedosaure();

@@ -18,7 +18,10 @@ private:
 
 	int m_maxGroupSize = 4;
 
+	std::vector<Wastedosaure *> m_wastosaures;
+
 	std::vector<std::vector<Wastedosaure *>> m_groups;
+
 
 public:
 
@@ -31,6 +34,12 @@ public:
 	~WastedosaureManager();
 
 	void AssignToAGroup(Wastedosaure * entity);
+
+	void AddWastedosaure(Wastedosaure * entity);
+
+	void FindPartner(Wastedosaure * entity);
+
+	
 
 };
 
