@@ -17,8 +17,6 @@ void WastedosaureManager::AddWastedosaure(Wastedosaure * entity)
 }
 
 
-
-
 void WastedosaureManager::AssignToAGroup(Wastedosaure * entity)
 {
 	int i = 0;
@@ -45,7 +43,7 @@ void WastedosaureManager::FindPartner(Wastedosaure * entity)
 {
 	for (int i = 0; i < m_wastosaures.size(); ++i)
 	{
-		if (m_wastosaures[i]->GetID() != entity->GetID() && m_wastosaures[i]->partner == NULL)
+		if (m_wastosaures[i]->GetID() != entity->GetID() && m_wastosaures[i]->partner == NULL && entity->partner == NULL)
 		{
 			m_wastosaures[i]->partner = entity;
 			entity->partner = m_wastosaures[i];

@@ -30,8 +30,25 @@ private:
 
 	float m_speed = 0.7f;
 
+	//Timers
+	//Egg
 	float m_timeEgg = 3.0f;
 	float m_timerEgg = 0.0f;
+
+	//Wandering/Attacking
+	float m_durationWandering = 120.0f;
+	float m_timerWandering = 0.0f;
+
+	//Reproduction
+	float m_durationReproduction = 120.0f;
+	float m_timerReproduction = 0.0f;
+
+	//Reproduction
+	bool m_canReproduce = true;
+	int m_counterReproduction = 0;
+	int m_maxReproductions = 2;
+
+	bool m_isMale = false;
 
 	//Path fo PF
 	Pathfinding * m_pf = Pathfinding::GetSingleton();
@@ -56,10 +73,12 @@ private:
 
 	bool m_debugDraw = true;
 
-	bool m_isMale = false;
+	
 
-	NYCube * m_cubeWater = NULL;//Sert juste dans FindClosestCubeWater. A delete
-	NYCube * FindClosestCubeWater();
+	NYVert3Df m_cubeWater;//Sert juste dans FindClosestCubeWater. A delete
+	NYVert3Df FindClosestCubeWater();
+
+	void UpdateTimers();
 	
 
 public:

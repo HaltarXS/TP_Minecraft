@@ -46,7 +46,8 @@ enum States_FSM
 	STATE_Egg,
 	STATE_FindPath,
 	STATE_Suicide,
-	STATE_Reproduction
+	STATE_Reproduction,
+	STATE_Attack
 
 };
 

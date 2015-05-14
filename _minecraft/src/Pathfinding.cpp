@@ -297,6 +297,7 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 			bool inX = (x + m_actualNode.X >= 0 && x + m_actualNode.X < MAT_SIZE_CUBES); //Si on est pas en dehors de la map en X
 			bool inY = (y + m_actualNode.Y >= 0 && y + m_actualNode.Y < MAT_SIZE_CUBES); //Si on est pas en dehors de la map en Y
 			int z = m_world->_MatriceHeights[(int)m_actualNode.X + x][(int)m_actualNode.Y + y] - 1;
+			if (z < 0) z = 0;
 			bool inZ = z >= 0; //Si on est pas en dehors de la map en Y
 			if (!inX || !inY || !inZ)
 			{
@@ -382,8 +383,12 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 	m_openList.clear();
 
 	bool PathNotFound = false;
-	m_startPosition = NYVert3Df(_startPosition.X, _startPosition.Y, m_world->_MatriceHeights[(int)_startPosition.X][(int)_startPosition.Y]-1);
-	m_arrivalPosition = NYVert3Df(_arrivalPosition.X, _arrivalPosition.Y, m_world->_MatriceHeights[(int)_arrivalPosition.X][(int)_arrivalPosition.Y] - 1);
+	int zStart = m_world->_MatriceHeights[(int)_startPosition.X][(int)_startPosition.Y] - 1;
+	if (zStart < 0) zStart = 0;
+	int zArrival = m_world->_MatriceHeights[(int)_arrivalPosition.X][(int)_arrivalPosition.Y] - 1;
+	if (zArrival < 0) zArrival = 0;
+	m_startPosition = NYVert3Df(_startPosition.X, _startPosition.Y, zStart);
+	m_arrivalPosition = NYVert3Df(_arrivalPosition.X, _arrivalPosition.Y, zArrival);
 	//NYCube * testdepart = m_world->getCube(m_startPosition.X, m_startPosition.Y, m_startPosition.Z);
 	//cout << m_startPosition.X << "," << m_startPosition.Y << "," << m_startPosition.Z << " --- Cube type : " << testdepart->_Type << endl;
 		/*_startPosition;
