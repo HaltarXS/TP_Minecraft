@@ -152,7 +152,7 @@ bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 				bool inZ = (z + m_actualNode.Z >= 0 && z + m_actualNode.Z < MAT_HEIGHT_CUBES); ////Si on est pas en dehors de la map en Z
 				if (!inX || !inY || !inZ)
 				{
-					cerr << "/!\ Out of bounds\n";
+					//cerr << "/!\ Out of bounds\n";
 					return false;
 				}
 					
@@ -322,17 +322,6 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 			int step = m_nodeToAnalyse->Position.Z - m_actualNode.Z;
 			bool stepOK = abs(step) <= _step ? true : false;//Si la step est ok
 
-
-			//Other
-			/*float offset = 0.0f;
-			offset = ;
-			if (offset < 0.0f)
-				offset = -1.0f;
-			else if (offset > 0.0f)
-				offset = 1.0f;
-			else
-				offset = 0.0f;*/
-
 			if (inX && inY && inZ && cubeType && listOK && notCurrentCube && stepOK)
 			{
 				//m_nodeToAnalyse = &m_nodes[(int)(x + m_actualNode.X)][(int)(y + m_actualNode.Y)][(int)(z + m_actualNode.Z)];
@@ -395,10 +384,6 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 	if (zArrival < 0) zArrival = 0;
 	m_startPosition = NYVert3Df(_startPosition.X, _startPosition.Y, zStart);
 	m_arrivalPosition = NYVert3Df(_arrivalPosition.X, _arrivalPosition.Y, zArrival);
-	//NYCube * testdepart = m_world->getCube(m_startPosition.X, m_startPosition.Y, m_startPosition.Z);
-	//cout << m_startPosition.X << "," << m_startPosition.Y << "," << m_startPosition.Z << " --- Cube type : " << testdepart->_Type << endl;
-		/*_startPosition;
-	m_arrivalPosition = _arrivalPosition;*/
 
 	m_actualNode = m_startPosition;
 	m_realActualNode = &m_nodes[(int)m_actualNode.X][(int)m_actualNode.Y][(int)m_actualNode.Z];
@@ -421,23 +406,19 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 
 		} while (!PathNotFound);
 
+
 		if (m_actualNode == m_arrivalPosition)
 		{
 			PathNotFound = false;
 		}
-		else if (m_openList.size() != 0)
+		else if (m_openList.size() != 0)//On a bloqué dans la boucle d'avant, on va chercher dans la liste ouverte la prochaine node utilisable. Si on trouve aucune node utilisable, on a trouvé aucun chemin.
+		//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
 		{
 			PathNotFound = false;
 			m_actualNode = m_openList.begin()->second->Position;
 			m_realActualNode = m_openList.begin()->second;
 			m_openList.erase(m_openList.begin());
 		}
-
-		//On a bloqué dans la boucle d'avant, on va chercher dans la liste ouverte la prochaine node utilisable. Si on trouve aucune node utilisable, on a trouvé aucun chemin.
-		//if (m_openList.size() != 0 /*&& m_actualNode != m_arrivalPosition*/)//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
-		//{
-		//	
-		//}
 	}
 
 	if (!PathNotFound)
