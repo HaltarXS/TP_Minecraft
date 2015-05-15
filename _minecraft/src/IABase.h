@@ -13,6 +13,8 @@ enum eTypeCreature
 	TEST_STATEMACHINE,
 	WASTEDOSAURE,
 	DAHUT,
+	CAMELEON,
+	MOUCHE,
 	
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
@@ -39,6 +41,8 @@ public:
 	NYVert3Df speed;
 	float faim;
 	float saciete;
+
+	bool infected; //If the entity is infected infected
 
 	int life = 100;
 
