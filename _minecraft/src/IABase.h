@@ -13,6 +13,8 @@ enum eTypeCreature
 	TEST_STATEMACHINE,
 	WASTEDOSAURE,
 	DAHUT,
+	CAMELEON,
+	MOUCHE,
 	
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
