@@ -100,22 +100,28 @@ void Pathfinding::InitializeNodes()
 
 void Pathfinding::ClearNodes()
 {
-	for (int i = 0; i<MAT_SIZE_CUBES; i++)
+	for(auto i = m_closeList.begin(); i != m_closeList.end(); ++i)
 	{
-		for (int j = 0; j<MAT_SIZE_CUBES; j++)
-		{
-			for (int k = 0; k<MAT_HEIGHT_CUBES; k++)
-			{
-				m_nodes[i][j][k].G = 0;
-				m_nodes[i][j][k].F = 0;
-				m_nodes[i][j][k].H = 0;
-				m_nodes[i][j][k].Parent = NULL;
-				m_nodes[i][j][k].Weight = 10;
-				m_nodes[i][j][k].List = NO_LIST;
-				m_nodes[i][j][k].Position = NYVert3Df(i, j, k);
-			}
-		}
+		(*i)->G = 0;
+		(*i)->F = 0;
+		(*i)->H = 0;
+		(*i)->Parent = NULL;
+		(*i)->Weight = 10;
+		(*i)->List = NO_LIST;
 	}
+
+	for(auto i = m_openList.begin(); i != m_openList.end(); ++i)
+	{
+		(i->second)->G = 0;
+		(i->second)->F = 0;
+		(i->second)->H = 0;
+		(i->second)->Parent = NULL;
+		(i->second)->Weight = 10;
+		(i->second)->List = NO_LIST;
+	}
+	
+	m_closeList.clear();
+	m_openList.clear();
 }
 
 void Pathfinding::SetWorld(NYWorld * _world)
@@ -140,6 +146,7 @@ bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 
 	//On va regarder toutes les nodes autour de la node Actuelle.
 	m_realActualNode->List = CLOSE_LIST;//On met la node actuelle(que l'on va utiliser pour essayer de trouver une node utilisable autour) dans la liste fermée pour ne plus ensuite la réutiliser.
+	m_closeList.push_back(m_realActualNode);
 
 	for (int x = -1; x <= 1;++x)
 	{
@@ -200,6 +207,7 @@ bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 	{
 		m_betterNode->List = CLOSE_LIST;
 		m_realActualNode = m_betterNode;
+		m_closeList.push_back(m_realActualNode);
 		m_actualNode = m_realActualNode->Position;
 
 	}
@@ -211,7 +219,6 @@ bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition, int _cubeType, Path & _outPath)
 {
 	ClearNodes();
-	m_openList.clear();
 
 	bool PathNotFound = false;
 	m_startPosition = _startPosition;
@@ -231,6 +238,7 @@ bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition,
 	m_realActualNode->H = DistanceManhattan(m_actualNode, _arrivalPosition);//On calcul H
 	m_realActualNode->F = m_realActualNode->H;// + m_mapsNode[layerName][m_actualNode.x + m_actualNode.y*m_width].G;//On calcul F = H + G
 	m_realActualNode->List = CLOSE_LIST;//On met la premiere node dans la liste fermée
+	m_closeList.push_back(m_realActualNode);
 
 	while (m_actualNode != _arrivalPosition && !PathNotFound)
 	{
@@ -295,7 +303,8 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 
 	//On va regarder toutes les nodes autour de la node Actuelle.
 	m_realActualNode->List = CLOSE_LIST;//On met la node actuelle(que l'on va utiliser pour essayer de trouver une node utilisable autour) dans la liste fermée pour ne plus ensuite la réutiliser.
-	
+	m_closeList.push_back(m_realActualNode);
+
 	for (int x = -1; x <= 1; ++x)
 	{
 		for (int y = -1; y <= 1; ++y)
@@ -363,6 +372,7 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 	{
 		m_betterNode->List = CLOSE_LIST;
 		m_realActualNode = m_betterNode;
+		m_closeList.push_back(m_realActualNode);
 		m_actualNode = m_realActualNode->Position;
 
 	}
@@ -375,7 +385,6 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition, unsigned _step, Path & _outPath, bool _walkOnWater)
 {
 	ClearNodes();
-	m_openList.clear();
 
 	bool PathNotFound = false;
 	int zStart = m_world->_MatriceHeights[(int)_startPosition.X][(int)_startPosition.Y] - 1;
@@ -396,6 +405,7 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 	m_realActualNode->H = DistanceManhattan(m_actualNode, m_arrivalPosition);//On calcul H
 	m_realActualNode->F = m_realActualNode->H;// + m_mapsNode[layerName][m_actualNode.x + m_actualNode.y*m_width].G;//On calcul F = H + G
 	m_realActualNode->List = CLOSE_LIST;//On met la premiere node dans la liste fermée
+	m_closeList.push_back(m_realActualNode);
 
 	while (m_actualNode != m_arrivalPosition && !PathNotFound)
 	{
@@ -453,7 +463,6 @@ bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPositi
 
 	//Reset pathfinding
 	ClearNodes();
-	m_openList.clear();
 	m_startPosition = startPosition;
 	m_arrivalPosition = arrivalPosition;
 	m_actualNode = m_startPosition;
@@ -471,6 +480,7 @@ bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPositi
 	m_realActualNode->H = DistanceManhattan(m_actualNode, m_arrivalPosition);
 	m_realActualNode->F = m_realActualNode->H;
 	m_realActualNode->List = CLOSE_LIST;
+	m_closeList.push_back(m_realActualNode);
 
 	while(!PathNotFound && m_actualNode != m_arrivalPosition)
 	{
@@ -521,6 +531,7 @@ bool Pathfinding::AnalyseAdjacentNodesDahut()
 	bool foundBetterNode = false;
 	m_realActualNode->List = CLOSE_LIST;
 	m_betterNode = m_realActualNode;
+	m_closeList.push_back(m_realActualNode);
 
 	//Direct neighboring blocks
 	foundBetterNode |= AnalyseNodeDahut(1, 0, 0, NYCube::CUBE_SIZE);
@@ -546,6 +557,7 @@ bool Pathfinding::AnalyseAdjacentNodesDahut()
 	{
 		m_betterNode->List = CLOSE_LIST;
 		m_realActualNode = m_betterNode;
+		m_closeList.push_back(m_realActualNode);
 		m_actualNode = m_realActualNode->Position;
 	}
 
@@ -584,7 +596,6 @@ bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
 	//Check if grounded
 	bool grounded = m_nodes[(int) posX][(int) posY][(int) posZ - 1].CubeType != CUBE_AIR;
 
-	
 	//Make sure it is grounded or climbable
 	if(!grounded && !climbable)
 	{
