@@ -446,3 +446,175 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 
 	return !PathNotFound;
 }
+
+bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPosition, Path &outPath)
+{
+	bool PathNotFound = false;
+
+	//Reset pathfinding
+	ClearNodes();
+	m_openList.clear();
+	m_startPosition = startPosition;
+	m_arrivalPosition = arrivalPosition;
+	m_actualNode = m_startPosition;
+	m_realActualNode = &m_nodes[(int) m_actualNode.X][(int) m_actualNode.Y][(int) m_actualNode.Z];
+
+	//Check boundaries
+	if(arrivalPosition == startPosition ||
+	   !(arrivalPosition.X >= 0 && arrivalPosition.X < MAT_SIZE_CUBES) ||
+	   !(arrivalPosition.Y >= 0 && arrivalPosition.Y < MAT_SIZE_CUBES))
+	{
+		PathNotFound = true;
+	}
+
+	//Init first node score and list
+	m_realActualNode->H = DistanceManhattan(m_actualNode, m_arrivalPosition);
+	m_realActualNode->F = m_realActualNode->H;
+	m_realActualNode->List = CLOSE_LIST;
+
+	while(!PathNotFound && m_actualNode != m_arrivalPosition)
+	{
+		//While there is a viable path, extend it
+		do
+		{
+			PathNotFound = !AnalyseAdjacentNodesDahut();
+		}
+		while(!PathNotFound);
+
+		//Path is found
+		if(m_actualNode == m_arrivalPosition)
+		{
+			PathNotFound = false;
+		}
+		//Look for another path if arrival node is not reached
+		else if(m_openList.size() != 0)
+		{
+			PathNotFound = false;
+			m_actualNode = m_openList.begin()->second->Position;
+			m_realActualNode = m_openList.begin()->second;
+			m_openList.erase(m_openList.begin());
+		}
+	}
+
+	//Build path if found
+	if(!PathNotFound)
+	{
+		m_tempPath.clear();
+		Node *TempNode = &m_nodes[(int)m_arrivalPosition.X][(int)m_arrivalPosition.Y][(int)m_arrivalPosition.Z];
+		while(TempNode->Parent)
+		{
+			m_tempPath.push_back(NYVert3Df((TempNode->Position.X * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
+										   (TempNode->Position.Y * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
+										   (TempNode->Position.Z * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f));
+			TempNode = TempNode->Parent;
+		}
+
+		std::reverse(m_tempPath.begin(), m_tempPath.end());
+		outPath.SetPath(m_tempPath);
+	}
+
+	return !PathNotFound;
+}
+
+bool Pathfinding::AnalyseAdjacentNodesDahut()
+{
+	bool foundBetterNode = false;
+	m_realActualNode->List = CLOSE_LIST;
+	m_betterNode = m_realActualNode;
+
+	//Direct neighboring blocks
+	foundBetterNode |= AnalyseNodeDahut(1, 0, 0, NYCube::CUBE_SIZE);
+	foundBetterNode |= AnalyseNodeDahut(0, 1, 0, NYCube::CUBE_SIZE);
+	foundBetterNode |= AnalyseNodeDahut(-1, 0, 0, NYCube::CUBE_SIZE);
+	foundBetterNode |= AnalyseNodeDahut(0, -1, 0, NYCube::CUBE_SIZE);
+	foundBetterNode |= AnalyseNodeDahut(0, 0, 1, NYCube::CUBE_SIZE);
+
+	//Diagonal blocks
+	if(!foundBetterNode)
+	{
+		foundBetterNode |= AnalyseNodeDahut(1, 0, 1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(1, 0, -1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(0, 1, 1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(0, 1, -1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(-1, 0, 1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(-1, 0, -1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(0, -1, 1, NYCube::CUBE_SIZE * 1.414f);
+		foundBetterNode |= AnalyseNodeDahut(0, -1, -1, NYCube::CUBE_SIZE * 1.414f);
+	}
+
+	if(foundBetterNode)
+	{
+		m_betterNode->List = CLOSE_LIST;
+		m_realActualNode = m_betterNode;
+		m_actualNode = m_realActualNode->Position;
+	}
+
+	return foundBetterNode;
+}
+
+bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
+{
+	//Node position
+	float posX = (x + m_actualNode.X);
+	float posY = (y + m_actualNode.Y);
+	float posZ = (z + m_actualNode.Z);
+
+	//Check boundaries
+	bool inX = (posX > 1 && posX < MAT_SIZE_CUBES - 1);
+	bool inY = (posY > 1 && posY < MAT_SIZE_CUBES - 1);
+	bool inZ = (posZ > 1 && posZ < MAT_SIZE_CUBES - 1);
+	if(!inX || !inY || !inZ)
+	{
+		return false;
+	}
+
+	//Check if empty (traversable) and not in closed list
+	m_nodeToAnalyse = &m_nodes[(int) posX][(int) posY][(int) posZ];
+	if(m_nodeToAnalyse->CubeType != CUBE_AIR || m_nodeToAnalyse->List == CLOSE_LIST)
+	{
+		return false;
+	}
+
+	//Check if climbable
+	bool climbable = m_nodes[(int) posX + 1][(int) posY + 0][(int) posZ].CubeType != CUBE_AIR ||
+					 m_nodes[(int) posX + 0][(int) posY + 1][(int) posZ].CubeType != CUBE_AIR ||
+					 m_nodes[(int) posX - 1][(int) posY - 0][(int) posZ].CubeType != CUBE_AIR ||
+					 m_nodes[(int) posX - 0][(int) posY - 1][(int) posZ].CubeType != CUBE_AIR;
+
+	//Check if grounded
+	bool grounded = m_nodes[(int) posX][(int) posY][(int) posZ - 1].CubeType != CUBE_AIR;
+
+	
+	//Make sure it is grounded or climbable
+	if(!grounded && !climbable)
+	{
+		return false;
+	}
+
+	//If node was not listed
+	if(m_nodeToAnalyse->List == NO_LIST) 
+	{
+		m_nodeToAnalyse->Parent = m_realActualNode;
+		m_nodeToAnalyse->H = DistanceManhattan(m_nodeToAnalyse->Position, m_arrivalPosition);
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
+		m_nodeToAnalyse->List = OPEN_LIST;
+		m_openList.insert(std::pair<int, Node*>(m_nodeToAnalyse->F, m_nodeToAnalyse));
+	}
+	//If node was in open list and needs its score to be updated
+	else if(m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + weight))
+	{
+		m_nodeToAnalyse->Parent = m_realActualNode;
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
+	}
+
+	//Return true if the node is a better choice
+	if(m_nodeToAnalyse->F <= m_betterNode->F)
+	{
+		m_betterNode = m_nodeToAnalyse;
+		return true;
+	}
+
+	return false;
+}
