@@ -95,7 +95,7 @@ void Wastedosaure::UpdateIA()
 		WastedosaureManager::GetSingleton()->AssignToAGroup(this);
 	}
 
-	if ((m_currentState == STATE_Move || m_currentState == STATE_Reproduction) && (partner == NULL || partner->GetState() == STATE_Dead))//Alors le wastedosaure se suicide :(
+	if (m_needPartner && (m_currentState == STATE_Move || m_currentState == STATE_Reproduction) && (partner == NULL || partner->GetState() == STATE_Dead))//Alors le wastedosaure se suicide :(
 	{
 		PushState(STATE_Suicide);
 	}
@@ -145,7 +145,7 @@ void Wastedosaure::Draw()
 {
 	if (m_currentState == STATE_Reproduction)
 	{
-		glColor3f(0.5f, 0, 0);
+		glColor3f(0.5f, 0.5f, 0);
 	}
 	else
 	{
@@ -217,7 +217,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	WastedosaureManager::GetSingleton()->AssignToAGroup(this);
 	//On assigne son sexe
 	m_isMale = (bool)(rand() % 2);
-	WastedosaureManager::GetSingleton()->FindPartner(this);
+	
 
 	//Find path
 	State(STATE_FindPath)
@@ -238,7 +238,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	if (HasAPath())
 	{
 		NYVert3Df distanceClosestWP = m_path.GetWaypoint(m_currentIndex) - position;
-		if (distanceClosestWP.getSize() > 100.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
+		if (distanceClosestWP.getSize() > 10.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
 		{
 			m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
 		}
@@ -264,6 +264,8 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	State(STATE_Move)
 	OnEnter
 	//cout << "Moving\n";
+	m_timerWandering = 0.0f;
+	m_timerReproduction = 0.0f;
 	OnUpdate
 	if (m_currentIndex < m_path.GetSize()-groupPosition)
 	{
@@ -289,9 +291,11 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnExit
 
 
-		//Reproduction
+	//Reproduction
 	State(STATE_Reproduction)
 	OnEnter
+	m_needPartner = true;
+	WastedosaureManager::GetSingleton()->FindPartner(this);
 	m_path.Clear();
 	m_timerWandering = 0.0f;
 	m_timerReproduction = 0.0f;
@@ -308,6 +312,8 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	m_currentIndex = 0;
 	//cout << "Reproduction\n";
 	OnUpdate
+	/*if (!HasAPath())
+		PushState(STATE_FindPath);*/
 	//Follow the path
 	if (HasAPath() && m_currentIndex < m_path.GetSize())
 	{
@@ -325,24 +331,26 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			position += direction * m_speed;
 		}
 	}
-	//else
-	//{
-	//	PushState(STATE_Reproduction);//Si j'ai pas de chemin, on va essayer d'en trouver un autre
-	//}
-	
-	NYVert3Df offsetPartners = position/NYCube::CUBE_SIZE - NYVert3Df(arrivalPartner.X, arrivalPartner.Y, m_world->_MatriceHeights[(int)arrivalPartner.X][(int)arrivalPartner.Y]);
-	//If close enought, reproduce
-	if (m_canReproduce && m_counterReproduction < m_maxReproductions && offsetPartners.getSize() <= 1 /* && m_isMale != partner->m_isMale*/)
+	else
 	{
- 		m_counterReproduction++;
-		partner->m_counterReproduction++;
-		partner->m_canReproduce = false;
-		m_canReproduce = false;
+		NYVert3Df tmpArrival = NYVert3Df(arrivalPartner.X, arrivalPartner.Y, m_world->_MatriceHeights[(int)arrivalPartner.X][(int)arrivalPartner.Y]);
+		NYVert3Df offsetPartners1 = position / NYCube::CUBE_SIZE - tmpArrival;
+		NYVert3Df offsetPartners2 = partner->position / NYCube::CUBE_SIZE - tmpArrival;
+		if (m_canReproduce && m_counterReproduction < m_maxReproductions && offsetPartners1.getSize() <= 1 && offsetPartners2.getSize() <= 1 /*&& m_isMale != partner->m_isMale*/)
+		{
+			m_counterReproduction++;
+			partner->m_counterReproduction++;
+			partner->m_canReproduce = false;
+			m_canReproduce = false;
 
-		Wastedosaure * w = new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE));
-		w->SetEntities(m_entities);
-		(*m_entities)[WASTEDOSAURE].push_back(w);
+			/*Wastedosaure * w = new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE));
+			w->SetEntities(m_entities);
+			(*m_entities)[WASTEDOSAURE].push_back(w);*/
+		}
 	}
+	
+	//If close enought, reproduce
+	
 	OnExit
 	m_canReproduce = true;
 	arrivalPartner = NYVert2Df(0, 0);

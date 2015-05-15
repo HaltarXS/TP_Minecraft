@@ -22,6 +22,9 @@ private:
 
 	std::vector<std::vector<Wastedosaure *>> m_groups;
 
+	inline int rand_a_b(int a, int b){
+		return rand() % (b - a) + a;
+	}
 
 public:
 

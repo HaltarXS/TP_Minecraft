@@ -49,6 +49,7 @@ private:
 	bool m_canReproduce = true;
 	int m_counterReproduction = 0;
 	int m_maxReproductions = 2;
+	bool m_needPartner = false;
 
 	bool m_isMale = false;
 
@@ -82,6 +83,8 @@ private:
 	NYVert3Df FindClosestCubeWater();
 
 	void UpdateTimers();
+
+	
 	
 
 public:
