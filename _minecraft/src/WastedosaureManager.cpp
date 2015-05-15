@@ -43,7 +43,7 @@ void WastedosaureManager::FindPartner(Wastedosaure * entity)
 {
 	for (int i = 0; i < m_wastosaures.size(); ++i)
 	{
-		if (m_wastosaures[i]->GetID() != entity->GetID() && m_wastosaures[i]->partner == NULL && entity->partner == NULL)
+		if (m_wastosaures[i]->GetID() != entity->GetID() && m_wastosaures[i]->GetState() != STATE_Dead && m_wastosaures[i]->partner == NULL && entity->partner == NULL)
 		{
 			m_wastosaures[i]->partner = entity;
 			entity->partner = m_wastosaures[i];
@@ -52,3 +52,10 @@ void WastedosaureManager::FindPartner(Wastedosaure * entity)
 	}
 }
 
+void WastedosaureManager::FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2)
+{
+	NYVert2Df arrival = NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
+	//NYVert2Df arrival = NYVert2Df(entity1->position.X + 5, entity1->position.Y + 25);
+	entity1->arrivalPartner = arrival;
+	entity2->arrivalPartner = arrival;
+}

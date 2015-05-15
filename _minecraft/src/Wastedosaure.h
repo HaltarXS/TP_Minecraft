@@ -30,7 +30,7 @@ class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 0.7f;
+	float m_speed = 0.7f + 0.01f*GetID();
 
 	//Timers
 	//Egg
@@ -38,11 +38,11 @@ private:
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	float m_durationWandering = 3.0f;
+	float m_durationWandering = 60.0f;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	float m_durationReproduction = 32.0f;
+	float m_durationReproduction = 60.0f;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction

@@ -39,6 +39,8 @@ public:
 
 	void FindPartner(Wastedosaure * entity);
 
+	void FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2);
+
 	
 
 };
