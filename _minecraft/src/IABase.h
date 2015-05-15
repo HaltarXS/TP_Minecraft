@@ -31,7 +31,7 @@ private:
 	
 public:
 	IABase(NYWorld * world);
-	~IABase();
+	virtual ~IABase();
 
 	NYVert3Df position;
 	NYVert3Df positionCube;
