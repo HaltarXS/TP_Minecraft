@@ -81,7 +81,32 @@ TestStateMachine * entityTest2;
 Path returnPath;
 
 //Vecteur de Creatures
-static std::vector<IABase*> g_Creatures;
+//static std::vector<IABase*> g_Creatures;
+
+//Stockage des créatures
+typedef std::vector<IABase*> CreatureVector;
+static std::map<eTypeCreature, CreatureVector> g_CreatureMap;
+
+void spawnCreatures()
+{
+	//Init creature map
+	for(int i = 0; i < (int)CREATURE_NUM; ++i)
+	{
+		eTypeCreature type = (eTypeCreature) i;
+		g_CreatureMap.insert(std::pair<eTypeCreature, CreatureVector>(type, CreatureVector()));
+	}
+
+	// === Ajout des créatures ===
+
+	//Ajout des créatures
+	//Wastedosaure
+	for (int i = 0; i < 11; ++i)
+	{
+		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i));
+		w->SetEntities(&g_CreatureMap[WASTEDOSAURE]);
+		g_CreatureMap[WASTEDOSAURE].push_back(w);
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 // GESTION APPLICATION
@@ -114,10 +139,20 @@ void update(void)
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
 
-	for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
+	//Update creatures
+	for(int i = 0; i < CREATURE_NUM; ++i)
+	{
+		eTypeCreature type = (eTypeCreature) i;
+		for(int j = 0; j < g_CreatureMap[type].size(); ++j)
+		{
+			g_CreatureMap[type][j]->UpdateIA();
+		}
+	}
+
+	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
 	{
 		(*it)->UpdateIA();
-	}
+	}*/
 }
 
 
@@ -201,12 +236,21 @@ void renderObjects(void)
 
 	returnPath.DrawPath();
 
-	//Rendu des créatures
-	for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
+	//Render creatures
+	for(int i = 0; i < CREATURE_NUM; ++i)
 	{
-		(*it)->Draw();
+		eTypeCreature type = (eTypeCreature) i;
+		for(int j = 0; j < g_CreatureMap[type].size(); ++j)
+		{
+			g_CreatureMap[type][j]->Draw();
+		}
 	}
 
+	//Rendu des créatures
+	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
+	{
+		(*it)->Draw();
+	}*/
 }
 
 bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher)
@@ -725,14 +769,7 @@ int main(int argc, char* argv[])
 
 	srand(time(NULL));
 
-	//Ajout des créatures
-	//Wastedosaure
-	for (int i = 0; i < 11; ++i)
-	{
-		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i));
-		w->SetEntities(&g_Creatures);
-		g_Creatures.push_back(w);
-	}
+	spawnCreatures();
 	
 	//On start
 	g_timer->start();
