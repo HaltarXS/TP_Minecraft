@@ -52,6 +52,7 @@
 
 		//La liste ouverte triée par priorité des node.
 		std::multimap<int, Node*> m_openList;
+		std::vector<Node*> m_closeList;
 
 		//Node actuelle
 		NYVert3Df m_actualNode;//Position de la node actuellement analysée
