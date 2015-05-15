@@ -19,6 +19,7 @@
 #include "avatar.h"
 #include "IABase.h"
 #include "Herbe.h"
+#include "Crotte.h"
 #include "RessourcesManager.h"
 
 //State Machine
@@ -68,6 +69,9 @@ bool g_fast_time = false;
 //IABase *lapin;
 Herbe *herbe;
 Herbe *herbe2;
+
+Crotte *crotte;
+
 RessourcesManager *ressourceManager;
 
 //State Machine
@@ -233,6 +237,8 @@ void renderObjects(void)
 
 	herbe->Render();
 	herbe2->Render();
+
+	crotte->Render();
 
 	returnPath.DrawPath();
 
@@ -731,6 +737,7 @@ int main(int argc, char* argv[])
 	herbe = new Herbe(NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
 	herbe2 = new Herbe(NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
 
+	crotte = new Crotte(NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
 
 	//Init Timer
 	g_timer = new NYTimer();
