@@ -15,12 +15,33 @@ IABase(pWorld)
 	//Init type
 	type = DAHUT;
 
-	//Init transform
-	position.X = pos.X;
-	position.Y = pos.Y;
-	position.Z = pWorld->_MatriceHeights[(int) pos.X][(int) pos.Y];
+	//Init position
+	positionCube.X = (int) pos.X;
+	positionCube.Y = (int) pos.Y;
+	positionCube.Z = (int) pWorld->_MatriceHeights[(int) pos.X][(int) pos.Y];
+	
+	//Init anchor
+	m_cubeAnchor.X = (int) pos.X;
+	m_cubeAnchor.Y = (int) pos.Y;
+	m_cubeAnchor.Z = (int) positionCube.Z - 1;
 }
 
 Dahut::~Dahut()
 {
+}
+
+void Dahut::UpdateIA()
+{
+	//Update FSM
+	Update();
+}
+
+void Dahut::Draw()
+{
+
+}
+
+bool Dahut::States(StateMachineEvent event, MSG_Object *pMsg, int state)
+{
+	return true;
 }
