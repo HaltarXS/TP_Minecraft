@@ -329,7 +329,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	{
 		m_counterReproduction++;
 		m_canReproduce = false;
-		//m_entities->push_back(new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE)));
+		(*m_entities)[WASTEDOSAURE].push_back(new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE)));
 	}
 	OnExit
 	m_canReproduce = true;
