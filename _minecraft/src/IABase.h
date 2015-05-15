@@ -12,6 +12,9 @@ enum eTypeCreature
 	BASE = 0,
 	TEST_STATEMACHINE,
 	WASTEDOSAURE,
+	DAHUT,
+	
+	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };
 
@@ -28,7 +31,7 @@ private:
 	
 public:
 	IABase(NYWorld * world);
-	~IABase();
+	virtual ~IABase();
 
 	NYVert3Df position;
 	NYVert3Df positionCube;

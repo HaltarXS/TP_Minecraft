@@ -24,6 +24,8 @@
 
 //using namespace std;
 
+typedef std::vector<IABase*> CreatureVector;
+
 class Wastedosaure :public IABase
 {
 private:
@@ -36,11 +38,11 @@ private:
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	float m_durationWandering = 120.0f;
+	float m_durationWandering = 3.0f;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	float m_durationReproduction = 120.0f;
+	float m_durationReproduction = 32.0f;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction
@@ -54,6 +56,7 @@ private:
 	Pathfinding * m_pf = Pathfinding::GetSingleton();
 	Path m_path;
 	int m_currentIndex = 0;
+	//NYVert2Df arrivalPartner;
 
 	float m_timeTryFindPath = 3.0f;
 	float m_timerTryFindPath = 0.0f;
@@ -65,7 +68,7 @@ private:
 
 	Viewcone m_cone;
 
-	std::vector<IABase*> * m_entities;//Toutes les creatures du jeu
+	std::map<eTypeCreature, CreatureVector> * m_entities;//Toutes les creatures du jeu
 
 	std::vector<IABase*> m_creaturesInSight;//Les créatures dans le champ visuel
 
@@ -91,7 +94,9 @@ public:
 
 	IABase * target= NULL; //Cible du Wastedosaure
 
-	void SetEntities(std::vector<IABase*> * entities);
+	NYVert2Df arrivalPartner;
+
+	void SetEntities(std::map<eTypeCreature, CreatureVector> * entities);
 
 	Path GetPath();
 
