@@ -65,6 +65,9 @@
     <ClCompile Include="..\src\Crotte.cpp">
       <Filter>Ressources</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Dahut.cpp">
+      <Filter>Paul Gerst</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -185,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Crotte.h">
       <Filter>Ressources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Dahut.h">
+      <Filter>Paul Gerst</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
