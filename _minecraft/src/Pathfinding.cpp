@@ -243,7 +243,12 @@ bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition,
 		while (!PathNotFound);
 
 		//On a bloqué dans la boucle d'avant, on va chercher dans la liste ouverte la prochaine node utilisable. Si on trouve aucune node utilisable, on a trouvé aucun chemin.
-		if (m_openList.size() != 0)//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
+		//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
+		if (m_actualNode == m_arrivalPosition)
+		{
+			PathNotFound = false;
+		}
+		else if (m_openList.size() != 0)
 		{
 			PathNotFound = false;
 			m_actualNode = m_openList.begin()->second->Position;
@@ -416,14 +421,23 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 
 		} while (!PathNotFound);
 
-		//On a bloqué dans la boucle d'avant, on va chercher dans la liste ouverte la prochaine node utilisable. Si on trouve aucune node utilisable, on a trouvé aucun chemin.
-		if (m_openList.size() != 0)//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
+		if (m_actualNode == m_arrivalPosition)
+		{
+			PathNotFound = false;
+		}
+		else if (m_openList.size() != 0)
 		{
 			PathNotFound = false;
 			m_actualNode = m_openList.begin()->second->Position;
 			m_realActualNode = m_openList.begin()->second;
 			m_openList.erase(m_openList.begin());
 		}
+
+		//On a bloqué dans la boucle d'avant, on va chercher dans la liste ouverte la prochaine node utilisable. Si on trouve aucune node utilisable, on a trouvé aucun chemin.
+		//if (m_openList.size() != 0 /*&& m_actualNode != m_arrivalPosition*/)//Si on a encore des éléments dans la liste ouverte, alors on a encore une chance de trouver un chemin
+		//{
+		//	
+		//}
 	}
 
 	if (!PathNotFound)
