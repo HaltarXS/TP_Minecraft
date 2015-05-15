@@ -262,6 +262,10 @@ bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition,
 			m_actualNode = m_openList.begin()->second->Position;
 			m_realActualNode = m_openList.begin()->second;
 			m_openList.erase(m_openList.begin());
+			if(m_actualNode == m_arrivalPosition)
+			{
+				m_closeList.push_back(m_realActualNode);
+			}
 		}
 	}
 
@@ -273,8 +277,7 @@ bool Pathfinding::FindPath(NYVert3Df _startPosition, NYVert3Df _arrivalPosition,
 		Node * TempNode = &m_nodes[(int)_arrivalPosition.X][(int)_arrivalPosition.Y][(int)_arrivalPosition.Z];
 		while (TempNode->Parent)
 		{
-			TempNode->Position = NYVert3Df(TempNode->Position.X * NYCube::CUBE_SIZE, TempNode->Position.Y * NYCube::CUBE_SIZE, TempNode->Position.Z * NYCube::CUBE_SIZE);
-			m_tempPath.push_back(TempNode->Position);
+			m_tempPath.push_back(NYVert3Df(TempNode->Position.X * NYCube::CUBE_SIZE, TempNode->Position.Y * NYCube::CUBE_SIZE, TempNode->Position.Z * NYCube::CUBE_SIZE));
 			TempNode = TempNode->Parent;
 		}
 
@@ -428,6 +431,10 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 			m_actualNode = m_openList.begin()->second->Position;
 			m_realActualNode = m_openList.begin()->second;
 			m_openList.erase(m_openList.begin());
+			if(m_actualNode == m_arrivalPosition)
+			{
+				m_closeList.push_back(m_realActualNode);
+			}
 		}
 	}
 
@@ -439,8 +446,7 @@ bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition,
 		Node * TempNode = &m_nodes[(int)m_arrivalPosition.X][(int)m_arrivalPosition.Y][(int)m_arrivalPosition.Z];
 		while (TempNode->Parent)
 		{
-			TempNode->Position = NYVert3Df((TempNode->Position.X * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f, (TempNode->Position.Y  * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f, ((TempNode->Position.Z + 1) * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f);
-			m_tempPath.push_back(TempNode->Position);
+			m_tempPath.push_back(NYVert3Df((TempNode->Position.X * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f, (TempNode->Position.Y  * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f, ((TempNode->Position.Z + 1) * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f));
 			TempNode = TempNode->Parent;
 		}
 
@@ -503,6 +509,10 @@ bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPositi
 			m_actualNode = m_openList.begin()->second->Position;
 			m_realActualNode = m_openList.begin()->second;
 			m_openList.erase(m_openList.begin());
+			if(m_actualNode == m_arrivalPosition)
+			{
+				m_closeList.push_back(m_realActualNode);
+			}
 		}
 	}
 
