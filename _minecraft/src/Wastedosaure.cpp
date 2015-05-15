@@ -15,7 +15,7 @@ Wastedosaure::~Wastedosaure()
 
 }
 
-void Wastedosaure::SetEntities(std::vector<IABase*> * entities)
+void Wastedosaure::SetEntities(std::map<eTypeCreature, CreatureVector> * entities)
 {
 	m_entities = entities;
 }
@@ -23,13 +23,18 @@ void Wastedosaure::SetEntities(std::vector<IABase*> * entities)
 void Wastedosaure::GetCreaturesInSight()
 {
 	m_creaturesInSight.clear();
-	for (int i = 0; i < m_entities->size(); ++i)
+	for (int i = 0; i < CREATURE_NUM; ++i)
 	{
-		if (m_cone.IsInSight((*m_entities)[i]->position) && (*m_entities)[i]->GetID() != this->GetID())
+		eTypeCreature type = (eTypeCreature)i;
+		for (int j = 0; j < (*m_entities)[type].size(); ++j)
 		{
-			m_creaturesInSight.push_back((*m_entities)[i]);
+			if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
+			{
+				m_creaturesInSight.push_back((*m_entities)[type][j]);
+			}
 		}
 	}
+	
 }
 
 Path Wastedosaure::GetPath()
@@ -324,7 +329,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	{
 		m_counterReproduction++;
 		m_canReproduce = false;
-		m_entities->push_back(new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE)));
+		//m_entities->push_back(new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE)));
 	}
 	OnExit
 	m_canReproduce = true;

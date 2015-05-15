@@ -24,6 +24,8 @@
 
 //using namespace std;
 
+typedef std::vector<IABase*> CreatureVector;
+
 class Wastedosaure :public IABase
 {
 private:
@@ -66,7 +68,7 @@ private:
 
 	Viewcone m_cone;
 
-	std::vector<IABase*> * m_entities;//Toutes les creatures du jeu
+	std::map<eTypeCreature, CreatureVector> * m_entities;//Toutes les creatures du jeu
 
 	std::vector<IABase*> m_creaturesInSight;//Les créatures dans le champ visuel
 
@@ -94,7 +96,7 @@ public:
 
 	NYVert2Df arrivalPartner;
 
-	void SetEntities(std::vector<IABase*> * entities);
+	void SetEntities(std::map<eTypeCreature, CreatureVector> * entities);
 
 	Path GetPath();
 

@@ -89,7 +89,7 @@ Path returnPath;
 
 //Stockage des créatures
 typedef std::vector<IABase*> CreatureVector;
-static std::map<eTypeCreature, CreatureVector> g_CreatureMap;
+std::map<eTypeCreature, CreatureVector> g_CreatureMap;
 
 void spawnCreatures()
 {
@@ -107,7 +107,7 @@ void spawnCreatures()
 	for (int i = 0; i < 11; ++i)
 	{
 		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(3 + 2 * i, 3 + 2 * i));
-		w->SetEntities(&g_CreatureMap[WASTEDOSAURE]);
+		w->SetEntities(&g_CreatureMap);
 		g_CreatureMap[WASTEDOSAURE].push_back(w);
 	}
 }
