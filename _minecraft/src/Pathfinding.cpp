@@ -112,6 +112,7 @@ void Pathfinding::ClearNodes()
 				m_nodes[i][j][k].Parent = NULL;
 				m_nodes[i][j][k].Weight = 10;
 				m_nodes[i][j][k].List = NO_LIST;
+				m_nodes[i][j][k].Position = NYVert3Df(i, j, k);
 			}
 		}
 	}
