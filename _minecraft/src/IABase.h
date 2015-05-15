@@ -37,6 +37,8 @@ public:
 	float faim;
 	float saciete;
 
+	bool infected; //If the entity is infected infected
+
 	int life = 100;
 
 	NYWorld * m_world;
