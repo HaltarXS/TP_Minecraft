@@ -52,6 +52,7 @@
 
 		//La liste ouverte triée par priorité des node.
 		std::multimap<int, Node*> m_openList;
+		std::vector<Node*> m_closeList;
 
 		//Node actuelle
 		NYVert3Df m_actualNode;//Position de la node actuellement analysée
@@ -79,6 +80,10 @@
 
 		Pathfinding();
 
+		//Méthodes de recherche relatives au Dahut
+		bool AnalyseAdjacentNodesDahut();
+		bool AnalyseNodeDahut(int x, int y, int z, float weight);
+
 	public:
 		static Pathfinding * GetSingleton();
 		~Pathfinding();
@@ -91,4 +96,7 @@
 
 		//Trouve un chemin depuis la position x,y du terrain jusqu'à la position x',y' d'arrivée en prenant en compte une hauteur de cube franchissable
 		bool FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition, unsigned _step, Path & _outPath, bool _walkOnWater = false);
+		
+		//Trouve un chemin spécifique au comportement du Dahut (ne pas utiliser pour une autre créature)
+		bool FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPosition, Path &outPath);
 	};

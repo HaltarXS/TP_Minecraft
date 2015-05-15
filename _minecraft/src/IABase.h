@@ -9,9 +9,10 @@ using namespace std;
 
 enum eTypeCreature
 {
-	BASE,
+	BASE = 0,
 	TEST_STATEMACHINE,
-	WASTEDOSAURE
+	WASTEDOSAURE,
+	CREATURE_NUM
 };
 
 //Les créatures vont devoir hériter de cette classe

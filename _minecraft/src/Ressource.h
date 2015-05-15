@@ -12,7 +12,8 @@
 enum TypeRessource
 {
 	NONE,
-	HERBE
+	HERBE,
+	CROTTE
 };
 
 
