@@ -92,7 +92,11 @@ void Pathfinding::InitializeNodes()
 				m_nodes[i][j][k].Weight = 10;
 				m_nodes[i][j][k].Position = NYVert3Df(i, j, k);
 				m_nodes[i][j][k].CubeType = m_world->getCube(i, j, k)->_Type;
-
+				m_nodes[i][j][k].G = 0;
+				m_nodes[i][j][k].F = 0;
+				m_nodes[i][j][k].H = 0;
+				m_nodes[i][j][k].Parent = NULL;
+				m_nodes[i][j][k].List = NO_LIST;
 			}
 		}
 	}
@@ -521,7 +525,7 @@ bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPositi
 	{
 		m_tempPath.clear();
 		Node *TempNode = &m_nodes[(int)m_arrivalPosition.X][(int)m_arrivalPosition.Y][(int)m_arrivalPosition.Z];
-		while(TempNode->Parent)
+		while(TempNode != NULL)
 		{
 			m_tempPath.push_back(NYVert3Df((TempNode->Position.X * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
 										   (TempNode->Position.Y * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
@@ -617,7 +621,7 @@ bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
 	{
 		m_nodeToAnalyse->Parent = m_realActualNode;
 		m_nodeToAnalyse->H = DistanceManhattan(m_nodeToAnalyse->Position, m_arrivalPosition);
-		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + ((climbable)?weight:weight*5.0f);
 		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 		m_nodeToAnalyse->List = OPEN_LIST;
 		m_openList.insert(std::pair<int, Node*>(m_nodeToAnalyse->F, m_nodeToAnalyse));
@@ -626,7 +630,7 @@ bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
 	else if(m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + weight))
 	{
 		m_nodeToAnalyse->Parent = m_realActualNode;
-		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + ((climbable)?weight:weight*5.0f);
 		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 	}
 
