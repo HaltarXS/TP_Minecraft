@@ -10,6 +10,7 @@
 #include "IABase.h"
 #include "Pathfinding.h"
 #include "Viewcone.h"
+#include "engine/timer.h"
 
 typedef std::vector<IABase*> CreatureVector;
 
@@ -21,16 +22,24 @@ private :
 	Path m_path;
 	Pathfinding *m_pathfinding;
 
-	float m_eggTime = 3.0f;
-	float m_eggTimer;
-	float m_speed = 2.0f;
-	
+	float m_speed = 2.0f *  60;
+	float m_eggTime = 3.0f * 60;
+	float m_reproductionTime = 5.0f * 60;
+	float m_starvationTime = 4.0f * 60;
+
+	NYTimer m_LastUpdateTimer;
+	float m_eggTimer = 0;
+	float m_reproductionTimer = 0;
+	float m_starvationTimer = 0;
+
 	int m_currentPathIndex;
 
 	bool m_pathFound;
 	bool m_reproduce = false;
 	
 	bool m_debugDraw = true;
+
+	objectID m_targetID;
 
 	Viewcone m_cone;
 
@@ -42,6 +51,7 @@ private :
 	std::map<eTypeCreature, CreatureVector> * m_entities;//Toutes les creatures du jeu
 
 	void GetCreaturesInSight();
+	//void UpdateTimer();
 
 public:
 	GlaceGouille(NYWorld *pWorld, NYVert2Df pos);
