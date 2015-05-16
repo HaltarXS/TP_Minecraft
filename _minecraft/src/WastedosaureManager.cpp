@@ -3,7 +3,7 @@
 
 WastedosaureManager::WastedosaureManager()
 {
-	m_groups.resize(100000);
+	//m_groups.resize(100000);
 	/*for (int i = 0; i < 1000; ++i)
 	{
 		m_groups[i].resize(10);
@@ -20,45 +20,85 @@ void WastedosaureManager::AddWastedosaure(Wastedosaure * entity)
 	m_wastosaures.push_back(entity);
 }
 
+bool WastedosaureManager::IsEveryoneArrived()
+{
+	for (int i = 0; i < m_wastosaures.size(); ++i)
+	{
+		if (m_wastosaures[i]->GetState() != STATE_Dead)
+		{
+			if (!m_wastosaures[i]->isArrived)
+				return false;
+		}
+	}
+
+	return true;
+}
+
 
 void WastedosaureManager::AssignToAGroup(Wastedosaure * entity)
 {
-	int i = 0;
-	while (m_groups[i].size() >= m_maxGroupSize)
-	{
-		++i;
-	}
+	//if (m_group.size() > 1)
+	//{
+	//	if (m_group[0] == NULL || m_group[0]->GetState() == STATE_Dead)//Si le leader n'est plus là
+	//	{
+	//		m_group[0] = entity;
+	//		for (int i = 1; i < m_group.size(); ++i)
+	//		{
+	//			m_group[i]->leader = entity;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		m_group.push_back(entity);
+	//		entity->leader = m_group[0];
+	//	}
+	//}
+	//else
+	//{
+	//	m_group.push_back(entity);
+	//}
+	entity->groupPosition = m_group.size();
+	m_group.push_back(entity);
+	if (m_group[0]->GetState() == STATE_Dead)
+		m_group[0] = m_group.back();
 
-	m_currentGroupIndexWhereSpaceIsAvaliable = i;
 
-	if (m_groups[m_currentGroupIndexWhereSpaceIsAvaliable].size() == 0 /*|| m_groups[m_currentGroupIndexWhereSpaceIsAvaliable][0] == NULL*/)//On ajoute le premier WS dans le groupe, ce sera le leader
-	{
-		m_groups[m_currentGroupIndexWhereSpaceIsAvaliable].push_back(entity);
-	}
-	else //On ajoute les autres
-	{
-		entity->leader = m_groups[m_currentGroupIndexWhereSpaceIsAvaliable][0];
-		entity->groupPosition = m_groups[m_currentGroupIndexWhereSpaceIsAvaliable].size();
-		m_groups[m_currentGroupIndexWhereSpaceIsAvaliable].push_back(entity);
-	}
+	entity->leader = m_group[0];
+	m_group[0]->leader = NULL;
+
+	
+	
+	
 }
 
 void WastedosaureManager::FindPartner(Wastedosaure * entity)
 {
-	for (int i = 0; i < m_wastosaures.size(); ++i)
+	if (entity->partner == NULL)
 	{
-		if (m_wastosaures[i]->GetID() != entity->GetID() && m_wastosaures[i]->GetState() != STATE_Dead && m_wastosaures[i]->partner == NULL && entity->partner == NULL)
+		for (int i = 0; i < m_wastosaures.size(); ++i)
 		{
-			m_wastosaures[i]->partner = entity;
-			entity->partner = m_wastosaures[i];
-			return;
+			if (m_wastosaures[i]->GetID() != entity->GetID() &&
+				m_wastosaures[i]->GetState() != STATE_Dead &&
+				m_wastosaures[i]->partner == NULL &&
+				entity->partner == NULL)
+			{
+				m_wastosaures[i]->partner = entity;
+				entity->partner = m_wastosaures[i];
+				return;
+			}
 		}
 	}
+	
 }
 
 void WastedosaureManager::FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2)
 {
-	NYVert2Df arrival = NYVert2Df((int)entity1->position.X / NYCube::CUBE_SIZE + rand_a_b(-5, 5), (int)entity1->position.Y / NYCube::CUBE_SIZE + rand_a_b(-5, 5));
-	entity1->arrivalPartner = arrival;
-	entity2->arrivalPartner = arrival;
+	if (entity1 != NULL && entity2 != NULL)
+	{
+		NYVert2Df arrival = NYVert2Df((int)entity1->position.X / NYCube::CUBE_SIZE + rand_a_b(-4, 4), (int)entity1->position.Y / NYCube::CUBE_SIZE + rand_a_b(-4, 4));
+
+		entity1->arrivalPartner = arrival;
+		entity2->arrivalPartner = arrival;
+	}
+	
 }

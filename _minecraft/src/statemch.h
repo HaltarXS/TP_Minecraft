@@ -47,7 +47,8 @@ enum States_FSM
 	STATE_FindPath,
 	STATE_Suicide,
 	STATE_Reproduction,
-	STATE_Attack
+	STATE_Attack,
+	STATE_Wait
 
 };
 

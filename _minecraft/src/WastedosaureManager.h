@@ -20,11 +20,10 @@ private:
 
 	std::vector<Wastedosaure *> m_wastosaures;
 
-	std::vector<std::vector<Wastedosaure *>> m_groups;
+	//std::vector<std::vector<Wastedosaure *>> m_groups;
+	std::vector<Wastedosaure *> m_group;
 
-	inline int rand_a_b(int a, int b){
-		return rand() % (b - a) + a;
-	}
+	
 
 public:
 
@@ -44,7 +43,11 @@ public:
 
 	void FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2);
 
-	
+	inline int rand_a_b(int a, int b){
+		return rand() % (b - a) + a;
+	}
+
+	bool IsEveryoneArrived();
 
 };
 

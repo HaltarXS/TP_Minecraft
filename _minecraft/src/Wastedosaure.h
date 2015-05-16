@@ -25,24 +25,25 @@
 //using namespace std;
 
 typedef std::vector<IABase*> CreatureVector;
+#define MAX_WASTEDOSAURE 25
 
 class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 0.7f + 0.01f*GetID();
+	float m_speed = 0.65f + 0.018f*GetID();
 
 	//Timers
 	//Egg
-	float m_timeEgg = 3.0f;
+	float m_timeEgg = 10.0f;
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	float m_durationWandering = 60.0f;
+	float m_durationWandering = 30.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	float m_durationReproduction = 60.0f;
+	float m_durationReproduction = 15.0f/* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction
@@ -59,8 +60,12 @@ private:
 	int m_currentIndex = 0;
 	//NYVert2Df arrivalPartner;
 
-	float m_timeTryFindPath = 3.0f;
+	float m_timeTryFindPath = 5.0f;
 	float m_timerTryFindPath = 0.0f;
+
+	
+
+	bool IsEveryoneArrived();
 	
 
 	bool HasAPath();
@@ -84,6 +89,8 @@ private:
 
 	void UpdateTimers();
 
+
+
 	
 	
 
@@ -98,6 +105,8 @@ public:
 	IABase * target= NULL; //Cible du Wastedosaure
 
 	NYVert2Df arrivalPartner;
+
+	bool isArrived = true;
 
 	void SetEntities(std::map<eTypeCreature, CreatureVector> * entities);
 
