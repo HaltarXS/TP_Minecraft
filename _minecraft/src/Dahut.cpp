@@ -24,6 +24,9 @@ IABase(pWorld)
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
 
 	m_pPathfinder = Pathfinding::GetSingleton();
+
+	//Init timer
+	m_lastUpdate.start();
 }
 
 Dahut::~Dahut()
@@ -34,6 +37,9 @@ void Dahut::UpdateIA()
 {
 	//Update FSM
 	Update();
+
+	//Start timer
+	m_lastUpdate.start();
 }
 
 void Dahut::Draw()
@@ -91,7 +97,7 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		
 	OnUpdate
 	{
-		path += NYRenderer::_DeltaTime;
+		path += m_lastUpdate.getElapsedSeconds();
 		if(path >= m_path.GetSize() - 1.0f)
 		{
 			PushState(STATE_FindPath);

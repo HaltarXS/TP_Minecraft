@@ -7,6 +7,7 @@
 #ifndef DAHUT_H
 #define DAHUT_H
 
+#include "engine\timer.h"
 #include "IABase.h"
 #include "Pathfinding.h"
 
@@ -23,6 +24,9 @@ private :
 
 	//Determine the cube the Dahut is climbing/walking on
 	NYPoint3D m_cubeAnchor;
+
+	//Timer to determine delta time
+	NYTimer m_lastUpdate;
 
 public :
 
