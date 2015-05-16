@@ -44,9 +44,12 @@ void Dahut::Draw()
 		glTranslatef(position.X, position.Y, position.Z);
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPopMatrix();
-
+	
+	//Debug path
+	/*
 	if(m_path.GetSize() > 0)
 		m_path.DrawPath();
+	*/
 }
 
 bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)

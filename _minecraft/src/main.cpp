@@ -33,6 +33,7 @@
 
 //Creatures
 #include "Wastedosaure.h"
+#include "Dahut.h"
 
 NYWorld * g_world;
 
@@ -110,42 +111,28 @@ void spawnCreatures()
 		w->SetEntities(&g_CreatureMap);
 		g_CreatureMap[WASTEDOSAURE].push_back(w);
 	}
+
+	//Dahut
+	for(int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
+	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-// GESTION APPLICATION
-//////////////////////////////////////////////////////////////////////////
-void update(void)
+/** === Mise à jour des IA ===
+ * 
+ * Afin d'éviter que le framerate ne diminue trop, un temps fixe
+ * est alloué à la mise à jour des IA. A chaque appel, on effectue 
+ * autant de mises à jour dans le temps imparti et on reprend là
+ * où s'est arrêté à la frame suivante.
+ * Les mises à jour s'arrêtent avant le temps imparti si on a
+ * réussi à mettre à jour toutes les créatures.
+**/
+void creatureUpdate(int computeTimeMS)
 {
-	float elapsed = g_timer->getElapsedSeconds(true);
-	static float g_eval_elapsed = 0;
-
-	//Calcul des fps
-	g_elapsed_fps += elapsed;
-	g_nb_frames++;
-	if(g_elapsed_fps > 1.0)
-	{
-		LabelFps->Text = std::string("FPS : ") + toString(g_nb_frames);
-		g_elapsed_fps -= 1.0f;
-		g_nb_frames = 0;
-	}
-	//Rendu
-	lightPostion.rotate(NYVert3Df(0,1,0),M_PI_4*elapsed);
-	angleRad +=M_PI_4*elapsed;
-	g_renderer->render(elapsed);
-	avatar->update(elapsed);
-
-
-	//lapin->UpdateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
-	herbe->Update(NYRenderer::_DeltaTime);
-
-	//Update State Machine example
-	//entityTest1->UpdateIA();
-	//entityTest2->UpdateIA();
-
 	//Round robin creature update
-
-	/*
 	bool looped = false;
 	bool timedOut = false;
 	static int typeIt = 0;
@@ -181,12 +168,48 @@ void update(void)
 		}
 
 		//Check allocated time
-		if(updateTimer.getElapsedMs() >= 5)
+		if(updateTimer.getElapsedMs() >= computeTimeMS)
 		{
 			timedOut = true;
 		}
-	}*/
+	}
+}
 
+//////////////////////////////////////////////////////////////////////////
+// GESTION APPLICATION
+//////////////////////////////////////////////////////////////////////////
+void update(void)
+{
+	float elapsed = g_timer->getElapsedSeconds(true);
+	static float g_eval_elapsed = 0;
+
+	//Calcul des fps
+	g_elapsed_fps += elapsed;
+	g_nb_frames++;
+	if(g_elapsed_fps > 1.0)
+	{
+		LabelFps->Text = std::string("FPS : ") + toString(g_nb_frames);
+		g_elapsed_fps -= 1.0f;
+		g_nb_frames = 0;
+	}
+	//Rendu
+	lightPostion.rotate(NYVert3Df(0,1,0),M_PI_4*elapsed);
+	angleRad +=M_PI_4*elapsed;
+	g_renderer->render(elapsed);
+	avatar->update(elapsed);
+
+
+	//lapin->UpdateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
+	herbe->Update(NYRenderer::_DeltaTime);
+
+	//Update State Machine example
+	//entityTest1->UpdateIA();
+	//entityTest2->UpdateIA();
+
+	//Update creatures (max 5ms)
+	creatureUpdate(5);
+
+	/*
 	//Update creatures
 	for(int i = 0; i < CREATURE_NUM; ++i)
 	{
@@ -195,7 +218,7 @@ void update(void)
 		{
 			g_CreatureMap[type][j]->UpdateIA();
 		}
-	}
+	}*/
 
 	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
 	{
