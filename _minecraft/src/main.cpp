@@ -120,6 +120,14 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
 	}
+
+	//Gendamour
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+	}
 }
 
 /** === Mise à jour des IA ===

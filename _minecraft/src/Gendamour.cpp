@@ -22,7 +22,7 @@ Gendamour::~Gendamour()
 
 void Gendamour::Draw(){
 
-	glColor3f(255, 255, 0);
+	glColor3f(255, 0, 0);
 	glPushMatrix();
 
 	glTranslatef(position.X, position.Y, position.Z);
@@ -41,5 +41,29 @@ void Gendamour::UpdateIA()
 bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 {
 	BeginStateMachine
+
+		State(STATE_Initialize)
+		OnEnter
+	{
+		
+	}
+
+		State(STATE_FindPath)
+		OnUpdate
+	{
+	
+	}
+
+		State(STATE_Move)
+		OnEnter
+	{
+		
+	}
+
+		OnUpdate
+	{
+		
+	}
+
 	EndStateMachine
 }
