@@ -34,6 +34,7 @@
 //Creatures
 #include "Wastedosaure.h"
 #include "Dahut.h"
+#include "Gendamour.h"
 
 NYWorld * g_world;
 

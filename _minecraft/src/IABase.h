@@ -17,6 +17,7 @@ enum eTypeCreature
 	MOUCHE,
 	LEMMING,
 	GLACEGOUILLE,
+	GENDAMOUR,
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };
