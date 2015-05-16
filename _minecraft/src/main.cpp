@@ -143,6 +143,50 @@ void update(void)
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
 
+	//Round robin creature update
+
+	/*
+	bool looped = false;
+	bool timedOut = false;
+	static int typeIt = 0;
+	static int creatureIt = 0;
+	int startType = typeIt;
+	int startCreature = creatureIt;
+	NYTimer updateTimer;
+
+	updateTimer.start();
+	while(!looped && !timedOut)
+	{
+		//Loop through creatures
+		creatureIt++;
+		while(!looped && creatureIt >= g_CreatureMap[(eTypeCreature)typeIt].size())
+		{
+			creatureIt = 0;
+			typeIt++;
+			if(typeIt >= CREATURE_NUM)
+			{
+				typeIt = 0;
+			}
+
+			if(typeIt == startType && creatureIt == startCreature)
+			{
+				looped = true;
+			}
+		}
+
+		//Update creature
+		if(!looped)
+		{
+			g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->UpdateIA();
+		}
+
+		//Check allocated time
+		if(updateTimer.getElapsedMs() >= 5)
+		{
+			timedOut = true;
+		}
+	}*/
+
 	//Update creatures
 	for(int i = 0; i < CREATURE_NUM; ++i)
 	{
