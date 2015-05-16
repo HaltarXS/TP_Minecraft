@@ -8,10 +8,18 @@
 #define DAHUT_H
 
 #include "IABase.h"
+#include "Pathfinding.h"
 
 class Dahut : public IABase
 {
 private :
+
+	//TEMP
+	float path;
+
+	//Pathfinding singleton
+	Path m_path;
+	Pathfinding *m_pPathfinder;
 
 	//Determine the cube the Dahut is climbing/walking on
 	NYPoint3D m_cubeAnchor;
@@ -24,7 +32,7 @@ public :
 	//Override base class methods
 	virtual void UpdateIA();
 	virtual void Draw();
-	virtual bool States(StateMachineEvent event, MSG_Object *pMsg, int state);
+	virtual bool States(StateMachineEvent event, MSG_Object *msg, int state);
 };
 
 #endif
