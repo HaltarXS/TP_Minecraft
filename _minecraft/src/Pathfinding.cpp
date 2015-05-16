@@ -525,7 +525,7 @@ bool Pathfinding::FindPathDahut(NYVert3Df startPosition, NYVert3Df arrivalPositi
 	{
 		m_tempPath.clear();
 		Node *TempNode = &m_nodes[(int)m_arrivalPosition.X][(int)m_arrivalPosition.Y][(int)m_arrivalPosition.Z];
-		while(TempNode->Parent)
+		while(TempNode != NULL)
 		{
 			m_tempPath.push_back(NYVert3Df((TempNode->Position.X * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
 										   (TempNode->Position.Y * NYCube::CUBE_SIZE) + NYCube::CUBE_SIZE / 2.0f,
