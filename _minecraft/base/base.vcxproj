@@ -39,6 +39,7 @@
     <ClCompile Include="..\src\Wastedosaure.cpp" />
     <ClCompile Include="..\src\WastedosaureManager.cpp" />
     <ClCompile Include="GlaceGouille.cpp" />
+    <ClCompile Include="Neon.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +81,7 @@
     <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
     <ClInclude Include="GlaceGouille.h" />
+    <ClInclude Include="Neon.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

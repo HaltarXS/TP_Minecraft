@@ -80,6 +80,9 @@
     <ClCompile Include="..\src\Lemming.cpp">
       <Filter>Axel Deshors</Filter>
     </ClCompile>
+    <ClCompile Include="Neon.cpp">
+      <Filter>Lucas Le Gouic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -126,6 +129,9 @@
     </Filter>
     <Filter Include="Axel Deshors">
       <UniqueIdentifier>{1f7b40c5-57c0-4c12-bdbc-185376ad47f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lucas Le Gouic">
+      <UniqueIdentifier>{e8ab6d3e-b4b5-4d21-847f-5f501ec8d1e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Lemming.h">
       <Filter>Axel Deshors</Filter>
+    </ClInclude>
+    <ClInclude Include="Neon.h">
+      <Filter>Lucas Le Gouic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
