@@ -1,7 +1,7 @@
 #include "Snake.h"
 
 
-Snake::Snake()
+Snake::Snake(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 {
 }
 
