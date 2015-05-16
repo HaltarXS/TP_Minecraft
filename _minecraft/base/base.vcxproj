@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\Herbe.cpp" />
     <ClCompile Include="..\src\IABase.cpp" />
     <ClCompile Include="..\src\chunk.cpp" />
+    <ClCompile Include="..\src\Lemming.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\msg.cpp" />
     <ClCompile Include="..\src\msgroute.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="..\src\avatar.h" />
     <ClInclude Include="..\src\chunk.h" />
     <ClInclude Include="..\src\cube.h" />
+    <ClInclude Include="..\src\Lemming.h" />
     <ClInclude Include="..\src\msg.h" />
     <ClInclude Include="..\src\msgroute.h" />
     <ClInclude Include="..\src\my_physics.h" />

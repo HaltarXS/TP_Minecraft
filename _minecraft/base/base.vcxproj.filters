@@ -77,6 +77,9 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Vincent Swaenepoel</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Lemming.cpp">
+      <Filter>Axel Deshors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -120,6 +123,9 @@
     </Filter>
     <Filter Include="Vincent Swaenepoel">
       <UniqueIdentifier>{87714688-190c-4a1f-beba-f0b685f2fb3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Axel Deshors">
+      <UniqueIdentifier>{1f7b40c5-57c0-4c12-bdbc-185376ad47f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="Snake.h">
       <Filter>Vincent Swaenepoel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lemming.h">
+      <Filter>Axel Deshors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
