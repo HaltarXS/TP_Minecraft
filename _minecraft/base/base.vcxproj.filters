@@ -68,6 +68,9 @@
     <ClCompile Include="..\src\Dahut.cpp">
       <Filter>Paul Gerst</Filter>
     </ClCompile>
+    <ClCompile Include="GlaceGouille.cpp">
+      <Filter>Judicael Abecassis</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -102,6 +105,9 @@
     </Filter>
     <Filter Include="Paul Gerst">
       <UniqueIdentifier>{d818dbd5-96bb-45f5-96ec-cb8291fd8e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Judicael Abecassis">
+      <UniqueIdentifier>{518df530-1dab-4b78-a1fb-35b3b2b76535}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Dahut.h">
       <Filter>Paul Gerst</Filter>
+    </ClInclude>
+    <ClInclude Include="GlaceGouille.h">
+      <Filter>Judicael Abecassis</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
