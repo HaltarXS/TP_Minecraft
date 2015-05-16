@@ -22,6 +22,9 @@ private:
 
 	std::vector<std::vector<Wastedosaure *>> m_groups;
 
+	inline int rand_a_b(int a, int b){
+		return rand() % (b - a) + a;
+	}
 
 public:
 
@@ -38,6 +41,8 @@ public:
 	void AddWastedosaure(Wastedosaure * entity);
 
 	void FindPartner(Wastedosaure * entity);
+
+	void FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2);
 
 	
 
