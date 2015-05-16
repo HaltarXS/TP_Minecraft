@@ -4,7 +4,7 @@
 GlaceGouille::GlaceGouille(NYWorld *pWorld, NYVert2Df pos):
 IABase(pWorld), m_cone(90.0f, 30)
 {
-	//Init FSM
+	//Init state machine
 	Initialize();
 
 	//Init Type
@@ -90,6 +90,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 	OnUpdate
 	{
+		//Determine le temps passé en oeuf
 		m_eggTimer += m_LastUpdateTimer.getElapsedSeconds();
 		if (m_eggTimer >= m_eggTime)
 		{
@@ -105,6 +106,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 	OnUpdate
 	{
+		//Recherche d'une destination aléatoire dans la neige
 		if (!m_pathFound)
 		{
 			NYVert2Df arrival = NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
@@ -160,6 +162,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Reproduction)
 	OnEnter
 	{
+		//Pond un oeuf sur place
 		//cout << "Enter Reproduction" << endl;
 		NYVert2Df eggPosition;
 		eggPosition.X = position.X;
@@ -177,27 +180,31 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Sleep)
 	OnUpdate
 	{
+		//Update des timers
 		m_starvationTimer += m_LastUpdateTimer.getElapsedSeconds();
 		m_reproductionTimer += m_LastUpdateTimer.getElapsedSeconds();
 		m_rotationTimer += m_LastUpdateTimer.getElapsedSeconds();
+		m_lifeTimer += m_LastUpdateTimer.getElapsedSeconds();
 
+		//Rotation de la vue
 		if (m_rotationTimer >= m_rotationTime)
 		{ 
 			direction = direction.rotate(NYVert3Df(0, 0, 1), 90);
 			m_rotationTimer = 0;
 		}
 
+		//Detection des lemmings
 		GetCreaturesInSight();
 		if (m_creaturesInSight.size() > 0)
 		{
 			m_targetID = m_creaturesInSight[0]->GetID();
 			PushState(STATE_Eat);
 		}
-		else if (m_starvationTimer >= m_starvationTime)
+		else if (m_starvationTimer >= m_starvationTime || m_lifeTimer > m_lifeTime) //Conditions de mort
 		{
 			PushState(STATE_Dead);
 		}
-		else if (m_reproductionTimer >= m_reproductionTime)
+		else if (m_reproductionTimer >= m_reproductionTime)	//Condition de reproduction
 		{
 			m_reproduce = true;
 			PushState(STATE_FindPath);
