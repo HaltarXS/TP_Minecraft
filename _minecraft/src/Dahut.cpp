@@ -23,6 +23,7 @@ IABase(pWorld)
 	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE/2.0f;
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
 
+	//Init pathfinding singleton
 	m_pPathfinder = Pathfinding::GetSingleton();
 
 	//Init timer
@@ -52,10 +53,8 @@ void Dahut::Draw()
 	glPopMatrix();
 	
 	//Debug path
-	/*
 	if(m_path.GetSize() > 0)
 		m_path.DrawPath();
-	*/
 }
 
 bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
@@ -92,31 +91,43 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Move)
 	OnEnter
 	{
-		path = 0.0f;
+		if(m_path.GetSize() > 1)
+		{
+			m_targetPosition = m_path.GetWaypoint(1);
+			direction =  m_targetPosition - position;
+			direction.normalize();
+			m_pathIndex = 1;
+		}
+		else
+		{
+			PushState(STATE_FindPath);
+		}
 	}
 		
 	OnUpdate
 	{
-		path += m_lastUpdate.getElapsedSeconds();
-		if(path >= m_path.GetSize() - 1.0f)
-		{
-			PushState(STATE_FindPath);
-			path = 0.0f;
-		}
-		else
-		{
-			int firstPoint = (int) path;
-			int secondPoint = firstPoint + 1;
-			float lerp = path - firstPoint;
+		position += direction * m_lastUpdate.getElapsedSeconds() * NYCube::CUBE_SIZE;
 
-			NYVert3Df firstVec = m_path.GetWaypoint(firstPoint);
-			NYVert3Df secondVec = m_path.GetWaypoint(secondPoint);
-			position = firstVec * (1.0f - lerp) + secondVec * lerp;
+		NYVert3Df distance = m_targetPosition - position;
+		if(distance.scalProd(direction) < 0.0f)
+		{
+			position = m_targetPosition;
 
-			positionCube.X = (int) position.X/10.0f;
-			positionCube.Y = (int) position.Y/10.0f;
-			positionCube.Z = (int) position.Z/10.0f;
+			if(++m_pathIndex < m_path.GetSize())
+			{
+				m_targetPosition = m_path.GetWaypoint(m_pathIndex);
+				direction =  m_targetPosition - position;
+				direction.normalize();
+			}
+			else
+			{
+				PushState(STATE_FindPath);
+			}
 		}
+
+		positionCube.X = (int) position.X/NYCube::CUBE_SIZE;
+		positionCube.Y = (int) position.Y/NYCube::CUBE_SIZE;
+		positionCube.Z = (int) position.Z/NYCube::CUBE_SIZE;
 	}
 
 	EndStateMachine

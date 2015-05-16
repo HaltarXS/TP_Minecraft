@@ -15,15 +15,14 @@ class Dahut : public IABase
 {
 private :
 
-	//TEMP
-	float path;
-
 	//Pathfinding singleton
+	int m_pathIndex;
 	Path m_path;
 	Pathfinding *m_pPathfinder;
 
 	//Determine the cube the Dahut is climbing/walking on
 	NYPoint3D m_cubeAnchor;
+	NYVert3Df m_targetPosition;
 
 	//Timer to determine delta time
 	NYTimer m_lastUpdate;

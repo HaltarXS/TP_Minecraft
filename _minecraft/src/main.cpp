@@ -146,9 +146,9 @@ void creatureUpdate(int computeTimeMS)
 	bool timedOut = false;
 	static int typeIt = 0;
 	static int creatureIt = 0;
-	int startType = typeIt;
-	int startCreature = creatureIt;
-	NYTimer updateTimer;
+	static NYTimer updateTimer;
+	int startType = -1;
+	int startCreature = -1;
 
 	updateTimer.start();
 	while(!looped && !timedOut)
@@ -168,6 +168,13 @@ void creatureUpdate(int computeTimeMS)
 			{
 				looped = true;
 			}
+		}
+
+		//Init starting indexes to check for a loop
+		if(startType < 0 && startCreature < 0)
+		{
+			startType = typeIt;
+			startCreature = creatureIt;
 		}
 
 		//Update creature
