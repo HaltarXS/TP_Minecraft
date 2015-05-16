@@ -66,8 +66,8 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		while(!pathFound)
 		{
 			NYVert3Df newPosition;
-			newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 20.0f - 10.0f);
-			newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 20.0f - 10.0f);
+			newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
+			newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
 			newPosition.Z = (int) m_world->_MatriceHeights[(int) newPosition.X][(int) newPosition.Y];
 
 			if(newPosition.X > 1 && newPosition.X < MAT_SIZE_CUBES - 1 &&

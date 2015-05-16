@@ -621,7 +621,7 @@ bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
 	{
 		m_nodeToAnalyse->Parent = m_realActualNode;
 		m_nodeToAnalyse->H = DistanceManhattan(m_nodeToAnalyse->Position, m_arrivalPosition);
-		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + ((climbable)?weight:weight*10.0f);
 		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 		m_nodeToAnalyse->List = OPEN_LIST;
 		m_openList.insert(std::pair<int, Node*>(m_nodeToAnalyse->F, m_nodeToAnalyse));
@@ -630,7 +630,7 @@ bool Pathfinding::AnalyseNodeDahut(int x, int y, int z, float weight)
 	else if(m_nodeToAnalyse->List == OPEN_LIST && (m_nodeToAnalyse->G > m_realActualNode->G + weight))
 	{
 		m_nodeToAnalyse->Parent = m_realActualNode;
-		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + weight;
+		m_nodeToAnalyse->G = m_nodeToAnalyse->Parent->G + ((climbable)?weight:weight*10.0f);
 		m_nodeToAnalyse->F = m_nodeToAnalyse->H + m_nodeToAnalyse->G;
 	}
 
