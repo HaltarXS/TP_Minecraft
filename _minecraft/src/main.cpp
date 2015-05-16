@@ -35,6 +35,7 @@
 #include "Wastedosaure.h"
 #include "Dahut.h"
 #include "Gendamour.h"
+#include "GlaceGouille.h"
 
 NYWorld * g_world;
 
@@ -127,6 +128,22 @@ void spawnCreatures()
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
 		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+	}
+
+	//Gendamour
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+	}
+
+	//Glacegouille
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[GLACEGOUILLE].push_back(new GlaceGouille(g_world, NYVert2Df(x, y)));
 	}
 }
 
