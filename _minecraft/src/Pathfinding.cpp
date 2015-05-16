@@ -92,7 +92,11 @@ void Pathfinding::InitializeNodes()
 				m_nodes[i][j][k].Weight = 10;
 				m_nodes[i][j][k].Position = NYVert3Df(i, j, k);
 				m_nodes[i][j][k].CubeType = m_world->getCube(i, j, k)->_Type;
-
+				m_nodes[i][j][k].G = 0;
+				m_nodes[i][j][k].F = 0;
+				m_nodes[i][j][k].H = 0;
+				m_nodes[i][j][k].Parent = NULL;
+				m_nodes[i][j][k].List = NO_LIST;
 			}
 		}
 	}
