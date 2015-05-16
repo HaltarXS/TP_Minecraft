@@ -2,7 +2,7 @@
 
 
 GlaceGouille::GlaceGouille(NYWorld *pWorld, NYVert2Df pos):
-IABase(pWorld), m_cone(90.0f, 50)
+IABase(pWorld), m_cone(90.0f, 30)
 {
 	//Init FSM
 	Initialize();
@@ -34,6 +34,7 @@ void GlaceGouille::UpdateIA()
 	m_cone.SetOrientation(direction);
 	//Update State machine
 	Update();
+	//cout << m_LastUpdateTimer.getElapsedMs() << endl;
 	//UpdateTimer();
 	m_LastUpdateTimer.start();
 }
@@ -42,12 +43,21 @@ void GlaceGouille::UpdateIA()
 void GlaceGouille::Draw()
 {
 	//Basic rendering
-	glColor3f(244, 250, 252);
+	//glColor3f(244.0/255.0, 250.0/255.0, 252.0/255.0);
+	glColor3f(1, 1, 1);
 	glPushMatrix();
 
 	glTranslatef(position.X, position.Y, position.Z);
 	glutSolidCube(NYCube::CUBE_SIZE);
 	
+	if (m_currentState != STATE_Egg)
+	{
+		glPushMatrix();
+		glTranslatef(0, 0, NYCube::CUBE_SIZE);
+		glutSolidCube(NYCube::CUBE_SIZE);
+		glPopMatrix();
+	}
+
 	glPopMatrix();
 
 	if (m_debugDraw)
@@ -75,7 +85,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Egg)
 	OnEnter
 	{
-		cout << "Enter EggState" << endl;
+		//cout << "Enter EggState" << endl;
 		m_eggTimer = 0;
 	}
 	OnUpdate
@@ -91,7 +101,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	OnEnter
 	{
 		m_pathFound = false;
-		cout << "Enter FindPath" << endl;
+		//cout << "Enter FindPath" << endl;
 	}
 	OnUpdate
 	{
@@ -100,11 +110,11 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 			NYVert2Df arrival = NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
 
 			//cout << "X " << newPosition.X << " Y " << newPosition.Y << " Z " << newPosition.Z << endl;
-			cout << "X " << arrival.X << " Y " << arrival.Y << endl;
+			//cout << "X " << arrival.X << " Y " << arrival.Y << endl;
 			if (m_world->getCube(arrival.X, arrival.Y, m_world->_MatriceHeights[(int)arrival.X][(int)arrival.Y] - 1)->_Type == CUBE_NEIGE)
 			{
 				m_pathFound = m_pathfinding->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, CUBE_HERBE | CUBE_NEIGE | CUBE_TERRE, m_path);
-				cout << m_pathFound << endl;
+				//cout << m_pathFound << endl;
 			}
 		}
 		else
@@ -134,7 +144,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 			}
 			else
 			{
-				position += direction * m_speed * m_LastUpdateTimer.getElapsedMs();
+				position += direction * m_speed;
 			}
 		}
 		else if (m_reproduce)
@@ -150,7 +160,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Reproduction)
 	OnEnter
 	{
-		cout << "Enter Reproduction" << endl;
+		//cout << "Enter Reproduction" << endl;
 		NYVert2Df eggPosition;
 		eggPosition.X = position.X;
 		eggPosition.Y = position.Y;
@@ -169,6 +179,14 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	{
 		m_starvationTimer += m_LastUpdateTimer.getElapsedSeconds();
 		m_reproductionTimer += m_LastUpdateTimer.getElapsedSeconds();
+		m_rotationTimer += m_LastUpdateTimer.getElapsedSeconds();
+
+		if (m_rotationTimer >= m_rotationTime)
+		{ 
+			direction = direction.rotate(NYVert3Df(0, 0, 1), 90);
+			m_rotationTimer = 0;
+		}
+
 		GetCreaturesInSight();
 		if (m_creaturesInSight.size() > 0)
 		{
@@ -205,13 +223,13 @@ void GlaceGouille::GetCreaturesInSight()
 {
 	m_creaturesInSight.clear();
 
-	eTypeCreature type = LEMMING;
-	for (int j = 0; j < (*m_entities)[type].size(); ++j)
-	{
-		if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
-		{
-			m_creaturesInSight.push_back((*m_entities)[type][j]);
-		}
-	}
+	//eTypeCreature type = LEMMING;
+	//for (int j = 0; j < (*m_entities)[type].size(); ++j)
+	//{
+	//	if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
+	//	{
+	//		m_creaturesInSight.push_back((*m_entities)[type][j]);
+	//	}
+	//}
 
 }

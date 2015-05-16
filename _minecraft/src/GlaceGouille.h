@@ -22,15 +22,17 @@ private :
 	Path m_path;
 	Pathfinding *m_pathfinding;
 
-	float m_speed = 2.0f *  60;
-	float m_eggTime = 3.0f * 60;
+	float m_speed = 0.5f;
+	float m_eggTime = 3.0f;//* 60;
 	float m_reproductionTime = 5.0f * 60;
 	float m_starvationTime = 4.0f * 60;
+	float m_rotationTime = 0.5;
 
 	NYTimer m_LastUpdateTimer;
 	float m_eggTimer = 0;
 	float m_reproductionTimer = 0;
 	float m_starvationTimer = 0;
+	float m_rotationTimer = 0;
 
 	int m_currentPathIndex;
 
