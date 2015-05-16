@@ -33,6 +33,8 @@
 
 //Creatures
 #include "Wastedosaure.h"
+#include "Dahut.h"
+#include "Gendamour.h"
 
 NYWorld * g_world;
 
@@ -110,6 +112,83 @@ void spawnCreatures()
 		w->SetEntities(&g_CreatureMap);
 		g_CreatureMap[WASTEDOSAURE].push_back(w);
 	}
+
+	//Dahut
+	for(int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
+	}
+
+	//Gendamour
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+	}
+}
+
+/** === Mise à jour des IA ===
+ * 
+ * Afin d'éviter que le framerate ne diminue trop, un temps fixe
+ * est alloué à la mise à jour des IA. A chaque appel, on effectue 
+ * autant de mises à jour dans le temps imparti et on reprend là
+ * où s'est arrêté à la frame suivante.
+ * Les mises à jour s'arrêtent avant le temps imparti si on a
+ * réussi à mettre à jour toutes les créatures.
+**/
+void creatureUpdate(int computeTimeMS)
+{
+	//Round robin creature update
+	bool looped = false;
+	bool timedOut = false;
+	static int typeIt = 0;
+	static int creatureIt = 0;
+	static NYTimer updateTimer;
+	int startType = -1;
+	int startCreature = -1;
+
+	updateTimer.start();
+	while(!looped && !timedOut)
+	{
+		//Loop through creatures
+		creatureIt++;
+		while(!looped && creatureIt >= g_CreatureMap[(eTypeCreature)typeIt].size())
+		{
+			creatureIt = 0;
+			typeIt++;
+			if(typeIt >= CREATURE_NUM)
+			{
+				typeIt = 0;
+			}
+
+			if(typeIt == startType && creatureIt == startCreature)
+			{
+				looped = true;
+			}
+		}
+
+		//Init starting indexes to check for a loop
+		if(startType < 0 && startCreature < 0)
+		{
+			startType = typeIt;
+			startCreature = creatureIt;
+		}
+
+		//Update creature
+		if(!looped)
+		{
+			g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->UpdateIA();
+		}
+
+		//Check allocated time
+		if(updateTimer.getElapsedMs() >= computeTimeMS)
+		{
+			timedOut = true;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,50 +222,10 @@ void update(void)
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
 
-	//Round robin creature update
+	//Update creatures (max 5ms)
+	creatureUpdate(5);
 
 	/*
-	bool looped = false;
-	bool timedOut = false;
-	static int typeIt = 0;
-	static int creatureIt = 0;
-	int startType = typeIt;
-	int startCreature = creatureIt;
-	NYTimer updateTimer;
-
-	updateTimer.start();
-	while(!looped && !timedOut)
-	{
-		//Loop through creatures
-		creatureIt++;
-		while(!looped && creatureIt >= g_CreatureMap[(eTypeCreature)typeIt].size())
-		{
-			creatureIt = 0;
-			typeIt++;
-			if(typeIt >= CREATURE_NUM)
-			{
-				typeIt = 0;
-			}
-
-			if(typeIt == startType && creatureIt == startCreature)
-			{
-				looped = true;
-			}
-		}
-
-		//Update creature
-		if(!looped)
-		{
-			g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->UpdateIA();
-		}
-
-		//Check allocated time
-		if(updateTimer.getElapsedMs() >= 5)
-		{
-			timedOut = true;
-		}
-	}*/
-
 	//Update creatures
 	for(int i = 0; i < CREATURE_NUM; ++i)
 	{
@@ -195,7 +234,7 @@ void update(void)
 		{
 			g_CreatureMap[type][j]->UpdateIA();
 		}
-	}
+	}*/
 
 	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
 	{

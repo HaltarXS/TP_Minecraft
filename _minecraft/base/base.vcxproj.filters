@@ -71,6 +71,12 @@
     <ClCompile Include="GlaceGouille.cpp">
       <Filter>Judicael Abecassis</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Gendamour.cpp">
+      <Filter>Nicolas Leroy</Filter>
+    </ClCompile>
+    <ClCompile Include="Snake.cpp">
+      <Filter>Vincent Swaenepoel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -108,6 +114,12 @@
     </Filter>
     <Filter Include="Judicael Abecassis">
       <UniqueIdentifier>{518df530-1dab-4b78-a1fb-35b3b2b76535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Nicolas Leroy">
+      <UniqueIdentifier>{c8aa6bd4-3bdd-4868-9199-b76e713cbf55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vincent Swaenepoel">
+      <UniqueIdentifier>{87714688-190c-4a1f-beba-f0b685f2fb3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +212,12 @@
     </ClInclude>
     <ClInclude Include="GlaceGouille.h">
       <Filter>Judicael Abecassis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Gendamour.h">
+      <Filter>Nicolas Leroy</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Vincent Swaenepoel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
