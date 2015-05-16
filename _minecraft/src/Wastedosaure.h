@@ -31,19 +31,19 @@ class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 0.65f + 0.018f*GetID();
+	float m_speed = 0.50f + 0.018f*GetID();
 
 	//Timers
 	//Egg
-	float m_timeEgg = 10.0f;
+	float m_timeEgg = 11.0f;
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	float m_durationWandering = 30.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
+	float m_durationWandering = 25.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	float m_durationReproduction = 15.0f/* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
+	float m_durationReproduction = 10.0f /* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction
@@ -51,6 +51,7 @@ private:
 	int m_counterReproduction = 0;
 	int m_maxReproductions = 2;
 	bool m_needPartner = false;
+	
 
 	bool m_isMale = false;
 
@@ -63,6 +64,11 @@ private:
 	float m_timeTryFindPath = 5.0f;
 	float m_timerTryFindPath = 0.0f;
 
+	float m_minSize = 2.0f;
+	float m_maxSize = 9.0f;
+	float m_currentSize = m_minSize;
+	float m_durationGrow = 40.0f;
+	float m_timerGrow = 0.0f;
 	
 
 	bool IsEveryoneArrived();
@@ -100,6 +106,7 @@ public:
 
 	Wastedosaure * leader = NULL;//Leader d'un groupe
 	Wastedosaure * partner = NULL; //Partenaire du wastedosaure
+	bool hasPartner = false;
 	int groupPosition = 0;
 
 	IABase * target= NULL; //Cible du Wastedosaure

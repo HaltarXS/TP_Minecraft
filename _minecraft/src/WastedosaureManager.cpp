@@ -66,29 +66,29 @@ void WastedosaureManager::AssignToAGroup(Wastedosaure * entity)
 	entity->leader = m_group[0];
 	m_group[0]->leader = NULL;
 
-	
-	
-	
 }
 
 void WastedosaureManager::FindPartner(Wastedosaure * entity)
 {
-	if (entity->partner == NULL)
+	//cout << entity->GetID() << " Test\n";
+	for (int i = 0; i < m_wastosaures.size(); ++i)
 	{
-		for (int i = 0; i < m_wastosaures.size(); ++i)
+		if (m_wastosaures[i]->partner == NULL && 
+			entity->partner == NULL && 
+			m_wastosaures[i]->GetID() != entity->GetID() &&
+			m_wastosaures[i]->GetState() != STATE_Dead &&
+			m_wastosaures[i]->GetState() != STATE_Egg)
 		{
-			if (m_wastosaures[i]->GetID() != entity->GetID() &&
-				m_wastosaures[i]->GetState() != STATE_Dead &&
-				m_wastosaures[i]->partner == NULL &&
-				entity->partner == NULL)
-			{
-				m_wastosaures[i]->partner = entity;
-				entity->partner = m_wastosaures[i];
-				return;
-			}
+			entity->partner = m_wastosaures[i];
+			entity->partner->partner = entity;
+			//m_wastosaures[i]->partner = entity;
+
+			entity->hasPartner = true;
+			entity->partner->hasPartner = true;
+			//cout << entity->GetID() << " et " << m_wastosaures[i]->GetID() << endl;
+			return;
 		}
 	}
-	
 }
 
 void WastedosaureManager::FindReproductionPlace(Wastedosaure * entity1, Wastedosaure * entity2)

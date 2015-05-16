@@ -8,8 +8,8 @@ IABase(_world), m_cone(50.0f,150)
 	type = WASTEDOSAURE;
 	position = NYVert3Df(_positionInitiale.X * NYCube::CUBE_SIZE, _positionInitiale.Y*NYCube::CUBE_SIZE, _world->_MatriceHeights[(int)_positionInitiale.X][(int)_positionInitiale.Y] * NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f);
 	life = 50;
-	m_durationWandering += WastedosaureManager::GetSingleton()->rand_a_b(-2,2);
-	m_durationReproduction += WastedosaureManager::GetSingleton()->rand_a_b(-2, 2);
+	//m_durationWandering += WastedosaureManager::GetSingleton()->rand_a_b(-2,2);
+	//m_durationReproduction += WastedosaureManager::GetSingleton()->rand_a_b(-2, 2);
 }
 
 Wastedosaure::~Wastedosaure()
@@ -97,10 +97,19 @@ void Wastedosaure::UpdateIA()
 		WastedosaureManager::GetSingleton()->AssignToAGroup(this);
 	}
 
-	if (m_needPartner && (m_currentState == STATE_Move || m_currentState == STATE_Reproduction) && (partner == NULL || partner->GetState() == STATE_Dead))//Alors le wastedosaure se suicide :(
-	{
-		PushState(STATE_Suicide);
-	}
+	//if (m_needPartner && 
+	//	(m_currentState == STATE_Move || m_currentState == STATE_Reproduction) && 
+	//	(partner == NULL || partner->GetState() == STATE_Dead))//Alors le wastedosaure se suicide :(
+	//{
+	//	PushState(STATE_Suicide);
+	//}
+
+
+	m_currentSize = (1 - (m_timerGrow / m_durationGrow))*m_minSize + (m_timerGrow / m_durationGrow)*m_maxSize;
+	m_currentSize = min(m_currentSize, m_maxSize);
+
+	m_timerGrow += NYRenderer::_DeltaTime;
+	
 }
 
 void Wastedosaure::UpdateTimers()
@@ -155,16 +164,16 @@ void Wastedosaure::Draw()
 	}
 	
 	glPushMatrix();
-	glTranslatef(position.X, position.Y, position.Z);
+	glTranslatef(position.X, position.Y, position.Z - (NYCube::CUBE_SIZE - m_currentSize)/2.0f);
 	if (m_currentState != STATE_Dead)
 	{
 		if (m_currentState == STATE_Egg)
 		{
-			glutSolidSphere(5, 20, 20);
+			glutSolidSphere(m_minSize, 20, 20);
 		}
 		else
 		{
-			glutSolidCube(8);
+			glutSolidCube(m_currentSize);
 		}
 	}
 	
@@ -204,6 +213,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnEnter
 	WastedosaureManager::GetSingleton()->AddWastedosaure(this);
 	PushState(STATE_Egg);
+	partner = NULL;
 	
 
 	//Egg
@@ -243,10 +253,11 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	if (HasAPath())
 	{
 		NYVert3Df distanceClosestWP = m_path.GetWaypoint(m_currentIndex) / NYCube::CUBE_SIZE - position / NYCube::CUBE_SIZE;
-		if (distanceClosestWP.getSize() > 15.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
+		if (distanceClosestWP.getSize() > 20.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
 		{
 			arrival = NYVert2Df(leader->position.X / NYCube::CUBE_SIZE, leader->position.Y / NYCube::CUBE_SIZE);
 			m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
+			m_currentIndex = 0;
 		}
 	}
 	isArrived = false;
@@ -303,39 +314,41 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnExit
 	m_path.Clear();
 
-	//Wait
-	State(STATE_Wait)
-	OnEnter
-
-	OnUpdate
-	if (WastedosaureManager::GetSingleton()->IsEveryoneArrived())
-		PushState(STATE_Reproduction);
-	OnExit
-
 
 	//Reproduction
 	State(STATE_Reproduction)
 	OnEnter
+	if (partner == NULL)
+		WastedosaureManager::GetSingleton()->FindPartner(this);
 
 	m_needPartner = true;
-	WastedosaureManager::GetSingleton()->FindPartner(this);
-	m_path.Clear();
-	m_timerWandering = 0.0f;
-	m_timerReproduction = 0.0f;
-	if (partner != NULL && partner->GetState() != STATE_Reproduction)
-	{
-		partner->PushState(STATE_Reproduction);
-	}
 	
-	if (arrivalPartner == NYVert2Df(0, 0))
+	if (!hasPartner || partner == NULL || partner->GetState() == STATE_Dead)//Alors le wastedosaure se suicide :(
 	{
-		WastedosaureManager::GetSingleton()->FindReproductionPlace(this, this->partner);
+		PushState(STATE_Suicide);
+	}
+	else
+	{
+		m_path.Clear();
+		m_timerWandering = 0.0f;
+		m_timerReproduction = 0.0f;
+		m_currentIndex = 0;
+
+		if (partner->GetState() != STATE_Reproduction)
+		{
+			partner->PushState(STATE_Reproduction);
+		}
+
+		if (arrivalPartner == NYVert2Df(0, 0))
+		{
+			WastedosaureManager::GetSingleton()->FindReproductionPlace(this, this->partner);
+		}
+
+		m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrivalPartner, 1, m_path);
+		
 	}
 
-	//cout << arrivalPartner.X << "," << arrivalPartner.Y << endl;
-	m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrivalPartner, 1, m_path);
 	
-	m_currentIndex = 0;
 	//cout << "Reproduction\n";
 	OnUpdate
 
@@ -376,8 +389,6 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			Wastedosaure * w = new Wastedosaure(m_world, NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE));
 			w->SetEntities(m_entities);
 			(*m_entities)[WASTEDOSAURE].push_back(w);
-			//partner->PushState(STATE_FindPath);
-			//PushState(STATE_FindPath);
 		}
 	}
 	
@@ -387,6 +398,8 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	m_canReproduce = true;
 	arrivalPartner = NYVert2Df(0, 0);
 	m_path.Clear();
+
+
 	//Suicide
 	State(STATE_Suicide)
 	OnEnter
