@@ -31,11 +31,11 @@ class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 0.50f + 0.018f*GetID();
+	float m_speed = 50.30f + 3.0f*GetID();
 
 	//Timers
 	//Egg
-	float m_timeEgg = 11.0f;
+	float m_timeEgg = 5.0f;
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
@@ -72,6 +72,8 @@ private:
 	
 
 	bool IsEveryoneArrived();
+
+	NYTimer m_lastUpdate;
 	
 
 	bool HasAPath();

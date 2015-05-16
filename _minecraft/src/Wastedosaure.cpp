@@ -10,6 +10,7 @@ IABase(_world), m_cone(50.0f,150)
 	life = 50;
 	//m_durationWandering += WastedosaureManager::GetSingleton()->rand_a_b(-2,2);
 	//m_durationReproduction += WastedosaureManager::GetSingleton()->rand_a_b(-2, 2);
+	m_lastUpdate.start();
 }
 
 Wastedosaure::~Wastedosaure()
@@ -108,7 +109,9 @@ void Wastedosaure::UpdateIA()
 	m_currentSize = (1 - (m_timerGrow / m_durationGrow))*m_minSize + (m_timerGrow / m_durationGrow)*m_maxSize;
 	m_currentSize = min(m_currentSize, m_maxSize);
 
-	m_timerGrow += NYRenderer::_DeltaTime;
+	m_timerGrow += m_lastUpdate.getElapsedSeconds();
+
+	m_lastUpdate.start();
 	
 }
 
@@ -121,7 +124,7 @@ void Wastedosaure::UpdateTimers()
 			PushState(STATE_Reproduction);
 			m_timerWandering = 0.0f;
 		}
-		m_timerWandering += NYRenderer::_DeltaTime;
+		m_timerWandering += m_lastUpdate.getElapsedSeconds();
 	}
 	else if (m_currentState == STATE_Reproduction)
 	{
@@ -130,7 +133,7 @@ void Wastedosaure::UpdateTimers()
 			PushState(STATE_Move);
 			m_timerReproduction = 0.0f;
 		}
-		m_timerReproduction += NYRenderer::_DeltaTime;
+		m_timerReproduction += m_lastUpdate.getElapsedSeconds();
 	}
 }
 
@@ -227,7 +230,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	{
 		PushState(STATE_FindPath);
 	}
-	m_timerEgg += NYRenderer::_DeltaTime;
+	m_timerEgg += m_lastUpdate.getElapsedSeconds();
 	OnExit
 	WastedosaureManager::GetSingleton()->AssignToAGroup(this);
 	//On assigne son sexe
@@ -272,7 +275,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	{
 		PushState(STATE_FindPath);
 	}
-	m_timerTryFindPath += NYRenderer::_DeltaTime;
+	m_timerTryFindPath += m_lastUpdate.getElapsedSeconds();
 
 	OnExit
 
@@ -301,7 +304,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 		else
 		{
-			position += direction * m_speed;
+			position += direction * m_speed * m_lastUpdate.getElapsedSeconds();
 		}
 	}
 	else
@@ -366,7 +369,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 		else
 		{
-			position += direction * m_speed;
+			position += direction * m_speed * m_lastUpdate.getElapsedSeconds();
 		}
 	}
 	else
@@ -423,7 +426,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			}
 			else
 			{
-				position += direction * m_speed;
+				position += direction * m_speed * m_lastUpdate.getElapsedSeconds();
 			}
 		}
 		else
