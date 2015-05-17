@@ -19,6 +19,7 @@
     <ClCompile Include="..\src\debuglog.cpp" />
     <ClCompile Include="..\src\gameobject.cpp" />
     <ClCompile Include="..\src\Gendamour.cpp" />
+    <ClCompile Include="..\src\GlaceGouille.cpp" />
     <ClCompile Include="..\src\Herbe.cpp" />
     <ClCompile Include="..\src\IABase.cpp" />
     <ClCompile Include="..\src\chunk.cpp" />
@@ -38,7 +39,6 @@
     <ClCompile Include="..\src\Viewcone.cpp" />
     <ClCompile Include="..\src\Wastedosaure.cpp" />
     <ClCompile Include="..\src\WastedosaureManager.cpp" />
-    <ClCompile Include="GlaceGouille.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +54,7 @@
     <ClInclude Include="..\src\FSM.h" />
     <ClInclude Include="..\src\gameobject.h" />
     <ClInclude Include="..\src\Gendamour.h" />
+    <ClInclude Include="..\src\GlaceGouille.h" />
     <ClInclude Include="..\src\global.h" />
     <ClInclude Include="..\src\Herbe.h" />
     <ClInclude Include="..\src\IABase.h" />
@@ -79,7 +80,6 @@
     <ClInclude Include="..\src\Wastedosaure.h" />
     <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
-    <ClInclude Include="GlaceGouille.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -13,6 +13,7 @@
 
 #include "Viewcone.h"
 #include "Path.h"
+#include "Pathfinding.h"
 
 #include "engine\timer.h"
 
@@ -33,7 +34,10 @@ public:
 
 private:
 	// Variables :
-	float m_walkSpeed = 0.5f;
+	float m_walkSpeed = 30.f;
+
+	// Debug mode :
+	bool m_debug = false;
 
 	// Gauge limitation
 	static const int m_maxHungerPoints = 200;
@@ -46,28 +50,34 @@ private:
 	int m_currentLifePoints;
 
 	// Timer :
-	float m_timeElapsed = 0.f;	// Time elapsed reset to 0 every 1 sec (used for the HungerPoints and ReproductionPoints)
+	float m_timeElapsed = 0.f;	// Time elapsed
+	float m_tick = 0.f;	// Tick every one second for the gauge
 	float m_dancingTime = 0.f;	// Time the lemming passed to dance
 	float m_randMovingTime = 0.f;	// Time the lemming passed to move around
 	NYTimer m_timer;	// Timer of the entity
 
-
-
 	// Times :
 	const float m_danceTime = 10.f;
+	const float m_randRoveTime = 5.f;
 
 	// Perceptions :
 	std::vector<IABase*> m_visibleCreatures;	// vector of visible creatures
 	IABase * m_target;	// Target to follow for the lemming
 	Viewcone m_view;	// View of the creature
 	Path m_path;	// Path of the lemming
-	NYVert3Df m_moveVector;	// Movement vector
+	NYVert2Df m_destination;	// The destination of the player
+	NYVert3Df m_movement;	// Movement vector
+	Pathfinding * m_pathfind;	// Pointer on the pathfind singleton
+	int m_currentPathIndex;	// Index of the lemming
 
 	// Functions :
 	bool IsHungry();	// If true : the lemming is hungry
 	void GetVisibleCreatures();	// Get the visible creatures (Update the visible creatures vector)
-	void Update(float elapsed_time);	// Update timers and gauges
+	void Update(float _elapsedTime);	// Update timers and gauges
 	void Eat();	// Eat a piece of snow
+	void GetTargetToFollow();	// Take a target to follow
+	bool TargetIsVisible();	// If true : the target followed by the Lemming is visible
+	NYVert3Df GetMoveVector();	// Get the vector movement
 
 };
 
