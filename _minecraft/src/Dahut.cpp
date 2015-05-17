@@ -5,6 +5,7 @@
  */
 
 #include "Dahut.h"
+#include "RessourcesManager.h"
 
 Dahut::Dahut(NYWorld *pWorld, NYVert2Df pos):
 IABase(pWorld)
@@ -36,6 +37,15 @@ Dahut::~Dahut()
 
 void Dahut::UpdateIA()
 {
+	//Do not update if dead
+	if(m_currentState == STATE_Dead)
+	{
+		return;
+	}
+
+	//Update hunger
+	UpdateHunger(m_lastUpdate.getElapsedSeconds(), NYRenderer::_DeltaTimeCumul);
+
 	//Update FSM
 	Update();
 
@@ -45,6 +55,12 @@ void Dahut::UpdateIA()
 
 void Dahut::Draw()
 {
+	//Do not draw anything if dead
+	if(m_currentState == STATE_Dead)
+	{
+		return;
+	}
+
 	//Basic rendering
 	glColor3f(255, 255, 0);
 	glPushMatrix();
@@ -57,13 +73,27 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 {
 	BeginStateMachine
 	
+	//Receive attack
+	OnMsg(MSG_Attack)
+	{
+		int *pData = (int*) msg->GetMsgData();
+		life -= *pData;
+		delete pData;
+
+		if(life <= 0)
+		{
+			PushState(STATE_Dead);
+		}
+	}
+
 	//Init FSM
 	State(STATE_Initialize)
 	OnEnter
 	{
 		PushState(STATE_FindPath);
 	}
-	
+
+	//Compute path to follow
 	State(STATE_FindPath)
 	OnUpdate
 	{
@@ -89,6 +119,48 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		PushState(STATE_Move);
 	}
 
+	//Try to eat something on current block
+	State(STATE_Eat)
+	OnEnter
+	{
+		//Override this state if not hungry enough
+		if(faim < m_hungerThreshold)
+		{
+			PushState(STATE_FindPath);
+		}
+	}
+
+	OnUpdate
+	{
+		bool found = false;
+
+		//Get through all eatable resources
+		RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
+		for(auto it = pList->begin(); it != pList->end(); ++it)
+		{
+			//If there is a close one
+			NYVert3Df distance = (*it)->Position - position;
+			if(distance.getSize() < NYCube::CUBE_SIZE)
+			{
+				//Eat it
+				int qty = (int) m_lastUpdate.getElapsedSeconds() * m_eatingQty;
+				(*it)->Use(qty);
+
+				//Reset hunger
+				Manger();
+
+				break;
+			}
+		}
+
+		//If no resource available
+		if(!found)
+		{
+			PushState(STATE_FindPath);
+		}
+	}
+
+	//Move along the path
 	State(STATE_Move)
 	OnEnter
 	{
