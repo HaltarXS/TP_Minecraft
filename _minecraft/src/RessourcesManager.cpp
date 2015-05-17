@@ -30,7 +30,7 @@ void RessourcesManager::Destroy()
 	SAFEDELETE(s_pInstance);
 }
 
-void RessourcesManager::Create(TypeRessource type, NYVert3Df position, int maxQuantity)
+Ressource* RessourcesManager::Create(TypeRessource type, NYVert3Df position, int maxQuantity)
 {
 	Ressource *pRessource = NULL;
 	switch(type)
@@ -58,6 +58,8 @@ void RessourcesManager::Create(TypeRessource type, NYVert3Df position, int maxQu
 	{
 		m_ressources[type].push_back(pRessource);
 	}
+
+	return pRessource;
 }
 
 RessourceList* RessourcesManager::GetRessourcesByType(TypeRessource type)
@@ -77,8 +79,13 @@ void RessourcesManager::Delete(Ressource *pRessource)
 	auto end = m_ressources[pRessource->Type].end();
 	for(auto it = begin; it != end; ++it)
 	{
-		delete (*it);
-		m_ressources[pRessource->Type].erase(it);
+		if((*it) == pRessource)
+		{
+			Ressource *pRessource = (*it);
+			m_ressources[pRessource->Type].erase(it);
+			delete pRessource;
+			break;
+		}
 	}
 }
 
@@ -96,6 +103,7 @@ void RessourcesManager::Update()
 			if((*it)->Quantity <= 0)
 			{
 				auto prev = it++;
+				delete (*prev);
 				m_ressources[type].erase(prev);
 			}
 			else

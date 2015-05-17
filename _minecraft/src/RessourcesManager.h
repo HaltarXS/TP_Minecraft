@@ -25,7 +25,7 @@ public :
 	static void Destroy();
 
 	//Create, get or delete ressources
-	void Create(TypeRessource type, NYVert3Df position, int maxQuantity);
+	Ressource* Create(TypeRessource type, NYVert3Df position, int maxQuantity);
 	RessourceList* GetRessourcesByType(TypeRessource type);
 	void Delete(Ressource *pRessource);
 
