@@ -11,7 +11,7 @@
 
 enum TypeRessource
 {
-	NONE,
+	NONE = 0,
 	HERBE,
 	CROTTE,
 	//Cet identifiant doit rester à la fin de l'enumeration

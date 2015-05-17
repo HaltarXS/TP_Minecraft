@@ -1,7 +1,18 @@
 #include "RessourcesManager.h"
+#include "Herbe.h"
+#include "Crotte.h"
 
 //Init singleton instance
 RessourcesManager* RessourcesManager::s_pInstance = NULL;
+
+RessourcesManager::RessourcesManager()
+{
+	for(int i = 0; i < (int)RESSOURCE_NUM; ++i)
+	{
+		TypeRessource type = (TypeRessource) i;
+		m_ressources.insert(std::pair<TypeRessource, RessourceList>(type, RessourceList()));
+	}
+}
 
 RessourcesManager* RessourcesManager::GetSingleton()
 {
@@ -20,16 +31,52 @@ void RessourcesManager::Destroy()
 
 void RessourcesManager::Create(TypeRessource type, NYVert3Df position, int maxQuantity)
 {
-	//Create a resource
+	Ressource *pRessource = NULL;
+	switch(type)
+	{
+		case HERBE :
+		{
+			pRessource = new Herbe(position, maxQuantity);
+		}
+		break;
+
+		case CROTTE :
+		{
+			pRessource = new Crotte(position, maxQuantity);
+		}
+		break;
+
+		default :
+		{
+			std::cout << "Failed to create ressource : unrecognized type" << std::endl;
+		}
+		break;
+	}
+
+	if(pRessource)
+	{
+		m_ressources[type].push_back(pRessource);
+	}
 }
 
-RessourceVector* RessourcesManager::GetRessourcesByType(TypeRessource type)
+RessourceList* RessourcesManager::GetRessourcesByType(TypeRessource type)
 {
-	//Get resource vector
-	return NULL;
+	if(type >= RESSOURCE_NUM)
+	{
+		std::cout << "Failed to get ressources : unrecognized type" << std::endl;
+		return NULL;
+	}
+
+	return &m_ressources[type];
 }
 
-void Delete(Ressource *pRessource)
+void RessourcesManager::Delete(Ressource *pRessource)
 {
-	//Delete a resource
+	auto begin = m_ressources[pRessource->Type].begin();
+	auto end = m_ressources[pRessource->Type].end();
+	for(auto it = begin; it != end; ++it)
+	{
+		delete (*it);
+		m_ressources[pRessource->Type].erase(it);
+	}
 }

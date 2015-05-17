@@ -1,8 +1,12 @@
-#pragma once
+#ifndef RESSOURCESMANAGER_H
+#define RESSOURCESMANAGER_H
+
+#include <list>
+
 #include "Ressource.h"
 
 //Typedef defining a ressources array
-typedef std::vector<Ressource> RessourceVector;
+typedef std::list<Ressource*> RessourceList;
 
 class RessourcesManager
 {
@@ -12,7 +16,7 @@ private :
 	static RessourcesManager* s_pInstance;
 
 	//Ressources container
-	std::map<TypeRessource, RessourceVector> m_ressources;
+	std::map<TypeRessource, RessourceList> m_ressources;
 
 public :
 
@@ -22,14 +26,16 @@ public :
 
 	//Create, get or delete ressources
 	void Create(TypeRessource type, NYVert3Df position, int maxQuantity);
-	RessourceVector* GetRessourcesByType(TypeRessource type);
+	RessourceList* GetRessourcesByType(TypeRessource type);
 	void Delete(Ressource *pRessource);
 
 private :
 
-	RessourcesManager(){}
+	RessourcesManager();
 	~RessourcesManager(){}
 };
+
+#endif
 
 //res * tmp = createT("nom");
 //res * tmp = createT<nom>
