@@ -44,13 +44,13 @@ void Crabe::UpdateIA(){
 		for (int i = 0; i < (*m_entities)[GENDAMOUR].size(); i++)
 		{
 			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube - this->positionCube;
-			if (posGend.X*posGend.X <8 && posGend.Y*posGend.Y <8)
+			if (posGend.X*posGend.X <4 && posGend.Y*posGend.Y <4)
 			{
 				IABase* ia = (*m_entities)[GENDAMOUR][i];
 				if (ia->GetState() != STATE_Dead)
 				{
 					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
-					ia->SendMsg(MSG_Attack, this->GetID(), new int(ia->life));
+					this->SendMsg(MSG_Attack, ia->GetID(), new int(ia->life));
 					this->Manger();
 					this->NextAttack = TimeBetweenAttack;
 					break;
