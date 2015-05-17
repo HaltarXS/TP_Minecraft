@@ -50,7 +50,7 @@ void Crabe::UpdateIA(){
 				if (ia->GetState() != STATE_Dead)
 				{
 					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
-					this->SendMsg(MSG_Attack, ia->GetID(), new int(ia->life));
+					this->SendMsg(MSG_Attack, ia->GetID(), new int(25));
 					this->Manger();
 					this->NextAttack = TimeBetweenAttack;
 					break;
