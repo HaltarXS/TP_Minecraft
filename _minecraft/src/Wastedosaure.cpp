@@ -35,12 +35,12 @@ void Wastedosaure::GetCreaturesInSight()
 		for (int j = 0; j < (*m_entities)[type].size(); ++j)
 		{
 			/////DEBUG
-			if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
-				(*m_entities)[type][j]->GetID() != this->GetID() &&  //Si ce n'est pas moi. On ne sais jamais
-				type != WASTEDOSAURE)
-			{
-				cout << (*m_entities)[type][j]->type << endl;
-			}
+			//if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
+			//	(*m_entities)[type][j]->GetID() != this->GetID() &&  //Si ce n'est pas moi. On ne sais jamais
+			//	type != WASTEDOSAURE)
+			//{
+			//	cout << (*m_entities)[type][j]->type << endl;
+			//}
 			/////DEBUG
 			if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
 				(*m_entities)[type][j]->GetID() != this->GetID() &&  //Si ce n'est pas moi. On ne sais jamais
