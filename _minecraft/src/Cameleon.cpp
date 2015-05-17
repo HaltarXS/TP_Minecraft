@@ -37,10 +37,10 @@ void Cameleon::Draw()
 
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
-		glColor4f(0.0f,1.0f, 0.0f,0.5f);
-		//glColor4f(0.0f,0.0f, 1.0f,1.0f);
+		//glColor4f(0.0f,1.0f, 0.0f,0.5f);
+		glColor4f(0.0f,0.0f, 1.0f,1.0f);
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
-		//glutSolidCube(10);
+		glutSolidCube(10);
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
@@ -79,27 +79,28 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnExit{}
 	
 	State(STATE_FindPath)
-		OnEnter{}
+		OnEnter
+		{
+
+			bool m_pathFound = false;
+		}
 		OnUpdate
 		{
-			bool pathFound = false;
-			while (!pathFound)
+
+			//Recherche d'une destination aléatoire dans la neige
+			if (!m_pathFound)
 			{
-				NYVert3Df newPosition;
-				newPosition.X = (int)(positionCube.X + rand() / ((float)RAND_MAX) * 50.0f - 25.0f);
-				newPosition.Y = (int)(positionCube.Y + rand() / ((float)RAND_MAX) * 50.0f - 25.0f);
-				newPosition.Z = (int)m_world->_MatriceHeights[(int)newPosition.X][(int)newPosition.Y];
+				NYVert2Df destination = NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
+				NYVert2Df start = NYVert2Df(positionCube.X, positionCube.Y);
 
-				if (newPosition.X > 1 && newPosition.X < MAT_SIZE_CUBES - 1 &&
-					newPosition.Y > 1 && newPosition.Y < MAT_SIZE_CUBES - 1 &&
-					newPosition.Z > 1 && newPosition.Z < MAT_SIZE_CUBES - 1)
-				{
-					pathFound = m_pathFinding->FindPath(positionCube, newPosition , 1, m_path);
-					//pathFound = m_pathFinding->FindPathDahut(positionCube, newPosition, m_path);
+				m_pathFound = m_pathFinding->FindPath(start, destination, CUBE_HERBE | CUBE_NEIGE | CUBE_TERRE, m_path);
 
-				}
 			}
-			PushState(STATE_Move);
+			else
+			{
+				PushState(STATE_Move);
+			}
+
 		}
 		OnExit{}
 
@@ -121,30 +122,26 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 		OnUpdate
 		{
-			position += direction * m_timer.getElapsedSeconds() * NYCube::CUBE_SIZE;
-
-			NYVert3Df distance = m_destination - position;
-			if (distance.scalProd(direction) < 0.0f)
+			if (m_waypointIndex < m_path.GetSize() )
 			{
-				position = m_destination;
-				m_waypointIndex++;
+				//On récupère la direction
+				direction = m_path.GetWaypoint(m_waypointIndex) - position;
+				float lenght = direction.getSize();
+				direction.normalize();
 
-				if (m_waypointIndex< m_path.GetSize())
+				if (lenght < 1.0f)
 				{
-					m_destination = m_path.GetWaypoint(m_waypointIndex);
-					direction = m_destination - position;
-					direction.normalize();
+					m_waypointIndex++;
 				}
-
 				else
 				{
-					PushState(STATE_FindPath);
+					position += direction * m_speed * m_timer.getElapsedSeconds();
 				}
 			}
-
-			positionCube.X = (int)position.X / NYCube::CUBE_SIZE;
-			positionCube.Y = (int)position.Y / NYCube::CUBE_SIZE;
-			positionCube.Z = (int)position.Z / NYCube::CUBE_SIZE;
+			else
+			{
+				PushState(STATE_FindPath);
+			} 
 		}
 		OnExit{}
 	

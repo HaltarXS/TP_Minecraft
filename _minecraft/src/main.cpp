@@ -174,6 +174,7 @@ void spawnCreatures()
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
+
 	//Furz
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 }

@@ -26,8 +26,9 @@ public:
 	
 	int m_waypointIndex;
 	Pathfinding * m_pathFinding = Pathfinding::GetSingleton();
+	bool m_pathFound;
 	Path m_path;
-	float m_speed = 0.7f + 0.01f*GetID();
+	float m_speed = 0.7f ;
 	
 
 	NYTimer m_timer;
