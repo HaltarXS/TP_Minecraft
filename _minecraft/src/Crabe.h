@@ -23,6 +23,7 @@ private:
 	float NextAttack;
 	float TimeBetweenAttack;
 	NYTimer m_timerAttack;
+	NYTimer m_timerDeath;
 	bool LeftToRight;
 	bool AxeX;
 	void Update(float _elapsedTime);
