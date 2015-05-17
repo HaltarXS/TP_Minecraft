@@ -9,7 +9,7 @@
 
 
 Lemming::Lemming(NYWorld * _world, NYVert2Df _spawnPos)
-	:IABase(_world), m_view(100.0f, 150)
+	:IABase(_world), m_view(100.0f, 100)
 {
 	// Get the spawn position :
 	NYVert3Df _worldSpawnPos = NYVert3Df(_spawnPos.X * NYCube::CUBE_SIZE,
@@ -246,7 +246,7 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 {
 	BeginStateMachine
 
-		OnMsg(MSG_Eat)
+	OnMsg(MSG_Eat)
 	{
 		Eat();
 
@@ -257,9 +257,8 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 		if (IsDancing())
 		{
 			DEBUG
-				std::cout << "Reproducing!!!" << std::endl;
-
-			// Update the variables
+			std::cout << "Reproducing!!!" << std::endl;
+						// Update the variables
 			Reproduce();
 
 			m_dancingTime = 0.f;
@@ -270,7 +269,7 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnMsg(MSG_Attack)
 	{
 		DEBUG
-			std::cout << "Lemming is dead" << std::endl;
+		std::cout << "Lemming is dead" << std::endl;
 		PushState(STATE_Dead);
 	}
 
@@ -278,80 +277,79 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	// States : 
 	// Initialization state :
 	State(STATE_Initialize)
-		OnEnter
-		PushState(STATE_Move);	// Principal state
+	OnEnter
+	PushState(STATE_Move);	// Principal state
 
 	// Random move state
 	State(STATE_Move)
-		OnEnter
-		if (m_path.GetSize() > 1)
-		{
-			IABase::direction = m_path.GetWaypoint(0) - IABase::position;
-			IABase::direction.normalize();
-			m_currentPathIndex = 0;
-		}
-		else
-			PushState(STATE_FindPath);
+	OnEnter
+	if (m_path.GetSize() > 1)
+	{
+		IABase::direction = m_path.GetWaypoint(0) - IABase::position;
+		IABase::direction.normalize();
+		m_currentPathIndex = 0;
+	}
+	else
+		PushState(STATE_FindPath);
 	OnUpdate
 		// If the lemming is hungry he goes finding some snow
-		if (IsHungry())
-			PushState(STATE_FindSnow);
-		else
+	if (IsHungry())
+		PushState(STATE_FindSnow);
+	else
+	{
+		// Update the visible creatures
+		GetVisibleCreatures();
+		// Lemming see other creatures
+		if (m_visibleCreatures.size() > 0)
 		{
-			// Update the visible creatures
-			GetVisibleCreatures();
+			DEBUG
+			std::cout << "Lemming see : " << m_visibleCreatures.size() << " creatures" << std::endl;
 
-			// Lemming see other creatures
-			if (m_visibleCreatures.size() > 0)
+			// If the lemming can reproduce
+			if (CanReproduce())
 			{
-				DEBUG
-					std::cout << "Lemming see : " << m_visibleCreatures.size() << " creatures" << std::endl;
-
-				// If the lemming can reproduce
-				if (CanReproduce())
+				for each (IABase * _monster in m_visibleCreatures)
 				{
-					for each (IABase * _monster in m_visibleCreatures)
+					bool _dance = false;
+					// If see another lemming Lemming :
+					if (_monster->type == LEMMING)
 					{
-						bool _dance = false;
-						// If see another lemming Lemming :
-						if (_monster->type == LEMMING)
+						if (((Lemming *)_monster)->IsDancing())
 						{
-							if (((Lemming *)_monster)->IsDancing())
-							{
-								DEBUG
-									std::cout << "Find a partner dancing" << std::endl;
+							DEBUG
+							std::cout << "Find a partner dancing" << std::endl;
+							
+							m_partner = ((Lemming *)_monster);
+							//m_destination = NYVert2Df(_monster->positionCube.X, _monster->positionCube.Y);	// Get the destination in case
 
-								m_partner = ((Lemming *)_monster);
-								//m_destination = NYVert2Df(_monster->positionCube.X, _monster->positionCube.Y);	// Get the destination in case
+							PushState(STATE_Reproduction);	// Repdroduce with the other lemming
+							return false;	// Exit the function
+						}
+						else
+						{
+							_dance = true;
+							DEBUG
+							std::cout << "Find a partner who don't dance" << std::endl;
+						}
 
-								PushState(STATE_Reproduction);	// Repdroduce with the other lemming
-								return false;	// Exit the function
-							}
-							else
-							{
-								_dance = true;
-								DEBUG
-									std::cout << "Find a partner who don't dance" << std::endl;
-							}
-
-							if (_dance)
-							{
-								PushState(STATE_Dance);	// Dance for the reporduction!!!
-								return false;
-							}
+						if (_dance)
+						{
+							PushState(STATE_Dance);	// Dance for the reporduction!!!
+							return false;
 						}
 					}
 				}
-				// Else the lemming follow a random creature
-				int _rand = rand() % m_visibleCreatures.size();
-				m_followedTarget = m_visibleCreatures.at(_rand);
-
-				DEBUG
-					std::cout << "Follow : : " << _rand << " index" << std::endl;
-
-				PushState(STATE_Follow);
 			}
+			// Else the lemming follow a random creature
+			int _rand = rand() % m_visibleCreatures.size();
+			m_followedTarget = m_visibleCreatures.at(_rand);
+
+			DEBUG
+			std::cout << "Follow : : " << _rand << " index" << std::endl;
+
+			PushState(STATE_Follow);
 		}
+	}
 
 	// Update the position
 	if (!UpdatePosition())
@@ -362,12 +360,16 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 
 	OnExit
 
-		// Find path for a random point on the map
-		State(STATE_FindPath)
-		OnUpdate
+	// Find path for a random point on the map
+	State(STATE_FindPath)
+	OnUpdate
 
-		int _x = rand() % MAT_SIZE_CUBES;
-	int _y = rand() % MAT_SIZE_CUBES;
+	// Get random proximity point
+	int _x = IABase::positionCube.X + (10 - rand() % 20);
+	int _y = IABase::positionCube.Y + (10 - rand() % 20);
+
+	_y = min(max(1, _y), MAT_SIZE_CUBES - 1);
+	_x = min(max(1, _x), MAT_SIZE_CUBES - 1);
 
 	m_path.Clear();
 
@@ -434,34 +436,33 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 		std::cout << "Lemming is dancing..." << std::endl;
 	m_dancingTime = m_danceTime;
 	OnUpdate
-		if (m_dancingTime <= 0.f)
-		{
-			m_dancingTime = 0.f;
-			PushState(STATE_Move);
-		}
+	if (m_dancingTime <= 0.f)
+	{
+		m_dancingTime = 0.f;
+		PushState(STATE_Move);
+	}
 	OnExit
-		m_path.Clear();
+	m_path.Clear();
 	m_currentPathIndex = 0;
 
 	DEBUG
-		std::cout << "Exit dance" << std::endl;
+	std::cout << "Exit dance" << std::endl;
 
 
 	State(STATE_FindSnow)
-		OnEnter
-		DEBUG
-		std::cout << "Lemming find snow" << std::endl;
+	OnEnter
+	DEBUG
+	std::cout << "Lemming find snow" << std::endl;
 	OnUpdate
-		// TO DO :
-		// FIND SOME SNOW
-		PushState(STATE_Move);
+	// TO DO :
+	// FIND SOME SNOW
+	PushState(STATE_Move);
 
 	// Follow the creature
 	State(STATE_Follow)
-		OnEnter
-		DEBUG
-		std::cout << "Lemming follow target" << std::endl;
-
+	OnEnter
+	DEBUG
+	std::cout << "Lemming follow target" << std::endl;
 	int _x = m_followedTarget->positionCube.X;
 	int _y = m_followedTarget->positionCube.Y;
 
@@ -482,59 +483,56 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	}
 
 	OnUpdate
-		if (!UpdatePosition())
+	if (!UpdatePosition())
+	{
+		// If the creature still visible
+		if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
 		{
-			// If the creature still visible
-			if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
-			{
-				int _x = m_followedTarget->positionCube.X;
-				int _y = m_followedTarget->positionCube.Y;
-
-				m_path.Clear();
-				m_currentPathIndex = 0;	// Set the path index to 0
-
-				float _dist = NYVert3Df(m_followedTarget->position - position).getSize();
-
-				// Le monstre n'as pas bougé depuis la dernière fois
-				if (_dist <= 10.f)
-				{
-					m_path.Clear();
-					m_currentPathIndex = 0;
-					PushState(STATE_Move);
-				}
-				else
-					m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
-			}
-			else	// Loose the followed creature
-			{
-				DEBUG
-					std::cout << "Lemming loose his target at pos : " << positionCube.X << "," << positionCube.Y << "..." << std::endl;
-
-
+			int _x = m_followedTarget->positionCube.X;
+			int _y = m_followedTarget->positionCube.Y;
+				
+			m_path.Clear();
+			m_currentPathIndex = 0;	// Set the path index to 0
+			float _dist = NYVert3Df(m_followedTarget->position - position).getSize();
+			// Le monstre n'as pas bougé depuis la dernière fois
+			if (_dist <=10.f)
+			{					
 				m_path.Clear();
 				m_currentPathIndex = 0;
 				PushState(STATE_Move);
 			}
+			else
+					m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
 		}
-		else
+		else	// Loose the followed creature
 		{
-			// The lemming is following another lemming
-			if (m_followedTarget->type == LEMMING)
+			DEBUG
+			std::cout << "Lemming loose his target at pos : " << positionCube.X << "," << positionCube.Y << "..." << std::endl;
+			
+			m_path.Clear();
+			m_currentPathIndex = 0;
+			PushState(STATE_Move);
+		}
+	}
+	else
+	{
+		// The lemming is following another lemming
+		if (m_followedTarget->type == LEMMING)
+		{
+			if (CanReproduce() && ((Lemming *)m_followedTarget)->IsDancing())
 			{
-				if (CanReproduce() && ((Lemming *)m_followedTarget)->IsDancing())
-				{
-					m_path.Clear();
-					PushState(STATE_Move);
-				}
+				m_path.Clear();
+				PushState(STATE_Move);
 			}
 		}
+	}
 
 
 	// DEAD STATE
 	State(STATE_Dead)
-		OnEnter
-		DEBUG
-		std::cout << "Lemming is dead" << std::endl;
+	OnEnter
+	DEBUG
+	std::cout << "Lemming is dead" << std::endl;
 
 	EndStateMachine
 }

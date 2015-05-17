@@ -124,7 +124,7 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
+		//g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
 	}
 
 	//Gendamour
@@ -134,7 +134,7 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
 		g->m_entities = &g_CreatureMap;
-		g_CreatureMap[GENDAMOUR].push_back(g);
+		//g_CreatureMap[GENDAMOUR].push_back(g);
 	}
 
 	//Griffonkitu
@@ -144,7 +144,7 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		Griffonkitu * g = new Griffonkitu(g_world, NYVert2Df(x, y));
 		g->SetEntities(&g_CreatureMap);
-		g_CreatureMap[GRIFFONKITU].push_back(g);
+		//g_CreatureMap[GRIFFONKITU].push_back(g);
 	}
 
 	//Glacegouille
@@ -154,7 +154,7 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		GlaceGouille * g = new GlaceGouille(g_world, NYVert2Df(x, y));
 		g->SetEntities(&g_CreatureMap);
-		g_CreatureMap[GLACEGOUILLE].push_back(g);
+		//g_CreatureMap[GLACEGOUILLE].push_back(g);
 	}
 
 	// Lemming
@@ -170,14 +170,14 @@ void spawnCreatures()
 	{
 		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100),i%2);
 		crabe->m_entities = &g_CreatureMap;
-		g_CreatureMap[CRABE].push_back(crabe);
+		//g_CreatureMap[CRABE].push_back(crabe);
 	}
 	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
 	bixi->_entities = &g_CreatureMap;
-	g_CreatureMap[BIXI].push_back(bixi);
+	//g_CreatureMap[BIXI].push_back(bixi);
 
 	//Furz
-	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
+	//g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 }
 
 /** === Mise à jour des IA ===
