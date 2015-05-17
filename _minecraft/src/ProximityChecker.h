@@ -25,7 +25,7 @@ public:
 
 	static ProximityChecker * GetSingleton();
 
-	vector<IABase*> checkParasiteProximityCreatures(Parasite* callerEntity, float sizeArea);
+	//vector<IABase*> checkParasiteProximityCreatures(Parasite* callerEntity, float sizeArea);
 
 };
 

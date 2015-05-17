@@ -89,14 +89,14 @@
     <ClCompile Include="..\src\Crabe.cpp">
       <Filter>Cyril Malvaux</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Cameleon.cpp">
-      <Filter>Pierre Le Marchand</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Parasite.cpp">
       <Filter>Bastien Nanceau</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ProximityChecker.cpp">
       <Filter>Bastien Nanceau</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Cameleon.cpp">
+      <Filter>Pierre Le Marchand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,14 +270,14 @@
     <ClInclude Include="..\src\Crabe.h">
       <Filter>Cyril Malvaux</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Cameleon.h">
-      <Filter>Pierre Le Marchand</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Parasite.h">
       <Filter>Bastien Nanceau</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ProximityChecker.h">
       <Filter>Bastien Nanceau</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Cameleon.h">
+      <Filter>Pierre Le Marchand</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

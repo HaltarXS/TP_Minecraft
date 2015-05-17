@@ -103,7 +103,7 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 }
 
 void Parasite::InfectCreaturesInArea(float sizeArea) {
-	m_creaturesNear = ProximityChecker::GetSingleton()->checkParasiteProximityCreatures(this, sizeArea);
+	//m_creaturesNear = ProximityChecker::GetSingleton()->checkParasiteProximityCreatures(this, sizeArea);
 	for (int i = 0; i < m_creaturesNear.size(); ++i)
 	{
 		m_creaturesNear[i]->infected = true;
