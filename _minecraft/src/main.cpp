@@ -38,6 +38,8 @@
 #include "Griffonkitu.h"
 #include "GlaceGouille.h"
 #include "Lemming.h"
+#include "Furz.h"
+#include "Crabe.h"
 
 NYWorld * g_world;
 
@@ -163,6 +165,15 @@ void spawnCreatures()
 		l->m_entities = &g_CreatureMap;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
+	// Crabe
+	for (int i = 0; i < 10; ++i)
+	{
+		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		crabe->m_entities = &g_CreatureMap;
+		g_CreatureMap[CRABE].push_back(crabe);
+	}
+	//Furz
+	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 }
 
 /** === Mise à jour des IA ===
