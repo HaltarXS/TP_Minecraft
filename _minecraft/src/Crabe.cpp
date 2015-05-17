@@ -20,7 +20,10 @@ Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos)
 	this->MaxTimeReprod = 60.0f;
 	this->Reproduction = this->MaxTimeReprod;
 	this->life = 10;
+	this->NextAttack = 0.0f;
+	this->TimeBetweenAttack = 1.0f;
 	this->m_timer.start();
+	this->m_timerAttack.start();
 }
 Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos,bool axeX)
 	: Crabe(world,spawnPos)
@@ -36,24 +39,26 @@ Crabe::~Crabe()
 
 void Crabe::UpdateIA(){
 
-	if (m_currentState != STATE_Dead)
+	if (m_currentState != STATE_Dead && this->NextAttack <= 0.0f)
 	{
 		for (int i = 0; i < (*m_entities)[GENDAMOUR].size(); i++)
 		{
 			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube - this->positionCube;
-			if (posGend.X*posGend.X <4 && posGend.Y*posGend.Y <4)
+			if (posGend.X*posGend.X <8 && posGend.Y*posGend.Y <8)
 			{
 				IABase* ia = (*m_entities)[GENDAMOUR][i];
 				if (ia->GetState() != STATE_Dead)
 				{
 					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
-					ia->SendMsg(MSG_Attack, this->GetID(), ((void*) ia->life));
+					ia->SendMsg(MSG_Attack, this->GetID(), new int(ia->life));
 					this->Manger();
+					this->NextAttack = TimeBetweenAttack;
 					break;
 				}
 			}
 		}
 	}
+	NextAttack -= m_timerAttack.getElapsedSeconds(true);
 	StateMachine::Update();
 }
 
