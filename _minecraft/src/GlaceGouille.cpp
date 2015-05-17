@@ -76,6 +76,19 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 {
 	BeginStateMachine
 
+	OnMsg(MSG_Attack)//If i'm attacked
+	{
+		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
+		m_life -= *data;//I remove the value of the message data from my life.
+		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << m_life << std::endl;
+		delete data;//Delete the data
+
+		if (m_life <= 0)//If i don't have any life
+		{
+			PushState(STATE_Dead);//Use PushState to go in an other state
+		}
+	}//Message Attack
+
 	State(STATE_Initialize)
 	OnEnter
 	{
@@ -222,21 +235,31 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 
 	State(STATE_Dead)
+	//Override Messages you don't want to receive in this particular state
+	OnMsg(MSG_Attack)//i'm already dead, so no one can attack me anymore
+	{
+		std::cout << "--Entity " << this->GetID() << "-- Get message attack, but i'm already Dead :(" << std::endl;
+	}
 
+	OnEnter
+		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
 	EndStateMachine
 }
 
 void GlaceGouille::GetCreaturesInSight()
 {
 	m_creaturesInSight.clear();
-
-	//eTypeCreature type = LEMMING;
-	//for (int j = 0; j < (*m_entities)[type].size(); ++j)
-	//{
-	//	if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
-	//	{
-	//		m_creaturesInSight.push_back((*m_entities)[type][j]);
-	//	}
-	//}
+	for (int i = 0; i < CREATURE_NUM; ++i)
+	{
+		eTypeCreature type = (eTypeCreature)i;
+		for (int j = 0; j < (*m_entities)[type].size(); ++j)
+		{
+			if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
+				type == LEMMING)
+			{
+				m_creaturesInSight.push_back((*m_entities)[type][j]);//...On le considère dans le champ de vision
+			}
+		}
+	}
 
 }

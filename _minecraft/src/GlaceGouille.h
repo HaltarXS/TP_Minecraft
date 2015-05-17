@@ -25,7 +25,7 @@ private :
 	float m_speed = 0.5f; //Vitesse de déplacement
 	float m_eggTime = 3.0f;//* 60; //temps passé en oeuf
 	float m_reproductionTime = 5.0f * 60; //Temps de vie avant de pondre un oeuf
-	float m_starvationTime = 4.0f * 60; //Temps avant de mourir de faim
+	float m_starvationTime = .0f * 60; //Temps avant de mourir de faim
 	float m_rotationTime = 0.5; //temps avant chaque rotation de la vue
 	float m_lifeTime = 10 * 60; // temps de vie
 
@@ -36,6 +36,8 @@ private :
 	float m_starvationTimer = 0;
 	float m_rotationTimer = 0;
 	float m_lifeTimer = 0;
+
+	int m_life = 10;
 
 	//Indice pour parcourir le path
 	int m_currentPathIndex; 

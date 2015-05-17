@@ -151,7 +151,9 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GLACEGOUILLE].push_back(new GlaceGouille(g_world, NYVert2Df(x, y)));
+		GlaceGouille * g = new GlaceGouille(g_world, NYVert2Df(x, y));
+		g->SetEntities(&g_CreatureMap);
+		g_CreatureMap[GLACEGOUILLE].push_back(g);
 	}
 
 	// Lemming
