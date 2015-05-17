@@ -1,26 +1,22 @@
-#pragma once
+/*
+* Header file : Cameleon AI class
+* Author : LE MARCHAND Pierre
+* Date : 16/05/2015
+*/
 
-#include "external/gl/glew.h"
-#include "external/gl/freeglut.h"
+#ifndef _CAMELEON_H_
+#define _CAMELEON_H_
 
-//Moteur
-#include "engine/utils/types_3d.h"
-#include "engine/timer.h"
-#include "engine/log/log_console.h"
-#include "engine/render/renderer.h"
-#include "engine/gui/screen.h"
-#include "engine/gui/screen_manager.h"
-#include <iostream>
+
+
 #include "IABase.h"
 
-#include "world.h"
-
+#include "Viewcone.h"
+#include "Path.h"
 #include "Pathfinding.h"
 
-#include "Viewcone.h"
-
-class Cameleon :
-	public IABase
+#include "engine\timer.h"
+class Cameleon :public IABase
 {
 public:
 	
@@ -32,18 +28,23 @@ public:
 	
 
 	NYTimer m_timer;
-
 	NYVert3Df m_destination;
+
+	bool hasTargetedMouch=false;
+
+	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;
+
 
 
 	Cameleon(NYWorld * _world, NYVert2Df _positionInitiale);
 	~Cameleon();
-
-
+	
 	void Draw();
-
 	void UpdateIA();
-
 	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state);
+	NYVert3Df findClosestMoucheInRange();
+
 };
 
+
+#endif _CAMELEON_H_

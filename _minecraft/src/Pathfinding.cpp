@@ -554,7 +554,13 @@ bool Pathfinding::AnalyseAdjacentNodesDahut()
 	foundBetterNode |= AnalyseNodeDahut(0, -1, 0, NYCube::CUBE_SIZE);
 	foundBetterNode |= AnalyseNodeDahut(0, 0, 1, NYCube::CUBE_SIZE);
 
-	//Diagonal blocks
+	//Diagonal blocks (horizontal)
+	foundBetterNode |= AnalyseNodeDahut(1, 1, 0, NYCube::CUBE_SIZE * 1.414f);
+	foundBetterNode |= AnalyseNodeDahut(1, -1, 0, NYCube::CUBE_SIZE * 1.414f);
+	foundBetterNode |= AnalyseNodeDahut(-1, 1, 0, NYCube::CUBE_SIZE * 1.414f);
+	foundBetterNode |= AnalyseNodeDahut(-1, -1, 0, NYCube::CUBE_SIZE * 1.414f);
+
+	//Diagonal blocks (upward and downward)
 	if(!foundBetterNode)
 	{
 		foundBetterNode |= AnalyseNodeDahut(1, 0, 1, NYCube::CUBE_SIZE * 1.414f);

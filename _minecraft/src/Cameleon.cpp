@@ -17,8 +17,7 @@ Cameleon::Cameleon(NYWorld * _world, NYVert2Df _startingPosition) : IABase(_worl
 	position.X = positionCube.X*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
 	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
-
-
+	
 	m_timer.start();
 
 }
@@ -28,7 +27,6 @@ Cameleon::~Cameleon()
 {
 }
 
-
 void Cameleon::Draw()
 {
 
@@ -37,10 +35,13 @@ void Cameleon::Draw()
 
 	glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
-		//glColor4f(0.0f,1.0f, 0.0f,0.5f);
-		glColor4f(0.0f,0.0f, 1.0f,1.0f);
+		glColor4f(0.0f,1.0f, 0.0f,0.5f);
+		//glColor4f(0.0f,0.0f, 1.0f,1.0f);
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
-		glutSolidCube(10);
+		//glutSolidCube(10);
+		glPushMatrix();
+			
+		glPopMatrix();
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
@@ -58,6 +59,16 @@ void Cameleon::UpdateIA()
 	m_timer.start();
 }
 
+NYVert3Df findClosestMoucheInRange(){
+
+	//m_entities=NULL;
+
+	//for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
+	//{
+	//}
+
+	return NYVert3Df(0,0,0);
+}
 
 
 bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
@@ -79,69 +90,63 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnExit{}
 	
 	State(STATE_FindPath)
-		OnEnter
-		{
+		OnEnter{
 
-			bool m_pathFound = false;
 		}
 		OnUpdate
 		{
-
-			//Recherche d'une destination aléatoire dans la neige
-			if (!m_pathFound)
-			{
-				NYVert2Df destination = NYVert2Df(rand() % MAT_SIZE_CUBES, rand() % MAT_SIZE_CUBES);
-				NYVert2Df start = NYVert2Df(positionCube.X, positionCube.Y);
-
-				m_pathFound = m_pathFinding->FindPath(start, destination, CUBE_HERBE | CUBE_NEIGE | CUBE_TERRE, m_path);
+			if (true){
 
 			}
-			else
-			{
-				PushState(STATE_Move);
+			else{
+
 			}
+			std::cout << "Cameleon on the move" << std::endl;
+			int _x = rand() % MAT_SIZE_CUBES;
+			int _y = rand() % MAT_SIZE_CUBES;
+
+			m_pathFinding->FindPath(NYVert2Df(positionCube.X, positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+
+			PushState(STATE_Move);
 
 		}
 		OnExit{}
 
 	State(STATE_Move)
 		OnEnter
-		{
-			if (m_path.GetSize() > 1)
-			{
-				m_destination = m_path.GetWaypoint(1);
-				direction = m_destination - position;
-				direction.normalize();
-				m_waypointIndex = 1;
-			}
-			else
-			{
-				PushState(STATE_FindPath);
-			}
+		{ 
+				if (m_path.GetSize() > 1)
+				{
+					direction = m_path.GetWaypoint(0) - position;
+					direction.normalize();
+					m_waypointIndex = 0;
+				}
+				else
+					PushState(STATE_FindPath);
 		}
 
 		OnUpdate
 		{
-			if (m_waypointIndex < m_path.GetSize() )
-			{
-				//On récupère la direction
-				direction = m_path.GetWaypoint(m_waypointIndex) - position;
-				float lenght = direction.getSize();
-				direction.normalize();
+			// Update the position with the direction path
+			position += direction * m_speed * m_timer.getElapsedSeconds()*30;
+			positionCube = position / NYCube::CUBE_SIZE;
 
-				if (lenght < 1.0f)
-				{
-					m_waypointIndex++;
-				}
-				else
-				{
-					position += direction * m_speed * m_timer.getElapsedSeconds();
-				}
+			NYVert3Df _dist = m_path.GetWaypoint(m_waypointIndex) - position;
+
+			if (_dist.getSize() <= 5.f)
+				m_waypointIndex++;
+
+			// We are not at the end of the 
+			if (m_waypointIndex < m_path.GetSize())
+			{
+				direction = m_path.GetWaypoint(m_waypointIndex) - position;
+				direction.normalize();
 			}
 			else
 			{
+				m_path.Clear();	// Delete the current path
 				PushState(STATE_FindPath);
-			} 
+			}
 		}
 		OnExit{}
 	
