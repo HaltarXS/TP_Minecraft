@@ -160,8 +160,9 @@ void spawnCreatures()
 	// Lemming
 	for (int i = 0; i < 10; ++i)
 	{
-		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i / 10 + 10));
-		l->m_entities = &g_CreatureMap;
+		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
+		l->SetEntities( &g_CreatureMap);
+		l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 	// Crabe
