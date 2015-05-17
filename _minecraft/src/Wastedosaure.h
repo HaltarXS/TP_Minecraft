@@ -31,19 +31,19 @@ class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 30.30f + 0.05f*GetID();
+	float m_speed = 50.0f + 0.05f*GetID();
 
 	//Timers
 	//Egg
-	const float m_timeEgg = 1.0f;
+	const float m_timeEgg = 11.0f;
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	const float m_durationWandering = 60.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
+	const float m_durationWandering = 50.0f;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	const float m_durationReproduction = 10.0f /* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
+	const float m_durationReproduction = 10.0f;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction
@@ -79,8 +79,8 @@ private:
 	float m_timerGrow = 0.0f;
 
 	//View Cone
-	const float m_viewDistance = 100.0f;
-	const float m_viewAngle = 50.0f;
+	const float m_viewDistance = 40.0f;
+	const float m_viewAngle = 70.0f;
 
 	//Distance to target
 	float m_distanceToTarget = 0.0f;
