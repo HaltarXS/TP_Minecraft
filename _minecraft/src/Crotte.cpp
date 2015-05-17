@@ -37,3 +37,13 @@ void Crotte::SetHasFly(bool val)
 {
 	_hasFly = val;
 }
+
+bool Crotte::GetHasParasite()
+{
+	return m_hasParasite;
+}
+
+void Crotte::SetHasParasite(bool val)
+{
+	m_hasParasite = val;
+}

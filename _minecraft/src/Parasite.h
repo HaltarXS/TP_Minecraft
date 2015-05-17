@@ -27,6 +27,10 @@ private:
 	float m_durationCheckProximity = 1.0f;
 	float m_timeCheckProximity = 0.0f;
 
+	//Timer de détection des animaux à proximité
+	float m_durationCheckCrotte = 1.0f; //Délay dans la vérification des crottes
+	float m_timeCheckCrotte = 0.0f;
+
 	//Zone de détection des créatures proches à infecter, en nombre de cases (case courrante du virus incluse)
 	float m_areaEffect = 3.0f;
 
@@ -40,7 +44,7 @@ private:
 
 public:
 
-	Parasite(NYWorld *pWorld, NYVert2Df pos, bool firstBorn);
+	Parasite(NYWorld *pWorld, NYVert3Df pos, bool firstBorn);
 	~Parasite();
 
 	std::map<eTypeCreature, CreatureVector> * m_entities;//Toutes les creatures du jeu
@@ -50,6 +54,11 @@ public:
 	void InfectCreaturesInArea(float sizeArea);
 	void FollowTarget();
 	float getSquarredDistance(NYVert3Df* p1, NYVert3Df* p2);
+
+
+	bool m_isSpawner = false;
+	void checkCrottesSpanw();
+
 	virtual void UpdateIA();
 	virtual void Draw();
 	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state);
