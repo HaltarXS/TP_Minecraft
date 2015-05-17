@@ -41,7 +41,11 @@ void Gendamour::Draw(){
 	glTranslatef(position.X, position.Y, position.Z);
 	glutSolidCube(NYCube::CUBE_SIZE / 2.0f);
 
-	glColor3f(1, 0, 1);
+	if (m_currentState != STATE_Dead)
+		glColor3f(1, 0, 1);
+	else
+		glColor3f(0, 0, 0);
+
 	glTranslatef(0, 0, 2);
 	glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPopMatrix();
