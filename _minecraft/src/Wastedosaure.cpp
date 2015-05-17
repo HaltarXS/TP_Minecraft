@@ -116,6 +116,7 @@ void Wastedosaure::UpdateIA()
 			m_currentSize >= m_maxSize / 2.0f &&
 			GetCubeUnderType(m_creaturesInSight[0]) != NYCubeType::CUBE_EAU)
 		{
+			//cout << "Creature in sight\n";
 			WastedosaureManager::GetSingleton()->PrepareAttack(m_creaturesInSight[0]);
 		}
 
@@ -165,6 +166,7 @@ void Wastedosaure::UpdateTimers()
 			m_timerAttack = 0.0f;
 			m_timerWandering = 0.0f;
 			m_timerReproduction = 0.0f;
+			//target = NULL;
 		}
 		m_timerAttack += m_lastUpdate.getElapsedSeconds();
 	}
@@ -392,6 +394,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			
 	OnExit
 	m_path.Clear();
+	target == NULL;
 
 	//Reproduction
 	State(STATE_Reproduction)
