@@ -117,7 +117,7 @@ void Griffonkitu::Draw(){
 		glColor3f(200, 0, 0);
 	else if (m_redColor)
 		glColor3f(200, 128, 128);
-	
+
 	glutSolidCube(NYCube::CUBE_SIZE / 2.0f);
 
 	glPopMatrix();
@@ -147,13 +147,12 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		State(STATE_Initialize)
 
 		OnEnter{
-		//cout << " Initialisation of the state machine d'un Griffonkitu" << endl;
 		PushState(STATE_Move);
 	}
 
-	State(STATE_FindPath)
+		State(STATE_FindPath)
 
-	OnEnter{
+		OnEnter{
 	}
 	OnUpdate{
 	}
@@ -165,11 +164,11 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 	OnUpdate{
 		m_positionFromHuntAreaPoint = position - m_huntAreaPoint;
 		if (m_positionFromHuntAreaPoint.getSize() > m_radius) {
-			
+
 			if (m_huntMod)
 				m_huntMod = false;
 			m_direction = m_positionFromHuntAreaPoint.normalize();
-			float scalar =  m_speed *NYRenderer::_DeltaTime;
+			float scalar = m_speed *NYRenderer::_DeltaTime;
 			m_direction.X *= scalar;
 			m_direction.Y *= scalar;
 			m_direction.Z *= scalar;
@@ -184,7 +183,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			m_positionFromHuntAreaPoint = m_positionFromHuntAreaPoint.rotate(Griffonkitu::m_s_up, NYRenderer::_DeltaTime * 3.0f);
 			position = m_huntAreaPoint + m_positionFromHuntAreaPoint;
 			float time = _spentTime.getElapsedSeconds(false);
-			if ( time > 15.0f)
+			if (time > 15.0f)
 				ChangeHuntArea();
 			else if (time > 5.0f && !m_hasLooked) {
 				for (size_t i = 0; i < (*m_entities)[WASTEDOSAURE].size(); i++)
@@ -223,13 +222,13 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		}
 	}
 
-	State(STATE_Attack)
+		State(STATE_Attack)
 		OnEnter{
 		m_attack = true;
 		m_speed = 120.0f;
 		cout << "Griffonkitu attack !" << endl;
 	}
-	OnUpdate{
+		OnUpdate{
 		m_positionTarget = position - m_target->position;
 		if (m_positionTarget.getSize() < 4.0f) {
 			this->SendMsg(MSG_Attack, m_target->GetID(), new int(1));
@@ -239,16 +238,16 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			m_speed = 30.0f;
 			PushState(STATE_Move);
 		}
-			m_direction = m_positionTarget.normalize();
+		m_direction = m_positionTarget.normalize();
 		float scalar = m_speed *NYRenderer::_DeltaTime;
 		m_direction.X *= scalar;
 		m_direction.Y *= scalar;
 		m_direction.Z *= scalar;
 		position = position - m_direction;
 	}
-	State(STATE_Dead)
+		State(STATE_Dead)
 
-	OnEnter{
+		OnEnter{
 		cout << "Griffonkitu is dead !" << endl;
 	}
 		OnUpdate{
