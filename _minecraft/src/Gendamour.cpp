@@ -1,5 +1,6 @@
 #include "Gendamour.h"
 
+
 Gendamour::Gendamour(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 {
 	//Init FSM
