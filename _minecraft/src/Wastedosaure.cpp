@@ -31,12 +31,18 @@ void Wastedosaure::GetCreaturesInSight()
 		eTypeCreature type = (eTypeCreature)i;
 		for (int j = 0; j < (*m_entities)[type].size(); ++j)
 		{
-			if (m_cone.IsInSight((*m_entities)[type][j]->position) && 
-				(*m_entities)[type][j]->GetID() != this->GetID() && 
-				type != WASTEDOSAURE && 
-				type != GRIFFONKITU)
+			if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
+				(*m_entities)[type][j]->GetID() != this->GetID() &&  //Si ce n'est pas moi. On ne sais jamais
+				type != WASTEDOSAURE &&  //Si ce n'est pas un de mes congénères...
+				type != GRIFFONKITU && //...Ni un de mes prédateurs...
+				type != NEON_BLEU &&
+				type != VAUTOUR &&
+				type != GEVAULOL &&
+				type != MOUCHE && 
+				type != PARASITE &&//...Ni les créatures aquatiques...
+				type != BIXI )
 			{
-				m_creaturesInSight.push_back((*m_entities)[type][j]);
+				m_creaturesInSight.push_back((*m_entities)[type][j]);//...On le considère dans le champ de vision
 			}
 		}
 	}

@@ -116,8 +116,6 @@ private:
 
 	NYCubeType GetCubeUnderType(IABase * target);
 	
-	
-
 public:
 	Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale);
 	~Wastedosaure();
