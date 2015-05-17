@@ -35,6 +35,7 @@ class Gendamour : public IABase
 		float _reproductionTime = 1;//temps en minute qu'il faut passé avec un autre gendamour pour se reproduire
 		NYTimer	_spentTime ;// temps passé vivant
 		NYTimer	_spentTimeTogether;//temps passé avec un autre gendamour
+		NYTimer _researhTime; //temps avant la prochaine recherche
 		void setTarget(IABase* target);
 
 };
