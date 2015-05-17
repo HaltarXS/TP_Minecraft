@@ -98,6 +98,9 @@
     <ClCompile Include="..\src\Cameleon.cpp">
       <Filter>Pierre Le Marchand</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BiXi.cpp">
+      <Filter>Julien Daniel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -159,6 +162,9 @@
     </Filter>
     <Filter Include="Bastien Nanceau">
       <UniqueIdentifier>{f1bb5843-c013-468c-bdc8-8226186177be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Julien Daniel">
+      <UniqueIdentifier>{5781b2f3-111f-4a2f-b954-1adab6d30fcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Cameleon.h">
       <Filter>Pierre Le Marchand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BiXi.h">
+      <Filter>Julien Daniel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

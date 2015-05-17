@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\BiXi.cpp" />
     <ClCompile Include="..\src\Cameleon.cpp" />
     <ClCompile Include="..\..\_engine\src\engine\log\log.cpp" />
     <ClCompile Include="..\..\_engine\src\engine\render\renderer.cpp" />
@@ -48,6 +49,7 @@
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\BiXi.h" />
     <ClInclude Include="..\src\Cameleon.h" />
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
     <ClInclude Include="..\..\_engine\src\engine\log\log_console.h" />

@@ -42,6 +42,7 @@
 #include "Crabe.h"
 #include "Cameleon.h"
 #include "Parasite.h"
+#include "BiXi.h"
 
 NYWorld * g_world;
 
@@ -170,6 +171,9 @@ void spawnCreatures()
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
+	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
+	bixi->_entities = &g_CreatureMap;
+	g_CreatureMap[BIXI].push_back(bixi);
 
 	//Furz
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
