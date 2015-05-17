@@ -269,7 +269,7 @@ void update(void)
 	RessourcesManager::GetSingleton()->Update();
 
 	//Update creatures (max 5ms)
-	creatureUpdate(5);
+	creatureUpdate(10);//J'ai mis 10, désolé, ça ramais trop :(
 
 	/*
 	//Update creatures
