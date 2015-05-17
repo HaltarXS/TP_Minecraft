@@ -20,6 +20,7 @@
     <ClCompile Include="..\src\gameobject.cpp" />
     <ClCompile Include="..\src\Gendamour.cpp" />
     <ClCompile Include="..\src\GlaceGouille.cpp" />
+    <ClCompile Include="..\src\Griffonkitu.cpp" />
     <ClCompile Include="..\src\Herbe.cpp" />
     <ClCompile Include="..\src\IABase.cpp" />
     <ClCompile Include="..\src\chunk.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="..\src\Gendamour.h" />
     <ClInclude Include="..\src\GlaceGouille.h" />
     <ClInclude Include="..\src\global.h" />
+    <ClInclude Include="..\src\Griffonkitu.h" />
     <ClInclude Include="..\src\Herbe.h" />
     <ClInclude Include="..\src\IABase.h" />
     <ClInclude Include="..\src\avatar.h" />

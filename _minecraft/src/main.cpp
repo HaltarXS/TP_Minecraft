@@ -35,12 +35,9 @@
 #include "Wastedosaure.h"
 #include "Dahut.h"
 #include "Gendamour.h"
-<<<<<<< HEAD
 #include "Griffonkitu.h"
-=======
 #include "GlaceGouille.h"
 #include "Lemming.h"
->>>>>>> 33fa4c88371ffbabd2d63dfb4132ab67d975e3d7
 
 NYWorld * g_world;
 
@@ -134,7 +131,7 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
 	}
-<<<<<<< HEAD
+
 	//Griffonkitu
 	for (int i = 0; i < 15; ++i)
 	{
@@ -144,7 +141,6 @@ void spawnCreatures()
 		g->SetEntities(&g_CreatureMap);
 		g_CreatureMap[GRIFFONKITU].push_back(g);
 	}
-=======
 
 	//Gendamour
 	for (int i = 0; i < 10; ++i)
@@ -169,8 +165,6 @@ void spawnCreatures()
 		l->m_entities = &g_CreatureMap;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
-
->>>>>>> 33fa4c88371ffbabd2d63dfb4132ab67d975e3d7
 }
 
 /** === Mise à jour des IA ===

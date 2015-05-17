@@ -80,6 +80,9 @@
     <ClCompile Include="..\src\GlaceGouille.cpp">
       <Filter>Judicael Abecassis</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Griffonkitu.cpp">
+      <Filter>Martin Lagrange</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -126,6 +129,9 @@
     </Filter>
     <Filter Include="Axel Deshors">
       <UniqueIdentifier>{1f7b40c5-57c0-4c12-bdbc-185376ad47f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Martin Lagrange">
+      <UniqueIdentifier>{73ff9518-0a85-41f2-a04a-d34821c46641}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="..\src\GlaceGouille.h">
       <Filter>Judicael Abecassis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Griffonkitu.h">
+      <Filter>Martin Lagrange</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
