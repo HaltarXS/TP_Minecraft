@@ -64,11 +64,6 @@ void Crabe::Update(float elapsedTime)
 bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 	float elapsedTime = this->m_timer.getElapsedSeconds(true);
-	this->Reproduction -= elapsedTime;
-	if (Reproduction <= 0.0f)
-	{
-		PushState(STATE_Reproduction);
-	}
 	BeginStateMachine
 
 		//MESSAGES
@@ -113,6 +108,11 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 					LeftToRight = true;
 				this->position = oldPos;
 				this->positionCube = this->position / NYCube::CUBE_SIZE;
+			}
+			this->Reproduction -= elapsedTime;
+			if (Reproduction <= 0.0f)
+			{
+				PushState(STATE_Reproduction);
 			}
 		}
 	State(STATE_Reproduction)
