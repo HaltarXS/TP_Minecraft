@@ -8,10 +8,13 @@
 #include "RessourcesManager.h"
 
 Dahut::Dahut(NYWorld *pWorld, NYVert2Df pos):
-IABase(pWorld)
+IABase(pWorld),
+m_viewCone(45.0f, NYCube::CUBE_SIZE * 10.0f),
+m_pEntities(NULL)
 {
 	//Init FSM
 	Initialize();
+	m_goalState = STATE_FindPath;
 
 	//Init type
 	type = DAHUT;
@@ -33,6 +36,11 @@ IABase(pWorld)
 
 Dahut::~Dahut()
 {
+}
+
+void Dahut::SetEntities(std::map<eTypeCreature, std::vector<IABase*>> *pEntities)
+{
+	m_pEntities = pEntities;
 }
 
 void Dahut::UpdateIA()
@@ -67,6 +75,8 @@ void Dahut::Draw()
 		glTranslatef(position.X, position.Y, position.Z);
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPopMatrix();
+
+	m_viewCone.DebugDraw();
 }
 
 bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
@@ -101,17 +111,32 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		bool pathFound = false;
 		while(!pathFound)
 		{
-			//Randomize a new path
 			NYVert3Df newPosition;
-			newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
-			newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
-			newPosition.Z = (int) m_world->_MatriceHeights[(int) newPosition.X][(int) newPosition.Y];
+			if(m_goalState == STATE_FindPath)
+			{
+				//Randomize a new path
+				newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
+				newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
+				newPosition.Z = (int) m_world->_MatriceHeights[(int) newPosition.X][(int) newPosition.Y];
+			}
+			else
+			{
+				//Go to the goal position
+				newPosition.X = (int) m_goalPosition.X;
+				newPosition.Y = (int) m_goalPosition.Y;
+				newPosition.Z = (int) m_world->_MatriceHeights[(int) newPosition.X][(int) newPosition.Y];
+			}
 
+			//Find path if valid position
 			if(newPosition.X > 1 && newPosition.X < MAT_SIZE_CUBES - 1 &&
 			   newPosition.Y > 1 && newPosition.Y < MAT_SIZE_CUBES - 1 &&
 			   newPosition.Z > 1 && newPosition.Z < MAT_SIZE_CUBES - 1)
 			{
 				pathFound = m_pPathfinder->FindPathDahut(positionCube, newPosition, m_path);
+				if(!pathFound && m_goalState == STATE_Eat)
+				{
+					m_goalState = STATE_FindPath;
+				}
 			}
 		}
 
@@ -148,7 +173,6 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 
 				//Reset hunger
 				Manger();
-
 				break;
 			}
 		}
@@ -190,15 +214,19 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 			position = m_interPositions[m_interIndex];
 			if(++m_interIndex >= m_interMax)
 			{
-				if(++m_pathIndex < m_path.GetSize())
+				//Since we are in a finite position, check everything around
+				//If our path is not changed, go on
+				bool newPath = Senses();
+
+				if(!newPath && ++m_pathIndex < m_path.GetSize())
 				{
 					//Set new target positions
 					SetTargetPosition();
 				}
-				else
+				else if(!newPath)
 				{
-					//Find another path
-					PushState(STATE_FindPath);
+					//Finished movement
+					PushState(m_goalState);
 				}
 			}
 
@@ -214,6 +242,58 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 
 	EndStateMachine
+}
+
+bool Dahut::Senses()
+{
+	//Look for predators to flee
+	if(m_pEntities != NULL && !infected)
+	{
+		//Update viewcone
+		m_viewCone.SetPosition(position);
+		m_viewCone.SetOrientation(direction);
+
+		//Check if a predator is in sight
+		std::vector<IABase*> *pVector = &((*m_pEntities)[VAUTOUR]);
+		for(int i = 0; i < (*pVector).size(); ++i)
+		{
+			if(m_viewCone.IsInSight((*pVector)[i]->position))
+			{
+				//Change goal position
+				m_goalPosition.X = 2.0f * positionCube.X - (*pVector)[i]->positionCube.X;
+				m_goalPosition.Y = 2.0f * positionCube.X - (*pVector)[i]->positionCube.Y;
+				m_goalState = STATE_Initialize;
+
+				//Change path
+				PushState(STATE_FindPath);
+				return true;
+			}
+		}
+	}
+
+	if(faim >= m_hungerThreshold && m_goalState != STATE_Eat)
+	{
+		//Get through all eatable resources
+		RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
+		for(auto it = pList->begin(); it != pList->end(); ++it)
+		{
+			//If there is a close one
+			NYVert3Df distance = (*it)->Position - position;
+			if(distance.getSize() < m_smellDistance * NYCube::CUBE_SIZE)
+			{
+				//Change goal position
+				m_goalPosition.X = (int) (*it)->Position.X / NYCube::CUBE_SIZE;
+				m_goalPosition.Y = (int) (*it)->Position.Y / NYCube::CUBE_SIZE;
+				m_goalState = STATE_Eat;
+
+				//Change path
+				PushState(STATE_FindPath);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void Dahut::SetTargetPosition()

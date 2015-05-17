@@ -10,6 +10,7 @@
 #include "engine\timer.h"
 #include "IABase.h"
 #include "Pathfinding.h"
+#include "Viewcone.h"
 
 class Dahut : public IABase
 {
@@ -17,12 +18,17 @@ private :
 
 	//Constant parameters
 	const int m_eatingQty = 100;
-	const int m_hungerThreshold = 200;
+	const int m_hungerThreshold = 100;
+	const int m_smellDistance = 30;
 
 	//Pathfinding singleton
 	int m_pathIndex;
 	Path m_path;
 	Pathfinding *m_pPathfinder;
+
+	//Pathfinding goal
+	NYVert2Df m_goalPosition;
+	unsigned int m_goalState;
 
 	//Movement parameters
 	NYPoint3D m_targetCube;
@@ -30,6 +36,12 @@ private :
 	NYVert3Df m_interPositions[8];
 	int m_interIndex;
 	int m_interMax;
+
+	//Viewcone
+	Viewcone m_viewCone;
+
+	//Entities
+	std::map<eTypeCreature, std::vector<IABase*>> *m_pEntities;
 
 	//Timer to determine delta time
 	NYTimer m_lastUpdate;
@@ -39,12 +51,18 @@ public :
 	Dahut(NYWorld *pWorld, NYVert2Df pos);
 	~Dahut();
 
+	//Init entities
+	void SetEntities(std::map<eTypeCreature, std::vector<IABase*>> *pEntities);
+
 	//Overriden base class methods
 	virtual void UpdateIA();
 	virtual void Draw();
 	virtual bool States(StateMachineEvent event, MSG_Object *msg, int state);
 
 private :
+
+	//Check senses to avoid predators and smell poop
+	bool Senses();
 
 	//Helper function
 	void SetTargetPosition();

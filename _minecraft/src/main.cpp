@@ -125,7 +125,9 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
+		Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
+		pDahut->SetEntities(&g_CreatureMap);
+		g_CreatureMap[DAHUT].push_back(pDahut);
 	}
 
 	//Gendamour
@@ -895,7 +897,7 @@ int main(int argc, char* argv[])
 	//lapin = new IABase();
 
 	RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
-	pRessourceMgr->Create(HERBE, NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
+	pRessourceMgr->Create(HERBE, NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10), 1000);
 	pRessourceMgr->Create(HERBE, NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
 	pRessourceMgr->Create(CROTTE, NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
 
