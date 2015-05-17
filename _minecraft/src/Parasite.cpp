@@ -116,7 +116,7 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 		if (m_timeCheckProximity >= m_durationCheckProximity)
 		{
 			m_timeCheckProximity = 0.0f; //Reset du compteur
-			InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
+			//InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
 		}
 		m_timeCheckProximity += m_lastUpdate.getElapsedSeconds();
 
@@ -148,7 +148,7 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 				//Si la créature n'est pas infectée et qu'elle est dans la zone de proximité du virus
 				if ((*m_entities)[type][j]->infected == false && getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) < (sizeArea * 10 * sizeArea * 10)) {
 					//cout << "Contamine " << m_type  << " - Distance : "<< getSquarredDistance(&this->position, &(*m_entities)[type][j]->position)<< endl;
-					
+					cout << "/!\\/!\\ Contamination en cours /!\\/!\\ " << endl;
 					//Création d'un parasite fils ayant pour cible la créature en cours
 					Parasite * p = new Parasite(m_world, NYVert2Df((*m_entities)[type][j]->position.X, (*m_entities)[type][j]->position.Y), false);
 					p->m_target = (*m_entities)[type][j]; //Affectation de la cible
