@@ -42,6 +42,7 @@
 #include "Crabe.h"
 #include "Cameleon.h"
 #include "Parasite.h"
+#include "BiXi.h"
 
 NYWorld * g_world;
 
@@ -131,7 +132,9 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
+		g->m_entities = &g_CreatureMap;
+		g_CreatureMap[GENDAMOUR].push_back(g);
 	}
 
 	//Griffonkitu
@@ -144,36 +147,34 @@ void spawnCreatures()
 		g_CreatureMap[GRIFFONKITU].push_back(g);
 	}
 
-	//Gendamour
-	for (int i = 0; i < 10; ++i)
-	{
-		int x = i % 10 + 10;
-		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
-	}
-
 	//Glacegouille
 	for (int i = 0; i < 10; ++i)
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GLACEGOUILLE].push_back(new GlaceGouille(g_world, NYVert2Df(x, y)));
+		GlaceGouille * g = new GlaceGouille(g_world, NYVert2Df(x, y));
+		g->SetEntities(&g_CreatureMap);
+		g_CreatureMap[GLACEGOUILLE].push_back(g);
 	}
 
 	// Lemming
 	for (int i = 0; i < 10; ++i)
 	{
-		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i / 10 + 10));
-		l->m_entities = &g_CreatureMap;
+		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
+		l->SetEntities( &g_CreatureMap);
+		l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
-		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100),i%2);
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
+	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
+	bixi->_entities = &g_CreatureMap;
+	g_CreatureMap[BIXI].push_back(bixi);
 
 	//Furz
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
@@ -275,7 +276,7 @@ void update(void)
 	RessourcesManager::GetSingleton()->Update();
 
 	//Update creatures (max 5ms)
-	creatureUpdate(5);
+	creatureUpdate(10);//J'ai mis 10, désolé, ça ramais trop :(
 
 	/*
 	//Update creatures

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\BiXi.cpp" />
     <ClCompile Include="..\src\Cameleon.cpp" />
     <ClCompile Include="..\..\_engine\src\engine\log\log.cpp" />
     <ClCompile Include="..\..\_engine\src\engine\render\renderer.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="..\src\ProximityChecker.cpp" />
     <ClCompile Include="..\src\Ressource.cpp" />
     <ClCompile Include="..\src\RessourcesManager.cpp" />
+    <ClCompile Include="..\src\Snake.cpp" />
     <ClCompile Include="..\src\statemch.cpp" />
     <ClCompile Include="..\src\TestStateMachine.cpp" />
     <ClCompile Include="..\src\tex_manager.cpp" />
@@ -45,9 +47,9 @@
     <ClCompile Include="..\src\Viewcone.cpp" />
     <ClCompile Include="..\src\Wastedosaure.cpp" />
     <ClCompile Include="..\src\WastedosaureManager.cpp" />
-    <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\BiXi.h" />
     <ClInclude Include="..\src\Cameleon.h" />
     <ClInclude Include="..\..\_engine\src\engine\log\log.h" />
     <ClInclude Include="..\..\_engine\src\engine\log\log_console.h" />
@@ -83,6 +85,7 @@
     <ClInclude Include="..\src\Ressource.h" />
     <ClInclude Include="..\src\RessourcesManager.h" />
     <ClInclude Include="..\src\singleton.h" />
+    <ClInclude Include="..\src\Snake.h" />
     <ClInclude Include="..\src\statemch.h" />
     <ClInclude Include="..\src\TestStateMachine.h" />
     <ClInclude Include="..\src\tex_manager.h" />
@@ -92,7 +95,6 @@
     <ClInclude Include="..\src\Wastedosaure.h" />
     <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
-    <ClInclude Include="Snake.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

@@ -71,9 +71,6 @@
     <ClCompile Include="..\src\Gendamour.cpp">
       <Filter>Nicolas Leroy</Filter>
     </ClCompile>
-    <ClCompile Include="Snake.cpp">
-      <Filter>Vincent Swaenepoel</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Lemming.cpp">
       <Filter>Axel Deshors</Filter>
     </ClCompile>
@@ -97,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Cameleon.cpp">
       <Filter>Pierre Le Marchand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BiXi.cpp">
+      <Filter>Julien Daniel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Snake.cpp">
+      <Filter>Vincent Swaenepoel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +162,9 @@
     </Filter>
     <Filter Include="Bastien Nanceau">
       <UniqueIdentifier>{f1bb5843-c013-468c-bdc8-8226186177be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Julien Daniel">
+      <UniqueIdentifier>{5781b2f3-111f-4a2f-b954-1adab6d30fcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +258,6 @@
     <ClInclude Include="..\src\Gendamour.h">
       <Filter>Nicolas Leroy</Filter>
     </ClInclude>
-    <ClInclude Include="Snake.h">
-      <Filter>Vincent Swaenepoel</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Lemming.h">
       <Filter>Axel Deshors</Filter>
     </ClInclude>
@@ -278,6 +281,12 @@
     </ClInclude>
     <ClInclude Include="..\src\Cameleon.h">
       <Filter>Pierre Le Marchand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BiXi.h">
+      <Filter>Julien Daniel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Snake.h">
+      <Filter>Vincent Swaenepoel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

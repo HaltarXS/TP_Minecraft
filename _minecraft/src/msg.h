@@ -15,7 +15,8 @@ typedef enum
 	MSG_Sleep,
 	MSG_Walk,
 	MSG_Attack,
-	MSG_PrepareAttack
+	MSG_PrepareAttack,
+	MSG_Reproduce,
 } MSG_Name;
 
 
