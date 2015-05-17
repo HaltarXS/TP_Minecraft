@@ -164,7 +164,7 @@ void spawnCreatures()
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
-		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100),i%2);
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
