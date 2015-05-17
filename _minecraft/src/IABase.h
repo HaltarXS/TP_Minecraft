@@ -23,6 +23,13 @@ enum eTypeCreature
 	FURZ,
 	CRABE,
 	PARASITE,
+	VAUTOUR,
+	GEVAULOL,
+	NEON_BLEU,
+	BIXI,
+	NOKIA,
+	YETI,
+	RADIATOSAURE,
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };
