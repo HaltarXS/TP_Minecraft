@@ -138,7 +138,7 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 	{
 		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
 		this->life -= *data;//I remove the value of the message data from my life.
-		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
+		std::cout << "--Gendamour " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
 		delete data;//Delete the data
 
 		if (this->life <= 0)//If i don't have any life
