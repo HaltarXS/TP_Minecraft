@@ -145,7 +145,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 	}
 
 	OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
+		std::cout << "--Crabe " << this->GetID() << "-- Ca y est, je suis mort." << endl;
 		std::vector<IABase*> crabes;
 		std::vector<IABase*> crabesToDelete;
 		for (int i = 0; i < (*m_entities)[CRABE].size(); i++)
