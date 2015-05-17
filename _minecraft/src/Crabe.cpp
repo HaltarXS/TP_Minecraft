@@ -57,10 +57,13 @@ void Crabe::Update(float elapsedTime)
 	this->Reproduction -= elapsedTime;
 	if (Reproduction <= 0.0f)
 	{
-		Crabe * crabe = new Crabe(m_world, NYVert2Df(this->positionCube.X,this->positionCube.Y),!this->AxeX);
-		crabe->m_entities = m_entities;
-		(*m_entities)[CRABE].push_back(crabe);
-		this->Reproduction = this->MaxTimeReprod;
+		if ((*m_entities)[CRABE].size() <= 10)
+		{
+			Crabe * crabe = new Crabe(m_world, NYVert2Df(this->positionCube.X, this->positionCube.Y), !this->AxeX);
+			crabe->m_entities = m_entities;
+			(*m_entities)[CRABE].push_back(crabe);
+			this->Reproduction = this->MaxTimeReprod;
+		}
 	}
 	NYVert3Df oldPos = this->position;
 	this->position.X += Speed*AxeX*elapsedTime*(-1 + 2 *LeftToRight);
