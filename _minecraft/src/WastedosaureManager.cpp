@@ -37,33 +37,18 @@ bool WastedosaureManager::IsEveryoneArrived()
 
 void WastedosaureManager::AssignToAGroup(Wastedosaure * entity)
 {
-	//if (m_group.size() > 1)
-	//{
-	//	if (m_group[0] == NULL || m_group[0]->GetState() == STATE_Dead)//Si le leader n'est plus là
-	//	{
-	//		m_group[0] = entity;
-	//		for (int i = 1; i < m_group.size(); ++i)
-	//		{
-	//			m_group[i]->leader = entity;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		m_group.push_back(entity);
-	//		entity->leader = m_group[0];
-	//	}
-	//}
-	//else
-	//{
-	//	m_group.push_back(entity);
-	//}
-	entity->groupPosition = m_group.size();
-	m_group.push_back(entity);
-	if (m_group[0]->GetState() == STATE_Dead)
-		m_group[0] = m_group.back();
-
-
-	entity->leader = m_group[0];
+	m_group.clear();
+	for (int i = 0; i < m_wastosaures.size(); ++i)
+	{
+		if (m_wastosaures[i]->GetState() != STATE_Dead)
+		{
+			m_group.push_back(m_wastosaures[i]);
+			if (m_group.size() > 0)
+			{
+				m_wastosaures[i]->leader = m_group[0];
+			}
+		}
+	}
 	m_group[0]->leader = NULL;
 
 }
@@ -107,7 +92,11 @@ void WastedosaureManager::PrepareAttack(IABase * target)
 {
 	for (int i = 0; i < m_wastosaures.size(); ++i)
 	{
-		m_wastosaures[i]->target = target;
-		m_wastosaures[i]->PushState(STATE_Attack);
+		if (m_wastosaures[i]->GetState() != STATE_Dead)
+		{
+			m_wastosaures[i]->target = target;
+			m_wastosaures[i]->PushState(STATE_Attack);
+		}
+		
 	}
 }
