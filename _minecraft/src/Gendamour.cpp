@@ -8,6 +8,8 @@ Gendamour::Gendamour(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 
 	type = GENDAMOUR;
 
+	life = 1000;
+
 	positionCube.X = (int)pos.X;
 	positionCube.Y = (int)pos.Y;
 	positionCube.Z = (int)pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y];
