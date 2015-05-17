@@ -96,7 +96,7 @@ Path returnPath;
 //Vecteur de Creatures
 //static std::vector<IABase*> g_Creatures;
 
-//Stockage des créatures
+//Stockage des crÃ©atures
 typedef std::vector<IABase*> CreatureVector;
 std::map<eTypeCreature, CreatureVector> g_CreatureMap;
 
@@ -109,9 +109,9 @@ void spawnCreatures()
 		g_CreatureMap.insert(std::pair<eTypeCreature, CreatureVector>(type, CreatureVector()));
 	}
 
-	// === Ajout des créatures ===
+	// === Ajout des crÃ©atures ===
 
-	//Ajout des créatures
+	//Ajout des crÃ©atures
 	//Wastedosaure
 	for (int i = 0; i < 6; ++i)
 	{
@@ -163,7 +163,7 @@ void spawnCreatures()
 	{
 		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
 		l->SetEntities( &g_CreatureMap);
-		l->m_drawDebug = true;
+		//l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 
@@ -204,14 +204,14 @@ void spawnCreatures()
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 }
 
-/** === Mise à jour des IA ===
+/** === Mise Ã  jour des IA ===
  * 
- * Afin d'éviter que le framerate ne diminue trop, un temps fixe
- * est alloué à la mise à jour des IA. A chaque appel, on effectue 
- * autant de mises à jour dans le temps imparti et on reprend là
- * où s'est arrêté à la frame suivante.
- * Les mises à jour s'arrêtent avant le temps imparti si on a
- * réussi à mettre à jour toutes les créatures.
+ * Afin d'Ã©viter que le framerate ne diminue trop, un temps fixe
+ * est allouÃ© Ã  la mise Ã  jour des IA. A chaque appel, on effectue 
+ * autant de mises Ã  jour dans le temps imparti et on reprend lÃ 
+ * oÃ¹ s'est arrÃªtÃ© Ã  la frame suivante.
+ * Les mises Ã  jour s'arrÃªtent avant le temps imparti si on a
+ * rÃ©ussi Ã  mettre Ã  jour toutes les crÃ©atures.
 **/
 void creatureUpdate(int computeTimeMS)
 {
@@ -300,7 +300,7 @@ void update(void)
 	RessourcesManager::GetSingleton()->Update();
 
 	//Update creatures (max 5ms)
-	creatureUpdate(10);//J'ai mis 10, désolé, ça ramais trop :(
+	creatureUpdate(10);//J'ai mis 10, dÃ©solÃ©, Ã§a ramais trop :(
 
 	/*
 	//Update creatures
@@ -342,7 +342,7 @@ void renderObjects(void)
 
 	glColor3d(1,1,1);
 
-	//Active la lumière
+	//Active la lumiÃ¨re
 	glEnable(GL_LIGHTING);
 	glShadeModel ( GL_SMOOTH );
 
@@ -415,7 +415,7 @@ void renderObjects(void)
 		}
 	}
 
-	//Rendu des créatures
+	//Rendu des crÃ©atures
 	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
 	{
 		(*it)->Draw();
@@ -429,11 +429,11 @@ bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher)
 	SYSTEMTIME t;
 	GetLocalTime(&t);
 
-	//On borne le tweak time à une journée (cyclique)
+	//On borne le tweak time Ã  une journÃ©e (cyclique)
 	while(g_tweak_time > 60)
 		g_tweak_time -= 60;
 
-	//Temps écoulé depuis le début de la journée
+	//Temps Ã©coulÃ© depuis le dÃ©but de la journÃ©e
 	float fTime = (float) (t.wHour*60 + t.wMinute);
 	fTime += g_tweak_time;
 	while(fTime > 24*60)
@@ -458,7 +458,7 @@ bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher)
 		fTime *= M_PI;
 	}
 
-	//Position en fonction de la progression dans la journée
+	//Position en fonction de la progression dans la journÃ©e
 	sun.X = cos(fTime);
 	sun.Y = 0.2f;
 	sun.Z = sin(fTime);
@@ -475,11 +475,11 @@ void setLightsBasedOnDayTime(void)
 	//On recup la direciton du soleil
 	bool nuit = getSunDirection(g_sun_dir,g_mn_lever,g_mn_coucher);
 
-	//On définit une lumière directionelle (un soleil)
+	//On dÃ©finit une lumiÃ¨re directionelle (un soleil)
 	float position[4] = {g_sun_dir.X,g_sun_dir.Y,g_sun_dir.Z,0}; ///w = 0 donc c'est une position a l'infini
 	glLightfv(GL_LIGHT0, GL_POSITION, position );
 
-	//Pendant la journée
+	//Pendant la journÃ©e
 	if(!nuit)
 	{
 		//On definit la couleur
@@ -777,7 +777,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	//Affichage des capacités du système
+	//Affichage des capacitÃ©s du systÃ¨me
 	Log::log(Log::ENGINE_INFO,("OpenGL Version : " + std::string((char*)glGetString(GL_VERSION))).c_str());
 
 	glutDisplayFunc(update);
@@ -880,7 +880,7 @@ int main(int argc, char* argv[])
 
 
 
-	//On définit une lumière 
+	//On dÃ©finit une lumiÃ¨re 
 	lightPostion.Z = 7;
 
 	g_world = new NYWorld();
