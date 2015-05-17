@@ -66,6 +66,11 @@ NYCubeType Wastedosaure::GetCubeUnderType(IABase * target)
 	return m_world->getCube(positionCube.X, positionCube.Y, positionCube.Z)->_Type;
 }
 
+NYCubeType Wastedosaure::GetCubeUnderType(NYVert2Df position)
+{
+	return m_world->getCube(position.X, position.Y, m_world->_MatriceHeights[(int)position.X][(int)position.Y])->_Type;
+}
+
 NYVert3Df Wastedosaure::FindClosestCubeWater()
 {
 	NYVert3Df offset;
@@ -298,26 +303,34 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	m_timerTryFindPath = 0.0f;
 	m_path.Clear();
 	NYVert2Df arrival = NYVert2Df(WastedosaureManager::GetSingleton()->rand_a_b(1, MAT_SIZE_CUBES - 1), WastedosaureManager::GetSingleton()->rand_a_b(1, MAT_SIZE_CUBES - 1));
-	if (leader == NULL)
+	if (GetCubeUnderType(arrival) == NYCubeType::CUBE_EAU)
 	{
-		m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
+		PushState(STATE_FindPath);
 	}
 	else
 	{
-		m_path = leader->GetPath(); //On va suivre le chemin du leader pour éviter de faire 1 pf/créature
-	}
-	//m_currentIndex = 0;
-	m_currentIndex = FindClosestWaypoint(m_path);
-	if (HasAPath())
-	{
-		NYVert3Df distanceClosestWP = m_path.GetWaypoint(m_currentIndex) / NYCube::CUBE_SIZE - position / NYCube::CUBE_SIZE;
-		if (distanceClosestWP.getSize() > 20.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
+		if (leader == NULL)
 		{
-			arrival = NYVert2Df(leader->position.X / NYCube::CUBE_SIZE, leader->position.Y / NYCube::CUBE_SIZE);
 			m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
-			m_currentIndex = 0;
+		}
+		else
+		{
+			m_path = leader->GetPath(); //On va suivre le chemin du leader pour éviter de faire 1 pf/créature
+		}
+		//m_currentIndex = 0;
+		m_currentIndex = FindClosestWaypoint(m_path);
+		if (HasAPath())
+		{
+			NYVert3Df distanceClosestWP = m_path.GetWaypoint(m_currentIndex) / NYCube::CUBE_SIZE - position / NYCube::CUBE_SIZE;
+			if (distanceClosestWP.getSize() > 20.0f)//Si le closest point est trop loin, on lance quand meme un pf pour éviter que l'entité passe à travers les murs
+			{
+				arrival = NYVert2Df(leader->position.X / NYCube::CUBE_SIZE, leader->position.Y / NYCube::CUBE_SIZE);
+				m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
+				m_currentIndex = 0;
+			}
 		}
 	}
+	
 	isArrived = false;
 	
 	OnUpdate
@@ -431,7 +444,16 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			WastedosaureManager::GetSingleton()->FindReproductionPlace(this, this->partner);
 		}
 
-		m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrivalPartner, 1, m_path);
+		if (GetCubeUnderType(arrivalPartner) == NYCubeType::CUBE_EAU)
+		{
+			PushState(STATE_Reproduction);
+			partner->PushState(STATE_Reproduction);
+		}
+		else
+		{
+			m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrivalPartner, 1, m_path);
+		}
+		
 		
 	}
 	OnUpdate

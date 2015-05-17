@@ -39,7 +39,7 @@ private:
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	const float m_durationWandering = 50.0f;
+	const float m_durationWandering = 40.0f;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
@@ -115,6 +115,7 @@ private:
 
 
 	NYCubeType GetCubeUnderType(IABase * target);
+	NYCubeType GetCubeUnderType(NYVert2Df position);
 	
 public:
 	Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale);
