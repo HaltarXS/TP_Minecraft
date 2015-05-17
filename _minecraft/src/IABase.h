@@ -22,6 +22,7 @@ enum eTypeCreature
 	GRIFFONKITU,
 	FURZ,
 	CRABE,
+	PARASITE,
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };

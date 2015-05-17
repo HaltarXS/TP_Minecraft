@@ -41,6 +41,7 @@
 #include "Furz.h"
 #include "Crabe.h"
 #include "Cameleon.h"
+#include "Parasite.h"
 
 NYWorld * g_world;
 
