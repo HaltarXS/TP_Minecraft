@@ -78,7 +78,7 @@ void Gendamour::UpdateIA(){
 			_spentTimeTogether.start();
 		}
 		//le gendamour meurt si il a dépassé sa durée de vie 
-		if (_spentTime.getElapsedSeconds() > _lifeTime * 60 || life <= 0){
+		if (_spentTime.getElapsedSeconds() > _lifeTime * 60 ){
 			//cout << "this is the end" << endl;
 			PushState(STATE_Dead);
 		}
@@ -129,6 +129,21 @@ void Gendamour::UpdateIA(){
 bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 {
 	BeginStateMachine
+
+
+		OnMsg(MSG_Attack)//If i'm attacked
+	{
+		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
+		this->life -= *data;//I remove the value of the message data from my life.
+		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
+		delete data;//Delete the data
+
+		if (this->life <= 0)//If i don't have any life
+		{
+			PushState(STATE_Dead);//Use PushState to go in an other state
+		}
+	}//Message Attack
+
 	State(STATE_Initialize)
 		OnEnter{
 			PushState(STATE_FindPath);
