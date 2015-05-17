@@ -38,6 +38,7 @@
 #include "Griffonkitu.h"
 #include "GlaceGouille.h"
 #include "Lemming.h"
+#include "Mouche.h"
 #include "Furz.h"
 #include "Crabe.h"
 #include "Cameleon.h"
@@ -165,6 +166,14 @@ void spawnCreatures()
 		l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
+
+	//Mouche
+	for (int i = 0; i < Mouche::MAX_MOUCHE; ++i)
+	{
+		Mouche * mouche = new Mouche(g_world, NYVert2Df(0, 0));
+		g_CreatureMap[MOUCHE].push_back(mouche);
+	}
+
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
