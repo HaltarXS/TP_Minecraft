@@ -100,7 +100,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 			this->position.Z = (m_world->_MatriceHeights[(int)this->positionCube.X][(int)this->positionCube.Y] + 1) * NYCube::CUBE_SIZE;
 			this->positionCube.Z = this->position.Z / NYCube::CUBE_SIZE;
-			if (this->positionCube.Z <= 2)
+			if (this->positionCube.Z <= 2 || this->positionCube.X < 0 || this->positionCube.Y < 0 || this->positionCube.X > 100 || this->positionCube.Y > 100)
 			{
 				if (LeftToRight)
 					LeftToRight = false;
