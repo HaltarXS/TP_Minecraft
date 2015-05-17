@@ -75,8 +75,6 @@ void Dahut::Draw()
 		glTranslatef(position.X, position.Y, position.Z);
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPopMatrix();
-
-	m_viewCone.DebugDraw();
 }
 
 bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
