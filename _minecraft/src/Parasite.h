@@ -31,12 +31,13 @@ private:
 	//Timer to determine delta time
 	NYTimer m_lastUpdate;
 
-	std::vector<IABase*> m_creaturesNear;//Les créatures à proximité
 
 public:
 
 	Parasite(NYWorld *pWorld, NYVert2Df pos, bool firstBorn);
 	~Parasite();
+
+	std::vector<IABase*> m_creaturesNear;//Les créatures à proximité
 
 	IABase* target = NULL; //Hôte du parasite
 	void InfectCreaturesInArea(float sizeArea);

@@ -31,7 +31,7 @@ ProximityChecker* ProximityChecker::GetSingleton()
 
 vector<IABase*> ProximityChecker::checkParasiteProximityCreatures(Parasite* callerEntity, float sizeArea)
 {
-	m_creaturesNear.clear(); //Nettoyage de la liste des créatures à proximité
+	callerEntity->m_creaturesNear.clear(); //Nettoyage de la liste des créatures à proximité
 
 	//Parcourt de la liste des créatures existantes
 	for (int i = 0; i < CREATURE_NUM; ++i)
@@ -45,12 +45,12 @@ vector<IABase*> ProximityChecker::checkParasiteProximityCreatures(Parasite* call
 
 				float distanceSquarred = getSquarredDistance(callerEntity->position, (*m_entities)[type][j]->position);
 				if (getSquarredDistance(callerEntity->position, (*m_entities)[type][j]->position) < (sizeArea*sizeArea) && callerEntity->target->GetID() != (*m_entities)[type][j]->GetID() && !(*m_entities)[type][j]->infected) {
-					m_creaturesNear.push_back((*m_entities)[type][j]);
+					callerEntity->m_creaturesNear.push_back((*m_entities)[type][j]);
 				}
 				//IF Distance between caller and (*m_entities)[type][j] < sizeArea && (*m_entities)[type][j] != caller.target
 				//}
 			}
 		}
 	}
-	return m_creaturesNear;
+	return callerEntity->m_creaturesNear;
 }

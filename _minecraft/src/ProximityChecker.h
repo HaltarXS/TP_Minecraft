@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IABase.h"
+#include "Parasite.h"
+
+class Parasite;
 
 typedef std::vector<IABase*> CreatureVector;
 
@@ -17,6 +20,9 @@ private:
 	float getSquarredDistance(NYVert3Df p1, NYVert3Df p2);
 
 public:
+	ProximityChecker();
+	~ProximityChecker();
+
 	static ProximityChecker * GetSingleton();
 
 	vector<IABase*> checkParasiteProximityCreatures(Parasite* callerEntity, float sizeArea);

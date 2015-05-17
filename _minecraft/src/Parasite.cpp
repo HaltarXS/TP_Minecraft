@@ -7,7 +7,7 @@ Parasite::Parasite(NYWorld *pWorld, NYVert2Df pos, bool firstBorn) : IABase(pWor
 	Initialize();
 
 	//Init type
-	type = DAHUT;
+	type = PARASITE;
 
 	//Détermine si le virus vient d'une crotte
 	m_isFirstBorn = firstBorn;
