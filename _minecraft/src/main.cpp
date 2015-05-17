@@ -36,6 +36,7 @@
 #include "Dahut.h"
 #include "Gendamour.h"
 #include "GlaceGouille.h"
+#include "Lemming.h"
 
 NYWorld * g_world;
 
@@ -145,6 +146,15 @@ void spawnCreatures()
 		int y = i / 10 + 10;
 		g_CreatureMap[GLACEGOUILLE].push_back(new GlaceGouille(g_world, NYVert2Df(x, y)));
 	}
+
+	// Lemming
+	for (int i = 0; i < 10; ++i)
+	{
+		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i / 10 + 10));
+		l->m_entities = &g_CreatureMap;
+		g_CreatureMap[LEMMING].push_back(l);
+	}
+
 }
 
 /** === Mise à jour des IA ===
