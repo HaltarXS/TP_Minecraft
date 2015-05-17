@@ -151,16 +151,11 @@ void Lemming::Draw()
 
 
 	glutSolidCube(7);
-
-	glPushMatrix();
-
-	glTranslatef(0, 0, 5);
-
-	glColor3f(0.1f, 0.9f, 0.1f);
-	glutSolidCube(5);
-
-	glPopMatrix();
-
+		glPushMatrix();
+			glTranslatef(0, 0, 5);
+			glColor3f(0.1f, 0.9f, 0.1f);
+			glutSolidCube(5);
+		glPopMatrix();
 	glPopMatrix();
 
 	if (m_drawDebug)
