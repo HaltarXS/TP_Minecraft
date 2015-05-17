@@ -28,7 +28,7 @@ ProximityChecker* ProximityChecker::GetSingleton()
 
 	return s_pcInstance;
 }
-
+/*
 vector<IABase*> ProximityChecker::checkParasiteProximityCreatures(Parasite* callerEntity, float sizeArea)
 {
 	callerEntity->m_creaturesNear.clear(); //Nettoyage de la liste des créatures à proximité
@@ -53,4 +53,4 @@ vector<IABase*> ProximityChecker::checkParasiteProximityCreatures(Parasite* call
 		}
 	}
 	return callerEntity->m_creaturesNear;
-}
+}*/
