@@ -13,10 +13,11 @@ public:
 	void UpdateIA();
 	bool States(StateMachineEvent event, MSG_Object * msg, int state);
 	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game
+	
 private:
 	float Size;
 	float Speed;
-	float Reproduction;
+	float Reproduction = 60.0f;
 	float MaxTimeReprod;
 	NYTimer m_timer;
 
