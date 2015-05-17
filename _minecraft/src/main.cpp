@@ -44,6 +44,7 @@
 #include "Cameleon.h"
 #include "Parasite.h"
 #include "BiXi.h"
+#include "Snake.h"
 
 NYWorld * g_world;
 
@@ -204,6 +205,9 @@ void spawnCreatures()
 
 	//Furz
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
+
+	//Snake
+	//g_CreatureMap[SNAKE].push_back(new Snake(g_world, NYVert2Df(20, 10),5));
 }
 
 /** === Mise à jour des IA ===
