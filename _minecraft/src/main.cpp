@@ -172,6 +172,13 @@ void spawnCreatures()
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
+	// Parasite
+	for (int i = 0; i < 1; ++i)
+	{
+		Parasite * p = new Parasite(g_world, NYVert2Df(19 + i, 15), true);
+		p->m_entities = &g_CreatureMap;
+		g_CreatureMap[PARASITE].push_back(p);
+	}
 	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
 	bixi->_entities = &g_CreatureMap;
 	g_CreatureMap[BIXI].push_back(bixi);
