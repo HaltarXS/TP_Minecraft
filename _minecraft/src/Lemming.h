@@ -55,13 +55,13 @@ private:
 	// Real time gauge :
 	int m_currentHungerPoints;
 	int m_currentReproductionPoints;
-	int m_currentLifePoints;
 
 	// Timer :
 	float m_timeElapsed = 0.f;	// Time elapsed
 	float m_tick = 0.f;	// Tick every one second for the gauge
 	float m_dancingTime = 0.f;	// Time the lemming passed to dance
 	float m_randMovingTime = 0.f;	// Time the lemming passed to move around
+	float m_inactiveTimer = 10.f;	// Time during the lemming is following anybody
 	NYTimer m_timer;	// Timer of the entity
 
 	// Times :
