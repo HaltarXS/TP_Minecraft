@@ -40,6 +40,7 @@
 #include "Lemming.h"
 #include "Furz.h"
 #include "Crabe.h"
+#include "Cameleon.h"
 
 NYWorld * g_world;
 

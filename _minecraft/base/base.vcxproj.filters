@@ -89,6 +89,9 @@
     <ClCompile Include="..\src\Crabe.cpp">
       <Filter>Cyril Malvaux</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Cameleon.cpp">
+      <Filter>Pierre Le Marchand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -144,6 +147,9 @@
     </Filter>
     <Filter Include="Cyril Malvaux">
       <UniqueIdentifier>{248841c5-ee9b-4b6b-930d-14342716efe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pierre Le Marchand">
+      <UniqueIdentifier>{3a93bfd1-2147-4368-bbda-ea7ecd22cec8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Crabe.h">
       <Filter>Cyril Malvaux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cameleon.h">
+      <Filter>Pierre Le Marchand</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
