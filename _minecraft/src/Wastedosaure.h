@@ -80,7 +80,7 @@ private:
 	float		  m_timerTryFindPath = 0.0f;						//Timer findpath
 
 	//Autre
-	bool									  m_debugDraw = true;	//Afficher ou pas les info de debug
+	bool									  m_debugDraw = false;	//Afficher ou pas les info de debug
 	NYTimer									  m_lastUpdate;		    //Timer pour l'update
 	std::map<eTypeCreature, CreatureVector> * m_entities;			//Toutes les creatures du jeu
 	std::vector<IABase*>					  m_creaturesInSight;	//Les créatures dans le champ visuel
