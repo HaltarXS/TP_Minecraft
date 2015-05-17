@@ -227,7 +227,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		OnEnter{
 		m_attack = true;
 		m_speed = 120.0f;
-		cout << "Griffonkitu is attack !" << endl;
+		cout << "Griffonkitu attack !" << endl;
 	}
 	OnUpdate{
 		m_positionTarget = position - m_target->position;
