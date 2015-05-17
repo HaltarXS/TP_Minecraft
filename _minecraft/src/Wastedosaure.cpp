@@ -2,7 +2,7 @@
 
 
 Wastedosaure::Wastedosaure(NYWorld * _world, NYVert2Df _positionInitiale):
-IABase(_world), m_cone(50.0f,150)
+IABase(_world), m_cone(m_viewAngle, m_viewDistance)
 {
 	Initialize();
 	type = WASTEDOSAURE;
@@ -31,7 +31,10 @@ void Wastedosaure::GetCreaturesInSight()
 		eTypeCreature type = (eTypeCreature)i;
 		for (int j = 0; j < (*m_entities)[type].size(); ++j)
 		{
-			if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
+			if (m_cone.IsInSight((*m_entities)[type][j]->position) && 
+				(*m_entities)[type][j]->GetID() != this->GetID() && 
+				type != WASTEDOSAURE && 
+				type != GRIFFONKITU)
 			{
 				m_creaturesInSight.push_back((*m_entities)[type][j]);
 			}
@@ -105,6 +108,13 @@ void Wastedosaure::UpdateIA()
 	//	PushState(STATE_Suicide);
 	//}
 
+	if (m_creaturesInSight.size() > 0 && 
+		target == NULL && 
+		m_currentState != STATE_Reproduction && 
+		m_currentSize >= m_maxSize/2.0f)
+	{
+		WastedosaureManager::GetSingleton()->PrepareAttack(m_creaturesInSight[0]);
+	}
 
 	m_currentSize = (1 - (m_timerGrow / m_durationGrow))*m_minSize + (m_timerGrow / m_durationGrow)*m_maxSize;
 	m_currentSize = min(m_currentSize, m_maxSize);
@@ -117,7 +127,7 @@ void Wastedosaure::UpdateIA()
 
 void Wastedosaure::UpdateTimers()
 {
-	if (m_currentState == STATE_Move || m_currentState == STATE_Attack || m_currentState == STATE_FindPath)
+	if (m_currentState == STATE_Move || /*m_currentState == STATE_Attack ||*/ m_currentState == STATE_FindPath)
 	{
 		if (m_timerWandering >= m_durationWandering)
 		{
@@ -135,6 +145,19 @@ void Wastedosaure::UpdateTimers()
 		}
 		m_timerReproduction += m_lastUpdate.getElapsedSeconds();
 	}
+	else if (m_currentState == STATE_Attack)
+	{
+		if (m_timerAttack >= m_durationAttack)
+		{
+			PushState(STATE_Reproduction);
+			m_timerAttack = 0.0f;
+			m_timerWandering = 0.0f;
+			m_timerReproduction = 0.0f;
+		}
+		m_timerAttack += m_lastUpdate.getElapsedSeconds();
+	}
+
+	
 }
 
 int Wastedosaure::FindClosestWaypoint(Path _path)
@@ -160,6 +183,10 @@ void Wastedosaure::Draw()
 	if (m_currentState == STATE_Reproduction)
 	{
 		glColor3f(0.0f, 0.0f, 1.0f);
+	}
+	else if (m_currentState == STATE_Attack)
+	{
+		glColor3f(0.7f, 0.2, 0.8);
 	}
 	else
 	{
@@ -187,7 +214,6 @@ void Wastedosaure::Draw()
 		m_cone.DebugDraw();
 		m_path.DrawPath();
 	}
-	
 }
 
 
@@ -209,6 +235,12 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		{
 			PushState(STATE_Dead);//Use PushState to go in an other state
 		}
+	}//Message Attack
+
+	OnMsg(MSG_PrepareAttack)
+	{
+		PushState(STATE_Attack);
+		m_timerAttack = 0.0f;
 	}//Message Attack
 
 	//Initialize
@@ -309,7 +341,6 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	}
 	else
 	{
-		//PushState(STATE_Wait);
 		PushState(STATE_FindPath);
 		isArrived = true;
 	}
@@ -317,6 +348,77 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnExit
 	m_path.Clear();
 
+	//Attack
+	State(STATE_Attack)
+	OnEnter
+	m_currentIndex = 0;
+	m_distanceToTarget = NYVert3Df(position / NYCube::CUBE_SIZE - target->position / NYCube::CUBE_SIZE).getSize();
+	//cout << m_distanceToTarget << endl;
+	if (m_distanceToTarget > 30.0f)
+	{
+		NYVert2Df start = NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE);
+		NYVert2Df arrival = NYVert2Df(target->position.X / NYCube::CUBE_SIZE, target->position.Y / NYCube::CUBE_SIZE);
+		//cout << start.X << "," << start.Y << "-" << arrival.X << "," << arrival.Y << endl;
+		if (leader == NULL)
+		{
+			if (m_pf->FindPath(start, arrival, 1, m_path))
+			{
+				cout << "Path found";
+			}
+			else
+			{
+				cout << "Path NOT found";
+			}
+		}
+		else
+		{
+			m_path = leader->GetPath(); //On va suivre le chemin du leader pour éviter de faire 1 pf/créature
+		}
+	}
+	m_timeElapsedBetween2Attacks = 0;
+	OnUpdate
+	m_distanceToTarget = NYVert3Df(position / NYCube::CUBE_SIZE - target->position / NYCube::CUBE_SIZE).getSize();
+	if (HasAPath() || m_distanceToTarget < 30.0f)
+	{
+		if (m_distanceToTarget < 30.0f)//Close enought, on attaque
+		{
+			direction = target->position - position;
+			direction.normalize();
+			position += direction * m_speed * m_lastUpdate.getElapsedSeconds();
+
+			if (m_timeElapsedBetween2Attacks >= m_timeBetween2Attacks)
+			{
+				SendMsg(MSG_Attack, target->GetID(), new int(m_damages + rand() % 5));
+				m_timeElapsedBetween2Attacks = 0.0f;
+			}
+
+			m_timeElapsedBetween2Attacks += m_lastUpdate.getElapsedSeconds();
+		}
+		else//On se déplace le long du chemin
+		{
+			if (m_currentIndex < m_path.GetSize())
+			{
+				direction = m_path.GetWaypoint(m_currentIndex) - position;
+				float lenght = direction.getSize();
+				direction.normalize();
+
+				if (lenght <= 3.0f)
+				{
+					++m_currentIndex;
+				}
+				else
+				{
+					position += direction * m_speed * m_lastUpdate.getElapsedSeconds();
+				}
+			}
+		}
+	}
+	else
+	{
+		//PushState(STATE_Attack);//On recherche un chemin
+	}
+	OnExit
+	m_path.Clear();
 
 	//Reproduction
 	State(STATE_Reproduction)
@@ -350,9 +452,6 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrivalPartner, 1, m_path);
 		
 	}
-
-	
-	//cout << "Reproduction\n";
 	OnUpdate
 
 	//Follow the path
@@ -378,6 +477,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		NYVert3Df tmpArrival = NYVert3Df(arrivalPartner.X, arrivalPartner.Y, m_world->_MatriceHeights[(int)arrivalPartner.X][(int)arrivalPartner.Y]);
 		NYVert3Df offsetPartners1 = position / NYCube::CUBE_SIZE - tmpArrival;
 		NYVert3Df offsetPartners2 = partner->position / NYCube::CUBE_SIZE - tmpArrival;
+		//If close enought, reproduce
 		if (m_canReproduce && 
 			m_counterReproduction < m_maxReproductions && 
 			offsetPartners1.getSize() <= 1 && 
@@ -395,7 +495,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 	}
 	
-	//If close enought, reproduce
+	
 	
 	OnExit
 	m_canReproduce = true;
@@ -410,6 +510,8 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	FindClosestCubeWater();
 	m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), NYVert2Df(m_cubeWater.X, m_cubeWater.Y), 2, m_path, true);
 	m_currentIndex = 0;
+	target = NULL;
+	partner = NULL;
 	OnUpdate
 	if (HasAPath())
 	{
@@ -440,6 +542,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	//Dead
 	State(STATE_Dead)
 	OnMsg(MSG_Attack)
+	OnMsg(MSG_PrepareAttack)
 	OnEnter
 	cout << "Im dead\n";
 	

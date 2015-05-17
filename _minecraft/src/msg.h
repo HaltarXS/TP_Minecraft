@@ -14,7 +14,8 @@ typedef enum
 	MSG_Eat,
 	MSG_Sleep,
 	MSG_Walk,
-	MSG_Attack
+	MSG_Attack,
+	MSG_PrepareAttack
 } MSG_Name;
 
 

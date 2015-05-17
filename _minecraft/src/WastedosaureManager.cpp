@@ -102,3 +102,12 @@ void WastedosaureManager::FindReproductionPlace(Wastedosaure * entity1, Wastedos
 	}
 	
 }
+
+void WastedosaureManager::PrepareAttack(IABase * target)
+{
+	for (int i = 0; i < m_wastosaures.size(); ++i)
+	{
+		m_wastosaures[i]->target = target;
+		m_wastosaures[i]->PushState(STATE_Attack);
+	}
+}

@@ -31,19 +31,19 @@ class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 50.30f + 3.0f*GetID();
+	float m_speed = 30.30f + 0.05f*GetID();
 
 	//Timers
 	//Egg
-	float m_timeEgg = 5.0f;
+	const float m_timeEgg = 1.0f;
 	float m_timerEgg = 0.0f;
 
 	//Wandering/Attacking
-	float m_durationWandering = 25.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
+	const float m_durationWandering = 60.0f /*+ WastedosaureManager::GetSingleton()->rand_a_b(-2,2)*/;
 	float m_timerWandering = 0.0f;
 
 	//Reproduction
-	float m_durationReproduction = 10.0f /* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
+	const float m_durationReproduction = 10.0f /* + WastedosaureManager::GetSingleton()->rand_a_b(-2, 2)*/;
 	float m_timerReproduction = 0.0f;
 
 	//Reproduction
@@ -51,6 +51,14 @@ private:
 	int m_counterReproduction = 0;
 	int m_maxReproductions = 2;
 	bool m_needPartner = false;
+
+	//Attack 
+	const float m_durationAttack = 10.0f;
+	float m_timerAttack = 0.0f;
+
+	const float m_timeBetween2Attacks = 3.0f;
+	float m_timeElapsedBetween2Attacks = 0.0f;
+	const int m_damages = 1;
 	
 
 	bool m_isMale = false;
@@ -69,6 +77,14 @@ private:
 	float m_currentSize = m_minSize;
 	float m_durationGrow = 40.0f;
 	float m_timerGrow = 0.0f;
+
+	//View Cone
+	const float m_viewDistance = 100.0f;
+	const float m_viewAngle = 50.0f;
+
+	//Distance to target
+	float m_distanceToTarget = 0.0f;
+	bool m_pathAttackFound = true;
 	
 
 	bool IsEveryoneArrived();
@@ -88,7 +104,7 @@ private:
 
 	void GetCreaturesInSight();
 
-	bool m_debugDraw = true;
+	bool m_debugDraw = false;
 
 	
 

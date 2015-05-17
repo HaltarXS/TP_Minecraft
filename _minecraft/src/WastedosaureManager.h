@@ -49,5 +49,7 @@ public:
 
 	bool IsEveryoneArrived();
 
+	void PrepareAttack(IABase * target);
+
 };
 
