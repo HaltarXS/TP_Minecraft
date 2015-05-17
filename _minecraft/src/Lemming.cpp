@@ -75,7 +75,8 @@ void Lemming::Update(float _elapsedTime)
 
 void Lemming::Born()
 {
-	std::cout << "NEW BORN!!" << std::endl;
+	DEBUG
+	std::cout << "Lemming is Born!!" << std::endl;
 
 	m_currentHungerPoints = 0;
 	IABase::life = m_maxLifePoints;
@@ -471,6 +472,8 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnEnter
 	DEBUG
 	std::cout << "Lemming follow target" << std::endl;
+	
+	
 	int _x = m_followedTarget->positionCube.X;
 	int _y = m_followedTarget->positionCube.Y;
 
@@ -491,34 +494,32 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	}
 
 	OnUpdate
+	// End of the path
 	if (!UpdatePosition())
 	{
+		m_path.Clear();
+		m_currentPathIndex = 0;	// Set the path index to 0
+
 		// If the creature still visible
 		if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
 		{
 			int _x = m_followedTarget->positionCube.X;
 			int _y = m_followedTarget->positionCube.Y;
 				
-			m_path.Clear();
-			m_currentPathIndex = 0;	// Set the path index to 0
+			
 			float _dist = NYVert3Df(m_followedTarget->position - position).getSize();
+
 			// Le monstre n'as pas bougé depuis la dernière fois
-			if (_dist <=10.f)
-			{					
-				m_path.Clear();
-				m_currentPathIndex = 0;
+			if (_dist <=10.f)				
 				PushState(STATE_Move);
-			}
 			else
-					m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+				m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
 		}
 		else	// Loose the followed creature
 		{
 			DEBUG
 			std::cout << "Lemming loose his target at pos : " << positionCube.X << "," << positionCube.Y << "..." << std::endl;
-			
-			m_path.Clear();
-			m_currentPathIndex = 0;
+
 			PushState(STATE_Move);
 		}
 	}

@@ -131,7 +131,7 @@ void spawnCreatures()
 	for (int i = 0; i < 10; ++i)
 	{
 		int x = i % 10 + 10;
-		int y = i / 10 + 10;
+		int y = i * 10 + 10;
 		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
 		g->m_entities = &g_CreatureMap;
 		g_CreatureMap[GENDAMOUR].push_back(g);
@@ -158,11 +158,12 @@ void spawnCreatures()
 	}
 
 	// Lemming
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
 		l->SetEntities( &g_CreatureMap);
-		l->m_drawDebug = true;
+		//l->m_drawDebug = true;
+		//l->m_printDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 	// Crabe
