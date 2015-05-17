@@ -68,9 +68,6 @@
     <ClCompile Include="..\src\Dahut.cpp">
       <Filter>Paul Gerst</Filter>
     </ClCompile>
-    <ClCompile Include="GlaceGouille.cpp">
-      <Filter>Judicael Abecassis</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Gendamour.cpp">
       <Filter>Nicolas Leroy</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Neon.cpp">
       <Filter>Lucas Le Gouic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GlaceGouille.cpp">
+      <Filter>Judicael Abecassis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +222,6 @@
     <ClInclude Include="..\src\Dahut.h">
       <Filter>Paul Gerst</Filter>
     </ClInclude>
-    <ClInclude Include="GlaceGouille.h">
-      <Filter>Judicael Abecassis</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Gendamour.h">
       <Filter>Nicolas Leroy</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="Neon.h">
       <Filter>Lucas Le Gouic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GlaceGouille.h">
+      <Filter>Judicael Abecassis</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
