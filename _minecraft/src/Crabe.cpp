@@ -92,7 +92,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Initialise : ALWAYS MUST BE HERE
 	State(STATE_Initialize)
 		OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- Initialisation " << std::endl;
+		std::cout << "--Crabe " << this->GetID() << "-- Initialisation " << std::endl;
 	PushState(STATE_Move); //Go to STATE_Move state
 
 	State(STATE_Move)
@@ -152,17 +152,12 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 	OnEnter
 		std::cout << "--Crabe " << this->GetID() << "-- Ca y est, je suis mort." << endl;
 		std::vector<IABase*> crabes;
-		std::vector<IABase*> crabesToDelete;
 		for (int i = 0; i < (*m_entities)[CRABE].size(); i++)
 		{
 			IABase* crabe = (*m_entities)[CRABE][i];
 			if (crabe->GetState() != STATE_Dead)
 			{
 				crabes.push_back(crabe);
-			}
-			else
-			{
-				crabesToDelete.push_back(crabe);
 			}
 		}
 		(*m_entities)[CRABE] = crabes;
