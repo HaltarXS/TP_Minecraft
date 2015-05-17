@@ -135,7 +135,7 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
+		Gendamour * g = new Gendamour(g_world, NYVert2Df(rand() % 100, rand() % 100));
 		g->m_entities = &g_CreatureMap;
 		g_CreatureMap[GENDAMOUR].push_back(g);
 	}
