@@ -104,7 +104,6 @@ void Gendamour::UpdateIA(){
 		}
 	}
 
-
 	//Update Finite State Machine
 	Update();
 
@@ -112,7 +111,7 @@ void Gendamour::UpdateIA(){
 	m_lastUpdate.start();
 
 	//recherche de créature a suivre
-	if (_target == NULL && _researhTime.getElapsedSeconds() >1){
+	if ((m_currentState != STATE_Dead && _target == NULL && _researhTime.getElapsedSeconds() >1){
 		_researhTime.start();
 		for (int i = 0; i < CREATURE_NUM; ++i){
 			eTypeCreature type = (eTypeCreature)i;
