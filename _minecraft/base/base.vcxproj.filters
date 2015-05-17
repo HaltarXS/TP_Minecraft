@@ -89,7 +89,7 @@
     <ClCompile Include="..\src\Crabe.cpp">
       <Filter>Cyril Malvaux</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Cameleon.cpp">
+    <ClCompile Include="..\src\Cameleon.cpp">
       <Filter>Pierre Le Marchand</Filter>
     </ClCompile>
   </ItemGroup>
@@ -261,7 +261,7 @@
     <ClInclude Include="..\src\Crabe.h">
       <Filter>Cyril Malvaux</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Cameleon.h">
+    <ClInclude Include="..\src\Cameleon.h">
       <Filter>Pierre Le Marchand</Filter>
     </ClInclude>
   </ItemGroup>
