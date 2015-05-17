@@ -14,6 +14,16 @@ class Gendamour : public IABase
 		Gendamour(NYWorld *pWorld, NYVert2Df pos);
 		~Gendamour();
 
+		//Pathfinding singleton
+		int m_pathIndex;
+		Path m_path;
+		Pathfinding *m_pPathfinder;
+		NYVert3Df m_targetPosition;
+		std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game
+
+		//Timer to determine delta time
+		NYTimer m_lastUpdate;
+
 		//truc a override
 		virtual void Draw();
 		virtual bool States(StateMachineEvent event, MSG_Object *msg, int state);

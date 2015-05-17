@@ -131,7 +131,9 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
+		g->m_entities = &g_CreatureMap;
+		g_CreatureMap[GENDAMOUR].push_back(g);
 	}
 
 	//Griffonkitu
@@ -142,14 +144,6 @@ void spawnCreatures()
 		Griffonkitu * g = new Griffonkitu(g_world, NYVert2Df(x, y));
 		g->SetEntities(&g_CreatureMap);
 		g_CreatureMap[GRIFFONKITU].push_back(g);
-	}
-
-	//Gendamour
-	for (int i = 0; i < 10; ++i)
-	{
-		int x = i % 10 + 10;
-		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
 	}
 
 	//Glacegouille
