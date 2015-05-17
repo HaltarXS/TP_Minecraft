@@ -479,14 +479,16 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 
 	//---Reproduction---//
 	State(STATE_Reproduction)
-		OnEnter
-		//Si on a pas encore de partenaire
+	OnEnter
+	//Si on a pas encore de partenaire
 	if (partner == NULL)
 		WastedosaureManager::GetSingleton()->FindPartner(this);//On va essayer d'en trouver un.
 
 	m_needPartner = true;
 
-	if (!hasPartner || partner == NULL || partner->GetState() == STATE_Dead)//Le wastedosaure se suicide si on a pas de partenaire ou si celui ci dest mort :(
+	if (!hasPartner || 
+		partner == NULL || 
+		partner->GetState() == STATE_Dead)//Le wastedosaure se suicide si on a pas de partenaire ou si celui ci dest mort :(
 	{
 		PushState(STATE_Suicide);//Snif
 	}
@@ -573,7 +575,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 	}
 
 	OnExit
-		m_canReproduce = true;//On peut se reproduire à nouveau
+	m_canReproduce = true;//On peut se reproduire à nouveau
 	arrivalPartner = NYVert2Df(0, 0); //Nouveau lieu de ponte à determiner
 	m_path.Clear();
 
