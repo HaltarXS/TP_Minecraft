@@ -20,7 +20,10 @@ Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos)
 	this->MaxTimeReprod = 60.0f;
 	this->Reproduction = this->MaxTimeReprod;
 	this->life = 10;
+	this->NextAttack = 0.0f;
+	this->TimeBetweenAttack = 1.0f;
 	this->m_timer.start();
+	this->m_timerAttack.start();
 }
 Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos,bool axeX)
 	: Crabe(world,spawnPos)
@@ -36,23 +39,26 @@ Crabe::~Crabe()
 
 void Crabe::UpdateIA(){
 
-	if (m_currentState != STATE_Dead)
+	if (m_currentState != STATE_Dead && this->NextAttack <= 0.0f)
 	{
 		for (int i = 0; i < (*m_entities)[GENDAMOUR].size(); i++)
 		{
-			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube;
-			if (posGend.X == this->positionCube.X && posGend.Y == this->positionCube.Y)
+			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube - this->positionCube;
+			if (posGend.X*posGend.X <4 && posGend.Y*posGend.Y <4)
 			{
 				IABase* ia = (*m_entities)[GENDAMOUR][i];
 				if (ia->GetState() != STATE_Dead)
 				{
-					ia->SendMsg(MSG_Attack, this->GetID(), ((void*) ia->life));
+					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
+					this->SendMsg(MSG_Attack, ia->GetID(), new int(ia->life));
 					this->Manger();
+					this->NextAttack = TimeBetweenAttack;
 					break;
 				}
 			}
 		}
 	}
+	NextAttack -= m_timerAttack.getElapsedSeconds(true);
 	StateMachine::Update();
 }
 
@@ -72,7 +78,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 	{
 		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
 		this->life -= *data;//I remove the value of the message data from my life.
-		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
+		std::cout << "--Crabe " << this->GetID() << " subit Charge de " << msg->GetSender() << ". C'est super efficace ! " << *data << "dmg, Vie restante : " << this->life << std::endl;
 		delete data;//Delete the data
 
 		if (this->life <= 0)//If i don't have any life
@@ -86,7 +92,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Initialise : ALWAYS MUST BE HERE
 	State(STATE_Initialize)
 		OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- Initialisation " << std::endl;
+		std::cout << "--Crabe " << this->GetID() << "-- Initialisation " << std::endl;
 	PushState(STATE_Move); //Go to STATE_Move state
 
 	State(STATE_Move)
@@ -128,6 +134,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 						Crabe * crabe = new Crabe(m_world, NYVert2Df(this->positionCube.X, this->positionCube.Y), !this->AxeX);
 						crabe->m_entities = m_entities;
 						(*m_entities)[CRABE].push_back(crabe);
+						std:cout << "Encore un qui marchera tout droit toute sa vie. NEW CRABE !" << endl;
 					}
 				}
 			}
@@ -139,14 +146,28 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 		//Override Messages you don't want to receive in this particular state
 		OnMsg(MSG_Attack)//i'm already dead, so no one can attack me anymore
 	{
-		std::cout << "--Entity " << this->GetID() << "-- Get message attack, but i'm already Dead émoticône frown" << std::endl;
+		std::cout << "--Crabe " << this->GetID() << "-- s'est fait attaqué mais était déjà mort. Respecte les cadavres, merci !" << std::endl;
 	}
 
 	OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
-
+		std::cout << "--Crabe " << this->GetID() << "-- Ca y est, je suis mort." << endl;
+		std::vector<IABase*> crabes;
+		for (int i = 0; i < (*m_entities)[CRABE].size(); i++)
+		{
+			IABase* crabe = (*m_entities)[CRABE][i];
+			if (crabe->GetState() != STATE_Dead)
+			{
+				crabes.push_back(crabe);
+			}
+		}
+		(*m_entities)[CRABE] = crabes;
+		
 
 	EndStateMachine
+		if (m_currentState == STATE_Dead)
+		{
+			delete this;
+		}
 }
 
 void Crabe::Draw()

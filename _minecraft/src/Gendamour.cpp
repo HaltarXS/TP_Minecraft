@@ -41,7 +41,11 @@ void Gendamour::Draw(){
 	glTranslatef(position.X, position.Y, position.Z);
 	glutSolidCube(NYCube::CUBE_SIZE / 2.0f);
 
-	glColor3f(1, 0, 1);
+	if (m_currentState != STATE_Dead)
+		glColor3f(1, 0, 1);
+	else
+		glColor3f(0, 0, 0);
+
 	glTranslatef(0, 0, 2);
 	glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPopMatrix();
@@ -100,7 +104,6 @@ void Gendamour::UpdateIA(){
 		}
 	}
 
-
 	//Update Finite State Machine
 	Update();
 
@@ -108,7 +111,7 @@ void Gendamour::UpdateIA(){
 	m_lastUpdate.start();
 
 	//recherche de créature a suivre
-	if (_target == NULL && _researhTime.getElapsedSeconds() >1){
+	if (m_currentState != STATE_Dead && _target == NULL && _researhTime.getElapsedSeconds() >1){
 		_researhTime.start();
 		for (int i = 0; i < CREATURE_NUM; ++i){
 			eTypeCreature type = (eTypeCreature)i;
@@ -135,7 +138,7 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 	{
 		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
 		this->life -= *data;//I remove the value of the message data from my life.
-		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
+		std::cout << "--Gendamour " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
 		delete data;//Delete the data
 
 		if (this->life <= 0)//If i don't have any life
@@ -200,7 +203,7 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 		}
 	State(STATE_Dead)
 		OnEnter{
-			//cout << "Gendamour is dead !" << endl;
+			cout << "Gendamour " << GetID() <<" is dead !" << endl;
 		}
 		OnUpdate{
 
@@ -218,22 +221,28 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 			bool pathFound = false;
 			NYVert3Df newPosition;
 
+		
 				if (_target != NULL){
-					newPosition.X = _target->positionCube.X;
-					newPosition.Y = _target->positionCube.Y;
-					newPosition.Z = (int)m_world->_MatriceHeights[(int)newPosition.X][(int)newPosition.Y];
+					if ((_target->position - position).getMagnitude() > 500){
 
-					if (newPosition.X > 1 && newPosition.X < MAT_SIZE_CUBES - 1 &&
-						newPosition.Y > 1 && newPosition.Y < MAT_SIZE_CUBES - 1 &&
-						newPosition.Z > 1 && newPosition.Z < MAT_SIZE_CUBES - 1)
-					{
-						NYVert2Df* pos = new NYVert2Df(positionCube.X, positionCube.Y);
-						NYVert2Df* newPos = new NYVert2Df(newPosition.X, newPosition.Y);
-						pathFound = m_pPathfinder->FindPath(*pos, *newPos, 1, m_path, false);
+						newPosition.X = _target->positionCube.X;
+						newPosition.Y = _target->positionCube.Y;
+						newPosition.Z = (int)m_world->_MatriceHeights[(int)newPosition.X][(int)newPosition.Y];
+
+						if (newPosition.X > 1 && newPosition.X < MAT_SIZE_CUBES - 1 &&
+							newPosition.Y > 1 && newPosition.Y < MAT_SIZE_CUBES - 1 &&
+							newPosition.Z > 1 && newPosition.Z < MAT_SIZE_CUBES - 1)
+						{
+							NYVert2Df* pos = new NYVert2Df(positionCube.X, positionCube.Y);
+							NYVert2Df* newPos = new NYVert2Df(newPosition.X, newPosition.Y);
+							pathFound = m_pPathfinder->FindPath(*pos, *newPos, 2, m_path, false);
+							PushState(STATE_Move);
+
+						}
 					}
 				}
-		
 				else{
+
 					newPosition.X = (int)(positionCube.X + rand() / ((float)RAND_MAX) * 50.0f - 25.0f);
 					newPosition.Y = (int)(positionCube.Y + rand() / ((float)RAND_MAX) * 50.0f - 25.0f);
 					newPosition.Z = (int)m_world->_MatriceHeights[(int)newPosition.X][(int)newPosition.Y];
@@ -244,11 +253,13 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 					{
 						NYVert2Df* pos = new NYVert2Df(positionCube.X, positionCube.Y);
 						NYVert2Df* newPos = new NYVert2Df(newPosition.X, newPosition.Y);
-						pathFound = m_pPathfinder->FindPath(*pos, *newPos, 1, m_path,false );
+						pathFound = m_pPathfinder->FindPath(*pos, *newPos, 2, m_path, false);
+
+						PushState(STATE_Move);
+
 					}
 				}
 			
-			PushState(STATE_Move);
 		}
 	State(STATE_Suicide)
 		OnEnter{

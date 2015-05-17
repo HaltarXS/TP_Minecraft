@@ -38,6 +38,7 @@
 #include "Griffonkitu.h"
 #include "GlaceGouille.h"
 #include "Lemming.h"
+#include "Mouche.h"
 #include "Furz.h"
 #include "Crabe.h"
 #include "Cameleon.h"
@@ -165,6 +166,14 @@ void spawnCreatures()
 		l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
+
+	//Mouche
+	for (int i = 0; i < Mouche::MAX_MOUCHE; ++i)
+	{
+		Mouche * mouche = new Mouche(g_world, NYVert2Df(0, 0));
+		g_CreatureMap[MOUCHE].push_back(mouche);
+	}
+
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
@@ -172,18 +181,13 @@ void spawnCreatures()
 		crabe->m_entities = &g_CreatureMap;
 		g_CreatureMap[CRABE].push_back(crabe);
 	}
-	// Cameleon
-	for (int i = 0; i < 2; ++i)
+	// Parasite
+	for (int i = 0; i < 1; ++i)
 	{
-
-		int x = i % 10 + 15;
-		int y = i / 10 + 15;
-		Cameleon * leon = new Cameleon(g_world, NYVert2Df(x, y));
-		leon->m_entities = &g_CreatureMap;
-		g_CreatureMap[CAMELEON].push_back(leon);
+		Parasite * p = new Parasite(g_world, NYVert2Df(19 + i, 15), true);
+		p->m_entities = &g_CreatureMap;
+		g_CreatureMap[PARASITE].push_back(p);
 	}
-
-
 	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
 	bixi->_entities = &g_CreatureMap;
 	g_CreatureMap[BIXI].push_back(bixi);

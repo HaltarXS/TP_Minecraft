@@ -30,6 +30,7 @@
     <ClCompile Include="..\src\chunk.cpp" />
     <ClCompile Include="..\src\Lemming.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Mouche.cpp" />
     <ClCompile Include="..\src\msg.cpp" />
     <ClCompile Include="..\src\msgroute.cpp" />
     <ClCompile Include="..\src\ny_utils.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\src\chunk.h" />
     <ClInclude Include="..\src\cube.h" />
     <ClInclude Include="..\src\Lemming.h" />
+    <ClInclude Include="..\src\Mouche.h" />
     <ClInclude Include="..\src\msg.h" />
     <ClInclude Include="..\src\msgroute.h" />
     <ClInclude Include="..\src\my_physics.h" />

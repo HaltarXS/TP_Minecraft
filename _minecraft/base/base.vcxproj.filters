@@ -101,6 +101,9 @@
     <ClCompile Include="..\src\Snake.cpp">
       <Filter>Vincent Swaenepoel</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Mouche.cpp">
+      <Filter>Guillaume Dor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -165,6 +168,9 @@
     </Filter>
     <Filter Include="Julien Daniel">
       <UniqueIdentifier>{5781b2f3-111f-4a2f-b954-1adab6d30fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillaume Dor">
+      <UniqueIdentifier>{284f19a7-c264-42a1-9acd-125fd5e5dd05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Snake.h">
       <Filter>Vincent Swaenepoel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Mouche.h">
+      <Filter>Guillaume Dor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

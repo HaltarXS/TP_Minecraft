@@ -22,7 +22,7 @@ Lemming::Lemming(NYWorld * _world, NYVert2Df _spawnPos)
 
 	// Gauge initialization
 	m_currentHungerPoints = 0;
-	m_currentLifePoints = m_maxLifePoints;
+	IABase::life = m_maxLifePoints;
 	m_currentReproductionPoints = 0;
 
 	// Timer initialization
@@ -64,6 +64,9 @@ void Lemming::Update(float _elapsedTime)
 		m_tick = 0;
 	}
 
+	if (m_inactiveTimer >= 0.f)
+		m_inactiveTimer -= m_timeElapsed;
+
 	if (m_currentState == STATE_Dance)
 	{
 		m_dancingTime -= m_timeElapsed;
@@ -75,7 +78,7 @@ void Lemming::Born()
 	std::cout << "NEW BORN!!" << std::endl;
 
 	m_currentHungerPoints = 0;
-	m_currentLifePoints = m_maxLifePoints;
+	IABase::life = m_maxLifePoints;
 	m_currentReproductionPoints = 0;
 }
 
@@ -107,9 +110,9 @@ void Lemming::GetVisibleCreatures()
 void Lemming::Eat()
 {
 	m_currentHungerPoints -= 100;
-	m_currentLifePoints += 10;
+	IABase::life += 10;
 	m_currentHungerPoints = max(m_currentHungerPoints, 0);
-	m_currentLifePoints = min(m_currentLifePoints, m_maxLifePoints);
+	IABase::life = min(IABase::life, m_maxLifePoints);
 }
 
 bool Lemming::CanReproduce()
@@ -121,8 +124,8 @@ void Lemming::Reproduce()
 {
 	m_currentReproductionPoints = 0;
 
-	m_currentLifePoints += 50;
-	m_currentLifePoints = min(m_maxLifePoints, m_currentLifePoints);
+	IABase::life += 50;
+	IABase::life = min(m_maxLifePoints, IABase::life);
 
 	m_currentHungerPoints = 0;
 }
@@ -145,17 +148,21 @@ void Lemming::Draw()
 		glColor3f(0.f, 0.f, 0.f);
 	else if (m_currentState == STATE_Follow)
 		glColor3f(1.0f, 0.2f, 0.2f);
+	else if (m_currentState == STATE_Dead)
+		glColor3f(0.f, 0.f, 1.f);
 	else
 		glColor3f(0.f, 0.4f, 0.9f);
 
 
-
+	// Corpse
 	glutSolidCube(7);
-		glPushMatrix();
-			glTranslatef(0, 0, 5);
-			glColor3f(0.1f, 0.9f, 0.1f);
-			glutSolidCube(5);
-		glPopMatrix();
+	glPushMatrix();
+	glTranslatef(0, 0, 5);
+	glColor3f(0.1f, 0.9f, 0.1f);
+	glutSolidCube(5);
+
+	// Pop matrices
+	glPopMatrix();
 	glPopMatrix();
 
 	if (m_drawDebug)
@@ -261,12 +268,18 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 	}
 
-	OnMsg(MSG_Attack)
+	OnMsg(MSG_Attack)//If i'm attacked
 	{
-		DEBUG
-		std::cout << "Lemming is dead" << std::endl;
-		PushState(STATE_Dead);
-	}
+		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
+		this->life -= *data;//I remove the value of the message data from my life.
+		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << this->life << std::endl;
+		delete data;//Delete the data
+
+		if (this->life <= 0)//If i don't have any life
+		{
+			PushState(STATE_Dead);//Use PushState to go in an other state
+		}
+	}//Message Attack
 
 
 	// States : 
@@ -295,7 +308,7 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 		// Update the visible creatures
 		GetVisibleCreatures();
 		// Lemming see other creatures
-		if (m_visibleCreatures.size() > 0)
+		if (m_visibleCreatures.size() > 0 && m_inactiveTimer <= 0.f)
 		{
 			DEBUG
 			std::cout << "Lemming see : " << m_visibleCreatures.size() << " creatures" << std::endl;

@@ -15,11 +15,15 @@ class Dahut : public IABase
 {
 private :
 
+	//Constant parameters
+	const int m_eatingQty = 100;
+	const int m_hungerThreshold = 200;
+
 	//Pathfinding singleton
 	int m_pathIndex;
 	Path m_path;
 	Pathfinding *m_pPathfinder;
-	
+
 	//Movement parameters
 	NYPoint3D m_targetCube;
 	NYVert3Df m_targetPosition;

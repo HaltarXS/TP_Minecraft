@@ -20,7 +20,9 @@ private:
 	float Reproduction = 60.0f;
 	float MaxTimeReprod;
 	NYTimer m_timer;
-
+	float NextAttack;
+	float TimeBetweenAttack;
+	NYTimer m_timerAttack;
 	bool LeftToRight;
 	bool AxeX;
 	void Update(float _elapsedTime);
