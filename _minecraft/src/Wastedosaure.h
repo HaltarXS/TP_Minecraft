@@ -25,13 +25,13 @@
 //using namespace std;
 
 typedef std::vector<IABase*> CreatureVector;
-#define MAX_WASTEDOSAURE 25
+#define MAX_WASTEDOSAURE 20
 
 class Wastedosaure :public IABase
 {
 private:
 
-	float m_speed = 50.0f + 0.05f*GetID();
+	float m_speed = 45.0f + 0.05f*GetID();
 
 	//Timers
 	//Egg
@@ -80,7 +80,7 @@ private:
 
 	//View Cone
 	const float m_viewDistance = 40.0f;
-	const float m_viewAngle = 70.0f;
+	const float m_viewAngle = 100.0f;
 
 	//Distance to target
 	float m_distanceToTarget = 0.0f;
@@ -114,7 +114,7 @@ private:
 	void UpdateTimers();
 
 
-
+	NYCubeType GetCubeUnderType(IABase * target);
 	
 	
 

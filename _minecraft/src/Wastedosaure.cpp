@@ -53,6 +53,13 @@ bool Wastedosaure::HasAPath()
 	return m_path.GetSize() > 0;
 }
 
+NYCubeType Wastedosaure::GetCubeUnderType(IABase * target)
+{
+	NYVert3Df positionCube = target->position / NYCube::CUBE_SIZE;
+	positionCube.Z = m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y];
+	return m_world->getCube(positionCube.X, positionCube.Y, positionCube.Z)->_Type;
+}
+
 NYVert3Df Wastedosaure::FindClosestCubeWater()
 {
 	NYVert3Df offset;
@@ -106,7 +113,8 @@ void Wastedosaure::UpdateIA()
 			m_currentState != STATE_Reproduction &&
 			m_currentState != STATE_Suicide &&
 			m_currentState != STATE_Dead &&
-			m_currentSize >= m_maxSize / 2.0f)
+			m_currentSize >= m_maxSize / 2.0f &&
+			GetCubeUnderType(m_creaturesInSight[0]) != NYCubeType::CUBE_EAU)
 		{
 			WastedosaureManager::GetSingleton()->PrepareAttack(m_creaturesInSight[0]);
 		}
@@ -336,7 +344,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		float lenght = direction.getSize();
 		direction.normalize();
 
-		if (lenght < 3.0f)
+		if (lenght < 4.0f)
 		{
 			++m_currentIndex;
 		}
@@ -427,7 +435,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 		float lenght = direction.getSize();
 		direction.normalize();
 
-		if (lenght < 1.0f)
+		if (lenght < 4.0f)
 		{
 			++m_currentIndex;
 		}
@@ -487,7 +495,7 @@ bool Wastedosaure::States(StateMachineEvent event, MSG_Object * msg, int state)
 			float lenght = direction.getSize();
 			direction.normalize();
 
-			if (lenght < 1.0f)
+			if (lenght < 4.0f)
 			{
 				++m_currentIndex;
 			}
