@@ -20,6 +20,7 @@ enum eTypeCreature
 	GENDAMOUR,
 	SNAKE,
 	GRIFFONKITU,
+	FURZ,
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };

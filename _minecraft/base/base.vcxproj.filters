@@ -83,6 +83,9 @@
     <ClCompile Include="..\src\Griffonkitu.cpp">
       <Filter>Martin Lagrange</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Furz.cpp">
+      <Filter>Bastien Besland</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -132,6 +135,9 @@
     </Filter>
     <Filter Include="Martin Lagrange">
       <UniqueIdentifier>{73ff9518-0a85-41f2-a04a-d34821c46641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bastien Besland">
+      <UniqueIdentifier>{cea04944-8a3f-4971-9f67-483946d7d6b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Griffonkitu.h">
       <Filter>Martin Lagrange</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Furz.h">
+      <Filter>Bastien Besland</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

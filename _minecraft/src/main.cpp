@@ -38,6 +38,7 @@
 #include "Griffonkitu.h"
 #include "GlaceGouille.h"
 #include "Lemming.h"
+#include "Furz.h"
 
 NYWorld * g_world;
 
@@ -163,6 +164,9 @@ void spawnCreatures()
 		l->m_entities = &g_CreatureMap;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
+
+	//Furz
+	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 }
 
 /** === Mise à jour des IA ===

@@ -17,6 +17,7 @@
     <ClCompile Include="..\src\Dahut.cpp" />
     <ClCompile Include="..\src\database.cpp" />
     <ClCompile Include="..\src\debuglog.cpp" />
+    <ClCompile Include="..\src\Furz.cpp" />
     <ClCompile Include="..\src\gameobject.cpp" />
     <ClCompile Include="..\src\Gendamour.cpp" />
     <ClCompile Include="..\src\GlaceGouille.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="..\src\database.h" />
     <ClInclude Include="..\src\debuglog.h" />
     <ClInclude Include="..\src\FSM.h" />
+    <ClInclude Include="..\src\Furz.h" />
     <ClInclude Include="..\src\gameobject.h" />
     <ClInclude Include="..\src\Gendamour.h" />
     <ClInclude Include="..\src\GlaceGouille.h" />
