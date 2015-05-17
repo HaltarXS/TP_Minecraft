@@ -16,8 +16,14 @@ Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos)
 	this->Speed = 10.0f;
 	this->AxeX = true;
 	this->LeftToRight = true;
+	this->MaxTimeReprod = 60.0f;
+	this->Reproduction = this->MaxTimeReprod;
 	this->m_timer.start();
-
+}
+Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos,bool axeX)
+	: Crabe(world,spawnPos)
+{
+	this->AxeX = axeX;
 }
 
 
@@ -36,6 +42,7 @@ void Crabe::UpdateIA(){
 		{
 			(*m_entities)[GENDAMOUR][i]->life = 0.0f;
 			this->Manger();
+			(*m_entities)[GENDAMOUR][i]->~IABase();
 		}
 		else
 		{
@@ -47,6 +54,14 @@ void Crabe::UpdateIA(){
 
 void Crabe::Update(float elapsedTime)
 {
+	this->Reproduction -= elapsedTime;
+	if (Reproduction <= 0.0f)
+	{
+		Crabe * crabe = new Crabe(m_world, NYVert2Df(this->positionCube.X,this->positionCube.Y),!this->AxeX);
+		crabe->m_entities = m_entities;
+		(*m_entities)[CRABE].push_back(crabe);
+		this->Reproduction = this->MaxTimeReprod;
+	}
 	NYVert3Df oldPos = this->position;
 	this->position.X += Speed*AxeX*elapsedTime*(-1 + 2 *LeftToRight);
 	this->position.Y += Speed*(!AxeX)*elapsedTime*(-1 + 2 *LeftToRight);

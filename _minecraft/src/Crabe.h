@@ -7,6 +7,7 @@ class Crabe :
 {
 public:
 	Crabe(NYWorld* world,NYVert2Df spawnPos);
+	Crabe(NYWorld* world, NYVert2Df spawnPos,bool axeX);
 	~Crabe();
 	void Draw();
 	void UpdateIA();
@@ -15,6 +16,8 @@ public:
 private:
 	float Size;
 	float Speed;
+	float Reproduction;
+	float MaxTimeReprod;
 	NYTimer m_timer;
 
 	bool LeftToRight;
