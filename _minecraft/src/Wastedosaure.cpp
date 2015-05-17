@@ -117,7 +117,7 @@ void Wastedosaure::UpdateIA()
 
 void Wastedosaure::UpdateTimers()
 {
-	if (m_currentState == STATE_Move || m_currentState == STATE_Attack)
+	if (m_currentState == STATE_Move || m_currentState == STATE_Attack || m_currentState == STATE_FindPath)
 	{
 		if (m_timerWandering >= m_durationWandering)
 		{
