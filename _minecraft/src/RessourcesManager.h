@@ -29,6 +29,10 @@ public :
 	RessourceList* GetRessourcesByType(TypeRessource type);
 	void Delete(Ressource *pRessource);
 
+	//Update, render ressources
+	void Update();
+	void Render();
+
 private :
 
 	RessourcesManager();

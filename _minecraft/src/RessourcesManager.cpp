@@ -1,4 +1,5 @@
 #include "RessourcesManager.h"
+#include "engine\render\renderer.h"
 #include "Herbe.h"
 #include "Crotte.h"
 
@@ -7,7 +8,7 @@ RessourcesManager* RessourcesManager::s_pInstance = NULL;
 
 RessourcesManager::RessourcesManager()
 {
-	for(int i = 0; i < (int)RESSOURCE_NUM; ++i)
+	for(int i = 0; i < RESSOURCE_NUM; ++i)
 	{
 		TypeRessource type = (TypeRessource) i;
 		m_ressources.insert(std::pair<TypeRessource, RessourceList>(type, RessourceList()));
@@ -78,5 +79,43 @@ void RessourcesManager::Delete(Ressource *pRessource)
 	{
 		delete (*it);
 		m_ressources[pRessource->Type].erase(it);
+	}
+}
+
+void RessourcesManager::Update()
+{
+	float delta = NYRenderer::_DeltaTime;
+	for(int i = 0; i < RESSOURCE_NUM; ++i)
+	{
+		TypeRessource type = (TypeRessource) i;
+		auto it = m_ressources[type].begin();
+		auto end = m_ressources[type].end();
+		while(it != end)
+		{
+			(*it)->Update(delta);
+			if((*it)->Quantity <= 0)
+			{
+				auto prev = it++;
+				m_ressources[type].erase(prev);
+			}
+			else
+			{
+				it++;
+			}
+		}
+	}
+}
+
+void RessourcesManager::Render()
+{
+	for(int i = 0; i < RESSOURCE_NUM; ++i)
+	{
+		TypeRessource type = (TypeRessource) i;
+		auto begin = m_ressources[type].begin();
+		auto end = m_ressources[type].end();
+		for(auto it = begin; it != end; ++it)
+		{
+			(*it)->Render();
+		}
 	}
 }

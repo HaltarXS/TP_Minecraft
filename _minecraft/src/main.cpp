@@ -77,8 +77,6 @@ Herbe *herbe2;
 
 Crotte *crotte;
 
-RessourcesManager *ressourceManager;
-
 //State Machine
 FSM * master_FSM;
 
@@ -253,11 +251,14 @@ void update(void)
 
 
 	//lapin->UpdateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
-	herbe->Update(NYRenderer::_DeltaTime);
+	//herbe->Update(NYRenderer::_DeltaTime);
 
 	//Update State Machine example
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
+
+	//Update ressouces
+	RessourcesManager::GetSingleton()->Update();
 
 	//Update creatures (max 5ms)
 	creatureUpdate(5);
@@ -355,10 +356,13 @@ void renderObjects(void)
 	glUseProgram(0);
 	avatar->render();
 
-	herbe->Render();
-	herbe2->Render();
+	//Render ressources
+	RessourcesManager::GetSingleton()->Render();
+	
+	//herbe->Render();
+	//herbe2->Render();
 
-	crotte->Render();
+	//crotte->Render();
 
 	returnPath.DrawPath();
 
@@ -850,11 +854,11 @@ int main(int argc, char* argv[])
 	avatar->Speed = NYVert3Df(60,60,60);
 	//Init application
 	//lapin = new IABase();
-	
-	herbe = new Herbe(NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
-	herbe2 = new Herbe(NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
 
-	crotte = new Crotte(NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
+	RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
+	pRessourceMgr->Create(HERBE, NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
+	pRessourceMgr->Create(HERBE, NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
+	pRessourceMgr->Create(CROTTE, NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
 
 	//Init Timer
 	g_timer = new NYTimer();
