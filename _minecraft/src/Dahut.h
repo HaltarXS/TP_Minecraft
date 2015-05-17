@@ -19,10 +19,13 @@ private :
 	int m_pathIndex;
 	Path m_path;
 	Pathfinding *m_pPathfinder;
-
-	//Determine the cube the Dahut is climbing/walking on
-	NYPoint3D m_cubeAnchor;
+	
+	//Movement parameters
+	NYPoint3D m_targetCube;
 	NYVert3Df m_targetPosition;
+	NYVert3Df m_interPositions[8];
+	int m_interIndex;
+	int m_interMax;
 
 	//Timer to determine delta time
 	NYTimer m_lastUpdate;
@@ -32,10 +35,24 @@ public :
 	Dahut(NYWorld *pWorld, NYVert2Df pos);
 	~Dahut();
 
-	//Override base class methods
+	//Overriden base class methods
 	virtual void UpdateIA();
 	virtual void Draw();
 	virtual bool States(StateMachineEvent event, MSG_Object *msg, int state);
+
+private :
+
+	//Helper function
+	void SetTargetPosition();
+
+	//Check if adjacent blocks are climbable
+	bool CheckClimbable(int x, int y);
+
+	//Movement functions, used in SetTargetPosition
+	void UnClimb(const NYVert3Df &from, const NYVert3Df &to);
+	void Climb(const NYVert3Df &from, const NYVert3Df &to);
+	void MoveUnclimbed(const NYVert3Df &from, const NYVert3Df &to);
+	void MoveClimbed(const NYVert3Df &from, const NYVert3Df &to);
 };
 
 #endif
