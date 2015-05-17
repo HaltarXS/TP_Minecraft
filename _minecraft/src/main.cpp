@@ -173,7 +173,15 @@ void spawnCreatures()
 		Mouche * mouche = new Mouche(g_world, NYVert2Df(0, 0));
 		g_CreatureMap[MOUCHE].push_back(mouche);
 	}
-
+	//Cameleon
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 15;
+		int y = i / 10 + 15;
+		Cameleon * leon = new Cameleon(g_world, NYVert2Df(x, y));
+		leon->m_entities = &g_CreatureMap;
+		g_CreatureMap[CAMELEON].push_back(leon);
+	}
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
