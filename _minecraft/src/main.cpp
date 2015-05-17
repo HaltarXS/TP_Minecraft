@@ -111,7 +111,7 @@ void spawnCreatures()
 	//Wastedosaure
 	for (int i = 0; i < 6; ++i)
 	{
-		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(20 + 2 * i, 20 + 2 * i));
+		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(50 + 2 * i, 20 + 2 * i));
 		w->SetEntities(&g_CreatureMap);
 		g_CreatureMap[WASTEDOSAURE].push_back(w);
 	}

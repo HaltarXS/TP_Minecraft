@@ -92,11 +92,10 @@ void WastedosaureManager::PrepareAttack(IABase * target)
 {
 	for (int i = 0; i < m_wastosaures.size(); ++i)
 	{
-		if (m_wastosaures[i]->GetState() != STATE_Dead)
+		if (m_wastosaures[i]->GetState() != STATE_Dead && m_wastosaures[i]->GetState() != STATE_Suicide && m_wastosaures[i]->GetState() != STATE_Reproduction)
 		{
 			m_wastosaures[i]->target = target;
 			m_wastosaures[i]->PushState(STATE_Attack);
 		}
-		
 	}
 }
