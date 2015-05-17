@@ -204,7 +204,7 @@ bool Gendamour::States(StateMachineEvent event, MSG_Object *msg, int state)
 		}
 	State(STATE_Dead)
 		OnEnter{
-			//cout << "Gendamour is dead !" << endl;
+			cout << "Gendamour " << GetID() <<" is dead !" << endl;
 		}
 		OnUpdate{
 
