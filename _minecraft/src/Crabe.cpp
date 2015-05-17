@@ -40,8 +40,8 @@ void Crabe::UpdateIA(){
 	{
 		for (int i = 0; i < (*m_entities)[GENDAMOUR].size(); i++)
 		{
-			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube;
-			if (posGend.X == this->positionCube.X && posGend.Y == this->positionCube.Y)
+			NYVert3Df posGend = (*m_entities)[GENDAMOUR][i]->positionCube - this->positionCube;
+			if (posGend.X*posGend.X <4 && posGend.Y*posGend.Y <4)
 			{
 				IABase* ia = (*m_entities)[GENDAMOUR][i];
 				if (ia->GetState() != STATE_Dead)
