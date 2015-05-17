@@ -35,6 +35,7 @@
 #include "Wastedosaure.h"
 #include "Dahut.h"
 #include "Gendamour.h"
+#include "Griffonkitu.h"
 
 NYWorld * g_world;
 
@@ -127,6 +128,15 @@ void spawnCreatures()
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
 		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+	}
+	//Griffonkitu
+	for (int i = 0; i < 15; ++i)
+	{
+		int x = i % 10 + 10;
+		int y = i / 10 + 10;
+		Griffonkitu * g = new Griffonkitu(g_world, NYVert2Df(x, y));
+		g->SetEntities(&g_CreatureMap);
+		g_CreatureMap[GRIFFONKITU].push_back(g);
 	}
 }
 
@@ -456,9 +466,6 @@ void specialDownFunction(int key, int p1, int p2)
 	if(key == GLUT_KEY_LEFT)
 	{
 	}
-
-	
-
 }
 
 void specialUpFunction(int key, int p1, int p2)
