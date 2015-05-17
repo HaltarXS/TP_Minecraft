@@ -16,11 +16,11 @@ class Parasite : public IABase
 private:
 
 	//Sleeping time, avant l'activation du parasite
-	float m_durationSleep = 10.0f;
+	float m_durationSleep = 40.0f;
 	float m_timeSleep = 0.0f;
 
 	//Active time, le parasite peut infecter les autres créatures en créant un fils parasite qui ira sur l'hôte cible
-	float m_durationReproduction = 20.0f;
+	float m_durationReproduction = 60.0f;
 	float m_timeReproduction = 0.0f;
 
 	//Timer de détection des animaux à proximité
