@@ -86,6 +86,9 @@
     <ClCompile Include="..\src\Furz.cpp">
       <Filter>Bastien Besland</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Crabe.cpp">
+      <Filter>Cyril Malvaux</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -138,6 +141,9 @@
     </Filter>
     <Filter Include="Bastien Besland">
       <UniqueIdentifier>{cea04944-8a3f-4971-9f67-483946d7d6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cyril Malvaux">
+      <UniqueIdentifier>{248841c5-ee9b-4b6b-930d-14342716efe9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Furz.h">
       <Filter>Bastien Besland</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Crabe.h">
+      <Filter>Cyril Malvaux</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
