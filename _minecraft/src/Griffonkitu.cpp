@@ -252,7 +252,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		OnUpdate{
 		m_positionTarget = position - m_target->position;
 		//si il touche ça cible, il repard
-		if (m_positionTarget.getSize() < 5.0f) {
+		if (m_positionTarget.getSize() < 6.0f) {
 			this->SendMsg(MSG_Attack, m_target->GetID(), new int(1));
 			ChangeHuntArea();
 			m_obsColor = false;
