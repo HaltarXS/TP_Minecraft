@@ -85,8 +85,8 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Move
 	State(STATE_Move)
 	OnUpdate
+
 	if (m_currentState != STATE_Dead){
-		//cout << "SNAKE : déplacement" << endl;
 
 		int direction = rand() % 4;
 		NYVert3Df newPosition;
@@ -110,12 +110,17 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 		if (isValideMove)
 		{
+			
+
 			for (int i = m_listPosition.size() - 1; i >= 0; i--){
 				if (i > 0)
 					m_listPosition[i] = m_listPosition[i - 1];
 				else
 					m_listPosition[i] = newPosition;
 				
+
+				
+
 			}
 			PushState(STATE_Sleep);
 		}
@@ -123,18 +128,21 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 	//Eat
 	State(STATE_Eat)
-	OnEnter
-	std::cout << "--Entity " << this->GetID() << "-- Entering Eat " << std::endl;
 	OnUpdate
-		std::cout << "--Entity " << this->GetID() << "-- I ate something :) " << std::endl;
-	PushState(STATE_Move);
-	OnExit
+	//Pour l'instant on fait comme ça, mais faudrait trouver mieux
+	if (rand() % 10 == 0){
+	NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
+	m_listPosition.push_back(push);
+	}
+
+	PushState(STATE_Reproduction);
 
 	State(STATE_Sleep)
 	OnUpdate
 	if (m_timerSleep >= m_sleepDuration)
 	{
-		PushState(STATE_Move);
+		//Si un autre monstre est à portée de sa bouche
+		PushState(STATE_Eat);
 	}
 	m_timerSleep += NYRenderer::_DeltaTime;
 	//Sleep. Do nothing
@@ -143,16 +151,20 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	m_timerSleep = 0.0f; //Reinitialisation of the timer when exiting
 
 
-	//Dead
-	State(STATE_Dead)
-	//Override Messages you don't want to receive in this particular state
-	OnMsg(MSG_Attack)//i'm already dead, so no one can attack me anymore
-	{
-		std::cout << "--Entity " << this->GetID() << "-- Get message attack, but i'm already Dead :(" << std::endl;
-	}
+	State(STATE_Reproduction)
+	OnUpdate
+	if (m_listPosition.size() >= 10){
+		cout << "SNAKE : verification reproduction" << endl;
+		Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
+		pommeDArgent->m_entities = m_entities;
+		(*m_entities)[SNAKE].push_back(pommeDArgent);
 
-	OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
+		//et on détruit les 5 dernières éléments
+		for (int i = 0; i < 5; i++)
+		m_listPosition.pop_back();
+	}
+	
+	PushState(STATE_Move);
 
 
 	EndStateMachine
