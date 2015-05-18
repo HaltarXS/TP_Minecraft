@@ -19,7 +19,8 @@ private :
 	//Constant parameters
 	const int m_eatingQty = 100;
 	const int m_hungerThreshold = 100;
-	const int m_smellDistance = 30;
+	const int m_smellDistance = 15;
+	const float m_pathfindingInterval = 0.5f;
 
 	//Pathfinding singleton
 	int m_pathIndex;
@@ -45,6 +46,7 @@ private :
 
 	//Timer to determine delta time
 	NYTimer m_lastUpdate;
+	NYTimer m_lastPathfinding;
 
 public :
 
