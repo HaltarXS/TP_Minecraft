@@ -166,7 +166,7 @@ void spawnCreatures()
 	{
 		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
 		l->SetEntities( &g_CreatureMap);
-		//l->m_printDebug = true;
+		//l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 
