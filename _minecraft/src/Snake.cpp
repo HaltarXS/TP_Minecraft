@@ -15,17 +15,10 @@ Snake::Snake(NYWorld *pWorld, NYVert2Df pos, int size = 5) : IABase(pWorld)
 
 	m_size = size;
 
-	positionCube.X = (int)pos.X;
-	positionCube.Y = (int)pos.Y;
-	positionCube.Z = (int)pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y];
-
-	position.X = positionCube.X*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
-	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
-	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
-
 	//On créer tous les cubes du snake
 	for (int i = 0; i < size; i++){
-		m_listPosition.push_back(NYVert3Df(position.X - i*NYCube::CUBE_SIZE, position.Y, (int)pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] * NYCube::CUBE_SIZE));
+		NYVert3Df posSpawn = NYVert3Df(pos.X*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, pos.Y * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] +1)*NYCube::CUBE_SIZE);
+		m_listPosition.push_back(posSpawn);
 	}
 }
 
@@ -41,12 +34,17 @@ void Snake::UpdateIA(){
 
 void Snake::Draw(){
 
-	glColor3f(160, 160, 160);
+	glColor3f(255, 255, 255);
 	glPushMatrix();
-
+	
 	for (int i = 0; i < m_listPosition.size(); i++){
-		glTranslatef(position.X, position.Y, position.Z);
-		glutSolidCube(NYCube::CUBE_SIZE / 2.0f);
+		if (i == 0){
+			glTranslatef(m_listPosition[i].X, m_listPosition[i].Y, m_listPosition[i].Z);
+		}
+		else{
+			glTranslatef(m_listPosition[i].X - m_listPosition[i - 1].X, m_listPosition[i].Y - m_listPosition[i - 1].Y, m_listPosition[i].Z - m_listPosition[i - 1].Z);
+		}
+		glutSolidCube(NYCube::CUBE_SIZE);
 	}
 
 
@@ -116,7 +114,7 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	std::cout << "--Entity " << this->GetID() << "-- Entering Eat " << std::endl;
 	OnUpdate
 		std::cout << "--Entity " << this->GetID() << "-- I ate something :) " << std::endl;
-	PushState(STATE_Sleep);
+	PushState(STATE_Move);
 	OnExit
 
 	//Dead

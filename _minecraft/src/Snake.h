@@ -23,7 +23,7 @@ private:
 	objectID m_entityToCommunicateWith;
 
 	int m_size;
-	std::list<NYVert3Df> m_listPosition;
+	std::vector<NYVert3Df> m_listPosition;
 
 public:
 	Snake(NYWorld *pWorld, NYVert2Df pos, int size);
