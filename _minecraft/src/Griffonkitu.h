@@ -39,7 +39,7 @@ private:
 	NYVert3Df m_positionFromHuntAreaPoint;
 	NYVert3Df m_positionTarget;
 	float m_radius;
-    NYVert3Df m_s_up;
+	NYVert3Df m_s_up;
 	Pathfinding * m_pf = Pathfinding::GetSingleton();
 	Path m_path;
 	int m_currentIndex = 0;

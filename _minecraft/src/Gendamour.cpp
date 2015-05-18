@@ -8,7 +8,7 @@ Gendamour::Gendamour(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 
 	type = GENDAMOUR;
 
-	life = 1000;
+	life = 250;
 
 	positionCube.X = (int)pos.X;
 	positionCube.Y = (int)pos.Y;

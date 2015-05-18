@@ -42,7 +42,7 @@ public:
 	void Draw();
 	void UpdateIA();
 	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state);
-	NYVert3Df findClosestMoucheInRange();
+	int  findClosestMoucheInRange(int _range);
 
 };
 
