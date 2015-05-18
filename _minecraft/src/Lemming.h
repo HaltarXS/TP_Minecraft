@@ -50,7 +50,7 @@ private:
 	// Gauge limitation
 	static const int m_maxHungerPoints = 200;
 	static const int m_maxLifePoints = 100;
-	static const int m_maxReproductionPoints = 100;
+	static const int m_maxReproductionPoints = 10;
 
 	// Optimisation
 	const float m_checkVisibilityTime = 0.5f;
@@ -64,13 +64,11 @@ private:
 	float m_timeElapsed = 0.f;	// Time elapsed
 	float m_tick = 0.f;	// Tick every one second for the gauge
 	float m_dancingTime = 0.f;	// Time the lemming passed to dance
-	float m_randMovingTime = 0.f;	// Time the lemming passed to move around
 	float m_inactiveTimer = 10.f;	// Time during the lemming is following anybody
 	NYTimer m_timer;	// Timer of the entity
 
 	// Times :
 	const float m_danceTime = 10.f;
-	const float m_randRoveTime = 5.f;
 
 	// Perceptions :
 	std::vector<IABase*> m_visibleCreatures;	// vector of visible creatures
@@ -79,7 +77,6 @@ private:
 	Viewcone m_view;	// View of the creature
 	Path m_path;	// Path of the lemming
 	NYVert3Df m_destination;	// The destination of the player
-	NYVert3Df m_movement;	// Movement vector
 	Pathfinding * m_pathfind;	// Pointer on the pathfind singleton
 	int m_currentPathIndex;	// Index of the lemming
 	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game

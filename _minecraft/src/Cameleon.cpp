@@ -41,9 +41,15 @@ void Cameleon::Draw()
 			glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
 
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
-	glPushMatrix();
-
-	glPopMatrix();
+		glColor4f(0.0f,0.0f, 0.0f, 1.0f);
+		glPushMatrix();
+			glTranslatef(1,1,1);
+			glutSolidCube(NYCube::CUBE_SIZE / 16.0f);
+		glPopMatrix();		
+		glPushMatrix();
+			glTranslatef(-1, 1, 1);
+			glutSolidCube(NYCube::CUBE_SIZE / 16.0f);
+		glPopMatrix();
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
@@ -60,6 +66,16 @@ void Cameleon::UpdateIA()
 	}
 	if (m_hunger >= 100) // if leon hasn't eaten since the last 100 seconds, he will die !
 		PushState(STATE_Dead);
+
+	m_eggLayingClock = m_eggLayingClock + m_timer.getElapsedSeconds();	
+	if (m_eggLayingClock > 99){
+		m_eggLayingClock = 0;
+
+		Cameleon * minileon = new Cameleon(m_world, NYVert2Df(positionCube.X , positionCube.Y ));
+		(*m_entities)[CAMELEON].push_back(minileon);
+
+	}
+
 	//Update FSM
 	Update();
 
@@ -87,9 +103,6 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 	return closestMoucheIndex;
 }
 
-void Cameleon::EatingMouch(){
-
-}
 
 
 bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
@@ -161,6 +174,7 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 			int _closestMoucheIndex = findClosestMoucheInRange(1);
 			if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState()!=STATE_Dead){ // living mouche in range ! Fire at will !
 				(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
+				m_hunger--;
 			}
 			else{ // no mouche in range, let's move
 

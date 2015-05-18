@@ -166,7 +166,7 @@ void spawnCreatures()
 	{
 		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
 		l->SetEntities( &g_CreatureMap);
-		//l->m_printDebug = true;
+		//l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 
@@ -210,7 +210,7 @@ void spawnCreatures()
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 
 	//Snake
-	g_CreatureMap[SNAKE].push_back(new Snake(g_world, NYVert2Df(12, 12),5));
+	g_CreatureMap[SNAKE].push_back(new Snake(g_world, NYVert2Df(20, 20),5));
 }
 
 /** === Mise à jour des IA ===
