@@ -18,7 +18,7 @@ Snake::Snake(NYWorld *pWorld, NYVert2Df pos, int size = 5) : IABase(pWorld)
 
 	//On créer tous les cubes du snake
 	for (int i = 0; i < size; i++){
-		NYVert3Df posSpawn = NYVert3Df(pos.X*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, pos.Y * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] + 1)*NYCube::CUBE_SIZE);
+		NYVert3Df posSpawn = NYVert3Df((pos.X+0.5f)*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, (pos.Y+0.5f) * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] + 1)*NYCube::CUBE_SIZE);
 		m_listPosition.push_back(posSpawn);
 	}
 }
@@ -85,42 +85,64 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Move
 	State(STATE_Move)
 	OnUpdate
+
 	if (m_currentState != STATE_Dead){
-		//cout << "SNAKE : déplacement" << endl;
-		for (int i = m_listPosition.size()-1; i >= 0; i--){
-			if (i > 0){
-				m_listPosition[i] = m_listPosition[i - 1];
-			}
-			else{
-				//choisi aléatoirement gauche droite ou tout droit
-				int direction = rand() % 3;
-				if (direction == 0)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else if (direction == 1)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else if (direction == 2)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+
+		int direction = rand() % 4;
+		NYVert3Df newPosition;
+		bool isValideMove = true;
+
+		if (direction == 0)
+			newPosition = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else if (direction == 1)
+			newPosition = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else if (direction == 2)
+			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else
+			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+
+		for (int i = 0; i < m_listPosition.size(); i++){
+			if (newPosition == m_listPosition[i] && isValideMove){
+				isValideMove = false;
+				//bloque le déplacement et choisi une nouvelle direction
 			}
 		}
-		PushState(STATE_Sleep);
+
+		if (isValideMove)
+		{
+			
+
+			for (int i = m_listPosition.size() - 1; i >= 0; i--){
+				if (i > 0)
+					m_listPosition[i] = m_listPosition[i - 1];
+				else
+					m_listPosition[i] = newPosition;
+				
+
+				
+
+			}
+			PushState(STATE_Sleep);
+		}
 	}
 
 	//Eat
 	State(STATE_Eat)
-	OnEnter
-	std::cout << "--Entity " << this->GetID() << "-- Entering Eat " << std::endl;
 	OnUpdate
-		std::cout << "--Entity " << this->GetID() << "-- I ate something :) " << std::endl;
-	PushState(STATE_Move);
-	OnExit
+	//Pour l'instant on fait comme ça, mais faudrait trouver mieux
+	if (rand() % 10 == 0){
+	NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
+	m_listPosition.push_back(push);
+	}
+
+	PushState(STATE_Reproduction);
 
 	State(STATE_Sleep)
 	OnUpdate
 	if (m_timerSleep >= m_sleepDuration)
 	{
-		PushState(STATE_Move);
+		//Si un autre monstre est à portée de sa bouche
+		PushState(STATE_Eat);
 	}
 	m_timerSleep += NYRenderer::_DeltaTime;
 	//Sleep. Do nothing
@@ -129,16 +151,20 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	m_timerSleep = 0.0f; //Reinitialisation of the timer when exiting
 
 
-	//Dead
-	State(STATE_Dead)
-	//Override Messages you don't want to receive in this particular state
-	OnMsg(MSG_Attack)//i'm already dead, so no one can attack me anymore
-	{
-		std::cout << "--Entity " << this->GetID() << "-- Get message attack, but i'm already Dead :(" << std::endl;
-	}
+	State(STATE_Reproduction)
+	OnUpdate
+	if (m_listPosition.size() >= 10){
+		cout << "SNAKE : verification reproduction" << endl;
+		Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
+		pommeDArgent->m_entities = m_entities;
+		(*m_entities)[SNAKE].push_back(pommeDArgent);
 
-	OnEnter
-		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
+		//et on détruit les 5 dernières éléments
+		for (int i = 0; i < 5; i++)
+		m_listPosition.pop_back();
+	}
+	
+	PushState(STATE_Move);
 
 
 	EndStateMachine

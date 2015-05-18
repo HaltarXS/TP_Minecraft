@@ -5,7 +5,7 @@
 Cameleon::Cameleon(NYWorld * _world, NYVert2Df _startingPosition) : IABase(_world)
 {
 
-	Initialize(); // Initialize the FSM
+	Initialize();
 
 	type = CAMELEON;
 
@@ -68,7 +68,7 @@ void Cameleon::UpdateIA()
 		PushState(STATE_Dead);
 
 	m_eggLayingClock = m_eggLayingClock + m_timer.getElapsedSeconds();	
-	if (m_eggLayingClock > 30){
+	if (m_eggLayingClock > 99){ // after 99 seconds, leon lay an egg
 		m_eggLayingClock = 0;
 
 		Cameleon * minileon = new Cameleon(m_world, NYVert2Df(positionCube.X , positionCube.Y ));
@@ -89,7 +89,7 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 	for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
 	{
 		if (((*m_entities)[MOUCHE][i]->GetState()!=STATE_Dead && // if mouche is not dead
-			( (*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize() ) ){ // if mouche is in range
+			( (*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize() ) ){ // if mouche is ccloser than previous closest mouche
 			smallestDistance = ((*m_entities)[MOUCHE][i]->positionCube - positionCube);
 			closestMoucheIndex = i;
 		}
@@ -135,13 +135,13 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 			int _x ,_y;
 			int _closestMoucheIndex = findClosestMoucheInRange(5);
-			if (_closestMoucheIndex == -1){ // si il n'y a pas de mouche dans un rayon de 5 cubes
+			if (_closestMoucheIndex == -1){ // if no mouche in a range of 5
 
-				 _x = positionCube.X+ rand( )% 5; // le cameleon part se balader
+				 _x = positionCube.X+ rand( )% 5; // then cameleon goes wandering around
 				 _y = positionCube.Y+ rand() % 5;
 
 			}
-			else{// sinon il se dirige vers la mouche en question
+			else{// else he goes to the closest mouche
 
 				m_destination = (*m_entities)[MOUCHE][_closestMoucheIndex]->positionCube;
 				 _x = m_destination.X;

@@ -48,6 +48,7 @@
     <ClCompile Include="..\src\Viewcone.cpp" />
     <ClCompile Include="..\src\Wastedosaure.cpp" />
     <ClCompile Include="..\src\WastedosaureManager.cpp" />
+    <ClCompile Include="..\src\Yeti.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\BiXi.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="..\src\Wastedosaure.h" />
     <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
+    <ClInclude Include="..\src\Yeti.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

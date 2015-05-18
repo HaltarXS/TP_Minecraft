@@ -123,17 +123,17 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 		}
 
 		//Vérification des créatures à proximité à intervalles réguliers (pas trop souvent pour ne pas trop alourdir)
-		if (m_timeCheckProximity >= m_durationCheckProximity)
+		if (m_timeCheckProximity >= m_durationCheckProximity /*&& m_isSpawner == false*/) //Le spawner ne devrait pas être infectieux.
 		{
 			m_timeCheckProximity = 0.0f; //Reset du compteur
-			//InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
+			InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
 		}
 		m_timeCheckProximity += m_lastUpdate.getElapsedSeconds();
 
 		if (m_timeReproduction >= m_durationReproduction)
 		{
 			if (m_target != NULL) { m_target->infected = false; } //La cible du parasite n'est plus infectée (elle pourra dont l'être de nouveau).
-			PushState(STATE_Dead); //Fin de la durée de reproduction, le parasite meurt...en espérant que sa race perdure grâce à ses frères...
+			if (m_isSpawner == false) { (STATE_Dead); } //Fin de la durée de reproduction, le parasite meurt...en espérant que sa race perdure grâce à ses frères...Le spawner reste pour checker les crottes
 		}
 		m_timeReproduction += m_lastUpdate.getElapsedSeconds();
 	}
@@ -157,8 +157,8 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 			{
 				//Si la créature n'est pas infectée et qu'elle est dans la zone de proximité du virus
 				if ((*m_entities)[type][j]->infected == false && getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) < (sizeArea * 10 * sizeArea * 10)) {
-					//cout << "Contamine " << m_type  << " - Distance : "<< getSquarredDistance(&this->position, &(*m_entities)[type][j]->position)<< endl;
-					cout << "/!\\/!\\ Contamination en cours /!\\/!\\ " << endl;
+					//cout << "Contamine " << m_type << " - Distance : " << getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) << "test " << &this->position - &(*m_entities)[type][j]->position << endl;
+					cout << "/!\\/!\\ Contamination en cours ;_; /!\\/!\\ " << endl;
 					//Création d'un parasite fils ayant pour cible la créature en cours
 					Parasite * p = new Parasite(m_world, (*m_entities)[type][j]->position, false);
 					p->m_target = (*m_entities)[type][j]; //Affectation de la cible
@@ -180,13 +180,13 @@ void Parasite::FollowTarget() {
 }
 
 void Parasite::checkCrottesSpanw() {
-	//Get through all eatable resources
+	//Récupération de toutes les crottes
 	RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
 	for (auto crotte = pList->begin(); crotte != pList->end(); ++crotte)
 	{
-		if ((*crotte)->GetHasParasite() == false) {
-			Parasite * p = new Parasite(m_world, (*crotte)->Position, true);
-			p->position = (*crotte)->Position;
+		if ((*crotte)->GetHasParasite() == false) { //Si la crotte n'a pas eu son parasite
+			Parasite * p = new Parasite(m_world, (*crotte)->Position, true); //Création d'un parasite
+			p->position = NYVert3Df((*crotte)->Position.X + NYCube::CUBE_SIZE / 2.0f, (*crotte)->Position.Y + NYCube::CUBE_SIZE / 2.0f, (*crotte)->Position.Z + 10); //Placement sur la crotte
 			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
 			cout << "Spawn de Parasite sur une crotte à la position" << (*crotte)->Position.X << "," << (*crotte)->Position.Y << "," << (int)m_world->_MatriceHeights[(int)(*crotte)->Position.X][(int)(*crotte)->Position.Y] << endl;
 			(*crotte)->SetHasParasite(true);

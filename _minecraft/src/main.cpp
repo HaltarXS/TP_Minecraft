@@ -45,6 +45,7 @@
 #include "Parasite.h"
 #include "BiXi.h"
 #include "Snake.h"
+#include "Yeti.h"
 
 NYWorld * g_world;
 
@@ -124,13 +125,26 @@ void spawnCreatures()
 	//Dahut
 	for(int i = 0; i < 10; ++i)
 	{
-		int x = i % 10 + 10;
-		int y = i / 10 + 10;
-		Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
-		pDahut->SetEntities(&g_CreatureMap);
-		g_CreatureMap[DAHUT].push_back(pDahut);
+		//Random place in the world
+		int x = rand() % MAT_SIZE_CUBES;
+		int y = rand() % MAT_SIZE_CUBES;
+		int z = g_world->_MatriceHeights[x][y];
+
+		//If it's a safe place to spawn to
+		if(g_world->getCube(x, y, z - 1)->_Type == CUBE_HERBE ||
+		   g_world->getCube(x, y, z - 1)->_Type == CUBE_TERRE)
+		{
+			Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
+			pDahut->SetEntities(&g_CreatureMap);
+			g_CreatureMap[DAHUT].push_back(pDahut);
+		}
+		else
+		{
+			i--;
+		}
 	}
 
+	
 	//Gendamour
 	for (int i = 0; i < 10; ++i)
 	{
@@ -210,7 +224,14 @@ void spawnCreatures()
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
 
 	//Snake
-	g_CreatureMap[SNAKE].push_back(new Snake(g_world, NYVert2Df(20, 20),5));
+	Snake* fruitInterdit = new Snake(g_world, NYVert2Df(25, 25), 5);
+	fruitInterdit->m_entities = &g_CreatureMap;
+	g_CreatureMap[SNAKE].push_back(fruitInterdit);
+	
+	//Yeti
+	Yeti * yeti = new Yeti(g_world, NYVert2Df(30, 30));
+	yeti->SetEntities( &g_CreatureMap);
+	g_CreatureMap[YETI].push_back(yeti);
 }
 
 /** === Mise à jour des IA ===
