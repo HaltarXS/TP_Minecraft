@@ -14,10 +14,11 @@ Snake::Snake(NYWorld *pWorld, NYVert2Df pos, int size = 5) : IABase(pWorld)
 	type = SNAKE;
 
 	m_size = size;
+	world = pWorld;
 
 	//On créer tous les cubes du snake
 	for (int i = 0; i < size; i++){
-		NYVert3Df posSpawn = NYVert3Df(pos.X*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, pos.Y * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] +1)*NYCube::CUBE_SIZE);
+		NYVert3Df posSpawn = NYVert3Df(pos.X*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, pos.Y * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] + 1)*NYCube::CUBE_SIZE);
 		m_listPosition.push_back(posSpawn);
 	}
 }
@@ -83,30 +84,28 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 	//Move
 	State(STATE_Move)
-	OnEnter
-	std::cout << "--Entity " << this->GetID() << "-- Entering Moving " << std::endl;
 	OnUpdate
-	if (m_timerMove >= m_moveDuration)
-	{
-		PushState(STATE_Eat);
+	if (m_currentState != STATE_Dead){
+		//cout << "SNAKE : déplacement" << endl;
+		for (int i = m_listPosition.size()-1; i >= 0; i--){
+			if (i > 0){
+				m_listPosition[i] = m_listPosition[i - 1];
+			}
+			else{
+				//choisi aléatoirement gauche droite ou tout droit
+				int direction = rand() % 3;
+				if (direction == 0)
+					m_listPosition[0] = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+				else if (direction == 1)
+					m_listPosition[0] = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+				else if (direction == 2)
+					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+				else
+					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+			}
+		}
+		PushState(STATE_Sleep);
 	}
-	m_timerMove += NYRenderer::_DeltaTime;
-
-	//When i am in the move state, i try to attack the other entity
-	int randomNumber = rand() % 100;
-	if (randomNumber > 98)
-	{
-		int * value = new int(rand() % 20);
-		this->SendMsg(MSG_Attack, m_entityToCommunicateWith, value);
-		//If a manage to hit the other entity, i send a message telling i'm attacking it :
-		// -- The first parameter is the type of the message
-		// -- The second parameter is the id of the entity i'm attacking
-		// -- The third paramter is the message data : the amount of life i'm removing from it
-	}
-	OnExit
-	m_timerMove = 0.0f; //Reinitialisation of the timer when exiting
-
-
 
 	//Eat
 	State(STATE_Eat)
@@ -116,6 +115,19 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 		std::cout << "--Entity " << this->GetID() << "-- I ate something :) " << std::endl;
 	PushState(STATE_Move);
 	OnExit
+
+	State(STATE_Sleep)
+	OnUpdate
+	if (m_timerSleep >= m_sleepDuration)
+	{
+		PushState(STATE_Move);
+	}
+	m_timerSleep += NYRenderer::_DeltaTime;
+	//Sleep. Do nothing
+
+	OnExit
+	m_timerSleep = 0.0f; //Reinitialisation of the timer when exiting
+
 
 	//Dead
 	State(STATE_Dead)
