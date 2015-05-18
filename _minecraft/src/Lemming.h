@@ -52,6 +52,10 @@ private:
 	static const int m_maxLifePoints = 100;
 	static const int m_maxReproductionPoints = 100;
 
+	// Optimisation
+	const float m_checkVisibilityTime = 0.5f;
+	float m_checkVisibility = 0.f;
+
 	// Real time gauge :
 	int m_currentHungerPoints;
 	int m_currentReproductionPoints;
