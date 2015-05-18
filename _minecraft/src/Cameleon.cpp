@@ -14,8 +14,8 @@ Cameleon::Cameleon(NYWorld * _world, NYVert2Df _startingPosition) : IABase(_worl
 	positionCube.Z = (int)_world->_MatriceHeights[(int)_startingPosition.X][(int)_startingPosition.Y];
 
 	//calculation of position in absolute coordinates
-	position.X = positionCube.X*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
-	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
+	position.X = positionCube.X*NYCube::CUBE_SIZE ;
+	position.Y = positionCube.Y*NYCube::CUBE_SIZE ;
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
 
 	m_timer.start();
@@ -59,19 +59,26 @@ void Cameleon::UpdateIA()
 	m_timer.start();
 }
 
-NYVert3Df Cameleon::findClosestMoucheInRange(){
-	NYVert3Df smallestDistance=NYVert3Df(1000,1000,100);
-	int closestMoucheIndex = -1;
-	for (int i = 0; i < (*m_entities)[LEMMING].size(); i++)
+int  Cameleon::findClosestMoucheInRange(int _range){
+	NYVert3Df smallestDistance = NYVert3Df(_range, _range, _range);
+	int closestMoucheIndex=-1;
+	for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
 	{
-		if (((*m_entities)[LEMMING][i]->position - position).getSize() < smallestDistance.getSize()){
-			smallestDistance = ((*m_entities)[LEMMING][i]->position - position);
+		if (((*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize()){
+			smallestDistance = ((*m_entities)[MOUCHE][i]->positionCube - positionCube);
 			closestMoucheIndex = i;
 		}
 	}
+	if (closestMoucheIndex == -1)
+		return -1;// no mouche in range :'( ? 
 
-	return (*m_entities)[LEMMING][closestMoucheIndex]->position;
+	NYVert3Df closestMouchePositionCube = (*m_entities)[MOUCHE][closestMoucheIndex]->positionCube;
+	NYVert3Df closestMouchePosition = (*m_entities)[MOUCHE][closestMoucheIndex]->position;
+
+	return closestMoucheIndex;
 }
+
+
 
 
 bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
@@ -99,11 +106,23 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnUpdate
 		{
 
-			m_destination = findClosestMoucheInRange();
-			m_destination.X;
+			int _x ,_y;
+			int _closestMoucheIndex = findClosestMoucheInRange(5);
+			if (_closestMoucheIndex == -1){ // si il n'y a pas de mouche dans un rayon de 5 cubes
+
+				 _x = positionCube.X+ rand( )% 5; // le cameleon part se balader
+				 _y = positionCube.Y+ rand() % 5;
+
+			}
+			else{// sinon il se dirige vers la mouche en question
+
+				m_destination = (*m_entities)[MOUCHE][_closestMoucheIndex]->positionCube;
+				 _x = m_destination.X;
+				 _y = m_destination.Y;
+			}
 			//std::cout << "Cameleon on the move" << std::endl;
-			int _x = m_destination.X/NYCube::CUBE_SIZE;
-			int _y = m_destination.Y / NYCube::CUBE_SIZE;
+
+
 
 			m_pathFinding->FindPath(NYVert2Df(positionCube.X, positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
 
@@ -115,37 +134,43 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		State(STATE_Move)
 		OnEnter
 		{
+
 			if (m_path.GetSize() > 1)
 			{
 				direction = m_path.GetWaypoint(0) - position;
 				direction.normalize();
 				m_waypointIndex = 0;
 			}
-			else
+			else 
 				PushState(STATE_FindPath);
 		}
 
 		OnUpdate
 		{
-			// Update the position with the direction path
-			position += direction * m_speed * m_timer.getElapsedSeconds() * 30;
-			positionCube = position / NYCube::CUBE_SIZE;
-
-			NYVert3Df _dist = m_path.GetWaypoint(m_waypointIndex) - position;
-
-			if (_dist.getSize() <= 5.f)
-				m_waypointIndex++;
-
-			// We are not at the end of the 
-			if (m_waypointIndex < m_path.GetSize())
-			{
-				direction = m_path.GetWaypoint(m_waypointIndex) - position;
-				direction.normalize();
+			int _closestMoucheIndex = findClosestMoucheInRange(1);
+			if (_closestMoucheIndex != -1){ // mouche in range ! Fire at will !
+				(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
 			}
-			else
-			{
-				m_path.Clear();	// Delete the current path
-				PushState(STATE_FindPath);
+			else{ // no mouche in range, let's move
+
+				position += direction * m_speed * m_timer.getElapsedSeconds() * 30;
+				positionCube = position / NYCube::CUBE_SIZE;
+
+				NYVert3Df _dist = m_path.GetWaypoint(m_waypointIndex) - position;
+
+				if (_dist.getSize() <= 5.f)
+					m_waypointIndex++;
+
+				if (m_waypointIndex < m_path.GetSize())
+				{
+					direction = m_path.GetWaypoint(m_waypointIndex) - position;
+					direction.normalize();
+				}
+				else
+				{
+					m_path.Clear();	
+					PushState(STATE_FindPath);
+				}
 			}
 		}
 		OnExit{}

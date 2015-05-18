@@ -18,7 +18,7 @@ Parasite::Parasite(NYWorld *pWorld, NYVert3Df pos, bool firstBorn) : IABase(pWor
 	positionCube.Z = (int)pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y];
 	position.X = positionCube.X*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
 	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
-	position.Z = positionCube.Z*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f+10;
+	position.Z = positionCube.Z*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
 
 	//Init timer
 	m_lastUpdate.start();
@@ -69,7 +69,7 @@ void Parasite::Draw()
 		}
 		glPushMatrix();
 		glTranslatef(position.X, position.Y, position.Z);
-		glScalef(5.5f, 5.5f, 5.5f);
+		glScalef(1.5f, 1.5f, 1.5f);
 		glutSolidOctahedron();
 		glPopMatrix();
 	}
@@ -182,13 +182,14 @@ void Parasite::FollowTarget() {
 void Parasite::checkCrottesSpanw() {
 	//Get through all eatable resources
 	RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
-	for (auto it = pList->begin(); it != pList->end(); ++it)
+	for (auto crotte = pList->begin(); crotte != pList->end(); ++crotte)
 	{
-		if ((*it)->GetHasParasite() == false) {
-			Parasite * p = new Parasite(m_world, (*it)->Position, true);
+		if ((*crotte)->GetHasParasite() == false) {
+			Parasite * p = new Parasite(m_world, (*crotte)->Position, true);
+			p->position = (*crotte)->Position;
 			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
-			cout << "Spawn de Parasite sur une crotte" << endl;
-			(*it)->SetHasParasite(true);
+			cout << "Spawn de Parasite sur une crotte à la position" << (*crotte)->Position.X << "," << (*crotte)->Position.Y << "," << (int)m_world->_MatriceHeights[(int)(*crotte)->Position.X][(int)(*crotte)->Position.Y] << endl;
+			(*crotte)->SetHasParasite(true);
 		}
 	}
 }
