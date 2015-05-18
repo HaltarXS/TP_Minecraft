@@ -10,6 +10,7 @@ Griffonkitu::Griffonkitu(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 	m_s_up = NYVert3Df(0, 0, 1);
 	//Taille du cercle éfféctué en mode observation
 	m_radius = NYCube::CUBE_SIZE * 3;
+	_Time.start();
 	_spentTime.start();
 	ChangeHuntArea();
 	m_speed = 30.0f;
@@ -149,6 +150,8 @@ void Griffonkitu::UpdateIA()
 	if (position.Z / NYCube::CUBE_SIZE < (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap]))
 		position.Z = (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap] + 1) * NYCube::CUBE_SIZE;
 	Update();//Update the state machine
+	//reset du timer
+	_Time.start();
 }
 
 
@@ -181,7 +184,8 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			if (m_observationMod)
 				m_observationMod = false;
 			m_direction = m_positionFromHuntAreaPoint.normalize();
-			float scalar = m_speed *NYRenderer::_DeltaTime;
+			
+			float scalar = m_speed *_Time.getElapsedSeconds();
 			m_direction.X *= scalar;
 			m_direction.Y *= scalar;
 			m_direction.Z *= scalar;
@@ -193,7 +197,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 				_spentTime.getElapsedSeconds(true);
 			}
 			m_obsColor = true;
-			m_positionFromHuntAreaPoint = m_positionFromHuntAreaPoint.rotate(Griffonkitu::m_s_up, NYRenderer::_DeltaTime * 3.0f);
+			m_positionFromHuntAreaPoint = m_positionFromHuntAreaPoint.rotate(Griffonkitu::m_s_up, _Time.getElapsedSeconds(false) * 3.0f);
 			position = m_huntAreaPoint + m_positionFromHuntAreaPoint;
 			float time = _spentTime.getElapsedSeconds(false);
 			// si le temps est écoulé, on change de zone d'observation
@@ -242,13 +246,13 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		OnEnter{
 		m_attack = true;
 		// on augmente la vitesse
-		m_speed = 120.0f;
+		m_speed = 60.0f;
 		cout << "Griffonkitu attack !" << endl;
 	}
 		OnUpdate{
 		m_positionTarget = position - m_target->position;
 		//si il touche ça cible, il repard
-		if (m_positionTarget.getSize() < 4.0f) {
+		if (m_positionTarget.getSize() < 5.0f) {
 			this->SendMsg(MSG_Attack, m_target->GetID(), new int(1));
 			ChangeHuntArea();
 			m_obsColor = false;
@@ -257,7 +261,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			PushState(STATE_Move);
 		}
 		m_direction = m_positionTarget.normalize();
-		float scalar = m_speed *NYRenderer::_DeltaTime;
+		float scalar = m_speed *_Time.getElapsedSeconds(false);
 		m_direction.X *= scalar;
 		m_direction.Y *= scalar;
 		m_direction.Z *= scalar;
