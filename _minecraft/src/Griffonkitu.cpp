@@ -15,6 +15,7 @@ Griffonkitu::Griffonkitu(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld)
 	ChangeHuntArea();
 	m_speed = 30.0f;
 	m_observationMod = false;
+	_lifeTime.start();
 
 }
 
@@ -112,6 +113,7 @@ void Griffonkitu::SetEntities(std::map<eTypeCreature, CreatureVector> * entities
 	m_entities = entities;
 }
 
+//Dessine le griffon
 void Griffonkitu::Draw(){
 
 	glPushMatrix();
@@ -142,16 +144,19 @@ void Griffonkitu::ChangeHuntArea() {
 
 void Griffonkitu::UpdateIA()
 {
-	// on set les position de l'entité sur la carte
-	m_XWorldMap = position.X / NYCube::CUBE_SIZE;
-	m_YWorldMap = position.Y / NYCube::CUBE_SIZE;
-
-	//En cas d'erreur de trajectoire, si le griffon est dans le sol on le remonte violament
-	if (position.Z / NYCube::CUBE_SIZE < (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap]))
-		position.Z = (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap] + 1) * NYCube::CUBE_SIZE;
-	Update();//Update the state machine
-	//reset du timer
-	_Time.start();
+	if (!m_dead) {
+		// on set les position de l'entité sur la carte
+		m_XWorldMap = position.X / NYCube::CUBE_SIZE;
+		m_YWorldMap = position.Y / NYCube::CUBE_SIZE;
+		if (_lifeTime.getElapsedSeconds() > 480.0f) {
+			PushState(STATE_Dead);
+		}
+		//En cas d'erreur de trajectoire, si le griffon est dans le sol on le remonte. C'est un peu violent mais c'est pas cencsé se produire souvent
+		if (position.Z / NYCube::CUBE_SIZE < (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap]))
+			position.Z = (m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap] + 1) * NYCube::CUBE_SIZE;
+		Update();//Update the state machine
+		_Time.start();
+	}
 }
 
 
@@ -164,17 +169,28 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		OnEnter{
 		PushState(STATE_Move);
 	}
+		State(STATE_Egg)
+		OnEnter{
+		position.Z = m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap] * NYCube::CUBE_SIZE + NYCube::CUBE_SIZE / 2.0f;
+	}
+		OnUpdate{
+		if (_lifeTime.getElapsedSeconds() > 80.0f) {
+			ChangeHuntArea();
+			PushState(STATE_Move);
+		}
 
-		State(STATE_FindPath)
+	}
+		State(STATE_Dead)
 
 		OnEnter{
-	}
-	OnUpdate{
+		m_dead = true;
+		position.Z = m_world->_MatriceHeights[m_XWorldMap][m_YWorldMap] * NYCube::CUBE_SIZE;
 	}
 
-	State(STATE_Move)
 
-	OnEnter{
+		State(STATE_Move)
+
+		OnEnter{
 	}
 	OnUpdate{
 		m_positionFromHuntAreaPoint = position - m_huntAreaPoint;
@@ -184,7 +200,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			if (m_observationMod)
 				m_observationMod = false;
 			m_direction = m_positionFromHuntAreaPoint.normalize();
-			
+
 			float scalar = m_speed *_Time.getElapsedSeconds();
 			m_direction.X *= scalar;
 			m_direction.Y *= scalar;
@@ -192,8 +208,17 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			position = position - m_direction;
 		} // sinon on fait un cercle autour de la zone d'observation
 		else {
+			//Si on rentre en mode Observation
 			if (!m_observationMod) {
 				m_observationMod = true;
+				if (m_victims >= 2) {
+					//Si le griffon a fait une victime il pond un oeuf
+					Griffonkitu * g = new Griffonkitu(m_world, NYVert2Df(m_XWorldMap, m_YWorldMap));
+					g->PushState(STATE_Egg);
+					g->SetEntities(m_entities);
+					(*m_entities)[GRIFFONKITU].push_back(g);
+					m_victims = 0;
+				}
 				_spentTime.getElapsedSeconds(true);
 			}
 			m_obsColor = true;
@@ -205,38 +230,10 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 				ChangeHuntArea();
 			else if (time > 5.0f && !m_hasLooked) //sinon on vérifie toute les 5 Seconde si il y a pas de Wastedosaure dans à porté
 			{
-				for (size_t i = 0; i < (*m_entities)[WASTEDOSAURE].size(); i++)
-				{
-					NYVert3Df lengthVector = this->position - (*m_entities)[WASTEDOSAURE][i]->position;
-					if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
-						setTarget((*m_entities)[WASTEDOSAURE][i]);
-						m_path.Clear();
-						m_currentIndex = 0;
-						// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
-						if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
-						{
-							PushState(STATE_Attack);
-							break;
-						}
-					}
-				}
-				m_hasLooked = true;
+				CheckTarget();
 			}
 			else if (time > 10.0f && m_hasLooked) { // idem que au dessus (ou je sais la duplication de code ce n'est pas super mais je me garde ça en deux blocks volontairement)
-				for (size_t i = 0; i < (*m_entities)[WASTEDOSAURE].size(); i++)
-				{
-					NYVert3Df lengthVector = this->position - (*m_entities)[WASTEDOSAURE][i]->position;
-					if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
-						setTarget((*m_entities)[WASTEDOSAURE][i]);
-						m_currentIndex = 0;
-						if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
-						{
-							PushState(STATE_Attack);
-							break;
-						}
-					}
-				}
-				m_hasLooked = false;
+				CheckTarget();
 			}
 
 		}
@@ -247,7 +244,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		m_attack = true;
 		// on augmente la vitesse
 		m_speed = 60.0f;
-		cout << "Griffonkitu attack !" << endl;
+		cout << "Griffonkitu is attacking !" << endl;
 	}
 		OnUpdate{
 		m_positionTarget = position - m_target->position;
@@ -258,6 +255,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 			m_obsColor = false;
 			m_attack = false;
 			m_speed = 30.0f;
+			m_victims = m_victims + 1;
 			PushState(STATE_Move);
 		}
 		m_direction = m_positionTarget.normalize();
@@ -276,6 +274,57 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 
 	EndStateMachine
+}
+
+void Griffonkitu::CheckTarget() {
+// normalement le GRIFFONKITU chasse le GLACEGOUILLE et le BIXI, mais comme il y a un probléme avec ces bestiole j'ai commenté et je remplace par le 	WASTEDOSAURE
+
+/*	for (size_t i = 0; i < (*m_entities)[GLACEGOUILLE].size(); i++)
+	{
+		NYVert3Df lengthVector = this->position - (*m_entities)[GLACEGOUILLE][i]->position;
+		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
+			setTarget((*m_entities)[GLACEGOUILLE][i]);
+			m_path.Clear();
+			m_currentIndex = 0;
+			// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
+			if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
+			{
+				PushState(STATE_Attack);
+				break;
+			}
+		}
+	}
+	for (size_t i = 0; i < (*m_entities)[BIXI].size(); i++)
+	{
+		NYVert3Df lengthVector = this->position - (*m_entities)[BIXI][i]->position;
+		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
+			setTarget((*m_entities)[BIXI][i]);
+			m_path.Clear();
+			m_currentIndex = 0;
+			// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
+			if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
+			{
+				PushState(STATE_Attack);
+				break;
+			}
+		}
+	}*/
+	for (size_t i = 0; i < (*m_entities)[WASTEDOSAURE].size(); i++)
+	{
+		NYVert3Df lengthVector = this->position - (*m_entities)[WASTEDOSAURE][i]->position;
+		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
+			setTarget((*m_entities)[WASTEDOSAURE][i]);
+			m_path.Clear();
+			m_currentIndex = 0;
+			// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
+			if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
+			{
+				PushState(STATE_Attack);
+				break;
+			}
+		}
+	}
+	m_hasLooked = true;
 }
 
 void Griffonkitu::setTarget(IABase* target){
