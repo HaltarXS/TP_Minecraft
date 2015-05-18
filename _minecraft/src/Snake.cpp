@@ -87,24 +87,38 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	OnUpdate
 	if (m_currentState != STATE_Dead){
 		//cout << "SNAKE : déplacement" << endl;
-		for (int i = m_listPosition.size()-1; i >= 0; i--){
-			if (i > 0){
-				m_listPosition[i] = m_listPosition[i - 1];
-			}
-			else{
-				//choisi aléatoirement gauche droite ou tout droit
-				int direction = rand() % 3;
-				if (direction == 0)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else if (direction == 1)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else if (direction == 2)
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
-				else
-					m_listPosition[0] = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 1)*NYCube::CUBE_SIZE);
+
+		int direction = rand() % 4;
+		NYVert3Df newPosition;
+		bool isValideMove = true;
+
+		if (direction == 0)
+			newPosition = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else if (direction == 1)
+			newPosition = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else if (direction == 2)
+			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		else
+			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+
+		for (int i = 0; i < m_listPosition.size(); i++){
+			if (newPosition == m_listPosition[i] && isValideMove){
+				isValideMove = false;
+				//bloque le déplacement et choisi une nouvelle direction
 			}
 		}
-		PushState(STATE_Sleep);
+
+		if (isValideMove)
+		{
+			for (int i = m_listPosition.size() - 1; i >= 0; i--){
+				if (i > 0)
+					m_listPosition[i] = m_listPosition[i - 1];
+				else
+					m_listPosition[i] = newPosition;
+				
+			}
+			PushState(STATE_Sleep);
+		}
 	}
 
 	//Eat
