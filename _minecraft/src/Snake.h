@@ -22,14 +22,14 @@ private:
 	float m_timerSleep = 0.0f;
 	float m_sleepDuration = 0.5f;
 
-	objectID m_entityToCommunicateWith;
-
 	int m_size;
 	NYWorld* world;
 
 	std::vector<NYVert3Df> m_listPosition;
 
 public:
+	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;
+
 	Snake(NYWorld *pWorld, NYVert2Df pos, int size);
 	~Snake();
 
