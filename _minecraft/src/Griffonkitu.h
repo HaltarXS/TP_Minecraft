@@ -20,6 +20,8 @@ public:
 	void ChangeHuntArea();
 	// Temps de vol en mode observation
 	NYTimer	_spentTime;
+	// temps total
+	NYTimer	_Time;
 	//liste des entitées
 	std::map<eTypeCreature, CreatureVector> * m_entities;
 	void SetEntities(std::map<eTypeCreature, CreatureVector> * entities);

@@ -35,10 +35,12 @@ void Cameleon::Draw()
 
 	glPushMatrix();
 	glTranslatef(position.X, position.Y, position.Z);
-	glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-	//glColor4f(0.0f,0.0f, 1.0f,1.0f);
-	glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
-	//glutSolidCube(10);
+		if (GetState() == STATE_Dead)
+			glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
+		else
+			glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+
+		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
 	glPushMatrix();
 
 	glPopMatrix();
@@ -46,12 +48,18 @@ void Cameleon::Draw()
 
 	glDisable(GL_BLEND);
 
-	if (m_path.GetSize() > 0)
-		m_path.DrawPath();
+	//if (m_path.GetSize() > 0)		m_path.DrawPath();
 }
 
 void Cameleon::UpdateIA()
 {
+	m_hungerStepIncrement = m_hungerStepIncrement + m_timer.getElapsedSeconds();
+	if (m_hungerStepIncrement > 1){// every second Leon get hungrier
+		m_hunger++;
+		m_hungerStepIncrement = 0;
+	}
+	if (m_hunger >= 100) // if leon hasn't eaten since the last 100 seconds, he will die !
+		PushState(STATE_Dead);
 	//Update FSM
 	Update();
 
@@ -79,7 +87,9 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 	return closestMoucheIndex;
 }
 
+void Cameleon::EatingMouch(){
 
+}
 
 
 bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
@@ -124,9 +134,6 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 				 _x = m_destination.X;
 				 _y = m_destination.Y;
 			}
-			//std::cout << "Cameleon on the move" << std::endl;
-
-
 
 			m_pathFinding->FindPath(NYVert2Df(positionCube.X, positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
 
@@ -152,7 +159,7 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnUpdate
 		{
 			int _closestMoucheIndex = findClosestMoucheInRange(1);
-			if (_closestMoucheIndex != -1){ // mouche in range ! Fire at will !
+			if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState()!=STATE_Dead){ // living mouche in range ! Fire at will !
 				(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
 			}
 			else{ // no mouche in range, let's move
