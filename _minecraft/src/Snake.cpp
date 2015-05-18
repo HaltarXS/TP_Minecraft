@@ -18,7 +18,7 @@ Snake::Snake(NYWorld *pWorld, NYVert2Df pos, int size = 5) : IABase(pWorld)
 
 	//On créer tous les cubes du snake
 	for (int i = 0; i < size; i++){
-		NYVert3Df posSpawn = NYVert3Df(pos.X*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, pos.Y * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] + 1)*NYCube::CUBE_SIZE);
+		NYVert3Df posSpawn = NYVert3Df((pos.X+0.5f)*NYCube::CUBE_SIZE + i*NYCube::CUBE_SIZE, (pos.Y+0.5f) * NYCube::CUBE_SIZE, (pWorld->_MatriceHeights[(int)pos.X][(int)pos.Y] + 1)*NYCube::CUBE_SIZE);
 		m_listPosition.push_back(posSpawn);
 	}
 }
