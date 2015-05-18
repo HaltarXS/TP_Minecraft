@@ -26,6 +26,8 @@ Lemming::Lemming(NYWorld * _world, NYVert2Df _spawnPos)
 	IABase::life = m_maxLifePoints;
 	m_currentReproductionPoints = 0;
 
+	m_checkVisibility = 0.f;
+
 	// Timer initialization
 	m_timer.start();
 
@@ -65,13 +67,21 @@ void Lemming::Update(float _elapsedTime)
 		m_tick = 0;
 	}
 
+	if (m_currentState == STATE_Move)
+	{
+		m_checkVisibility += m_timeElapsed;
+
+		if (m_checkVisibility >= m_checkVisibilityTime)
+			m_checkVisibility = 0;
+	}
+
 	if (m_inactiveTimer >= 0.f)
 		m_inactiveTimer -= m_timeElapsed;
 
 	if (m_currentState == STATE_Dance)
-	{
 		m_dancingTime -= m_timeElapsed;
-	}
+
+
 }
 
 void Lemming::Born()
@@ -325,57 +335,60 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 		PushState(STATE_FindSnow);
 	else
 	{
-		// Update the visible creatures
-		GetVisibleCreatures();
-		// Lemming see other creatures
-		if (m_visibleCreatures.size() > 0 && m_inactiveTimer <= 0.f)
+		if (m_checkVisibility == 0.f)
 		{
-			DEBUG
-			std::cout << "Lemming see : " << m_visibleCreatures.size() << " creatures" << std::endl;
-
-			// If the lemming can reproduce
-			if (CanReproduce())
+			// Update the visible creatures
+			GetVisibleCreatures();
+			// Lemming see other creatures
+			if (m_visibleCreatures.size() > 0 && m_inactiveTimer <= 0.f)
 			{
-				for each (IABase * _monster in m_visibleCreatures)
+				DEBUG
+				std::cout << "Lemming see : " << m_visibleCreatures.size() << " creatures" << std::endl;
+
+				// If the lemming can reproduce
+				if (CanReproduce())
 				{
-					bool _dance = false;
-					// If see another lemming Lemming :
-					if (_monster->type == LEMMING)
+					for each (IABase * _monster in m_visibleCreatures)
 					{
-						if (((Lemming *)_monster)->IsDancing())
+						bool _dance = false;
+						// If see another lemming Lemming :
+						if (_monster->type == LEMMING)
 						{
-							DEBUG
-							std::cout << "Find a partner dancing" << std::endl;
+							if (((Lemming *)_monster)->IsDancing())
+							{
+								DEBUG
+								std::cout << "Find a partner dancing" << std::endl;
 							
-							m_partner = ((Lemming *)_monster);
-							//m_destination = NYVert2Df(_monster->positionCube.X, _monster->positionCube.Y);	// Get the destination in case
+								m_partner = ((Lemming *)_monster);
+								//m_destination = NYVert2Df(_monster->positionCube.X, _monster->positionCube.Y);	// Get the destination in case
 
-							PushState(STATE_Reproduction);	// Repdroduce with the other lemming
-							return false;	// Exit the function
-						}
-						else
-						{
-							_dance = true;
-							DEBUG
-							std::cout << "Find a partner who don't dance" << std::endl;
-						}
+								PushState(STATE_Reproduction);	// Repdroduce with the other lemming
+								return false;	// Exit the function
+							}
+							else
+							{
+								_dance = true;
+								DEBUG
+								std::cout << "Find a partner who don't dance" << std::endl;
+							}
 
-						if (_dance)
-						{
-							PushState(STATE_Dance);	// Dance for the reporduction!!!
-							return false;
+							if (_dance)
+							{
+								PushState(STATE_Dance);	// Dance for the reporduction!!!
+								return false;
+							}
 						}
 					}
 				}
+				// Else the lemming follow a random creature
+				int _rand = rand() % m_visibleCreatures.size();
+				m_followedTarget = m_visibleCreatures.at(_rand);
+
+				DEBUG
+				std::cout << "Follow : : " << _rand << " index" << std::endl;
+
+				PushState(STATE_Follow);
 			}
-			// Else the lemming follow a random creature
-			int _rand = rand() % m_visibleCreatures.size();
-			m_followedTarget = m_visibleCreatures.at(_rand);
-
-			DEBUG
-			std::cout << "Follow : : " << _rand << " index" << std::endl;
-
-			PushState(STATE_Follow);
 		}
 	}
 
@@ -480,7 +493,7 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 
 	IABase::direction = m_destination - IABase::position;
 	IABase::direction.normalize();
-	m_currentPathIndex = 0;
+	//m_currentPathIndex = 0;
 
 	OnUpdate
 	// End of the path
