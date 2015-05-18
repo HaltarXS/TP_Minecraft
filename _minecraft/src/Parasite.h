@@ -8,6 +8,8 @@
 
 #include "engine\timer.h"
 #include "IABase.h"
+#include "Crotte.h"
+#include "RessourcesManager.h"
 
 typedef std::vector<IABase*> CreatureVector;
 

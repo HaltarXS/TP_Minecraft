@@ -1,5 +1,4 @@
 #include "Parasite.h"
-#include "RessourcesManager.h"
 
 Parasite::Parasite(NYWorld *pWorld, NYVert3Df pos, bool firstBorn) : IABase(pWorld)
 {
@@ -181,15 +180,16 @@ void Parasite::FollowTarget() {
 
 void Parasite::checkCrottesSpanw() {
 	//Récupération de toutes les crottes
-	RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
-	for (auto crotte = pList->begin(); crotte != pList->end(); ++crotte)
+	RessourceList *crotteList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
+	for (std::list<Ressource*>::iterator i = crotteList->begin(); i != crotteList->end(); ++i)
 	{
-		if ((*crotte)->GetHasParasite() == false) { //Si la crotte n'a pas eu son parasite
-			Parasite * p = new Parasite(m_world, (*crotte)->Position, true); //Création d'un parasite
-			p->position = NYVert3Df((*crotte)->Position.X + NYCube::CUBE_SIZE / 2.0f, (*crotte)->Position.Y + NYCube::CUBE_SIZE / 2.0f, (*crotte)->Position.Z + 10); //Placement sur la crotte
+		Crotte* crotte = (Crotte*)(*i);
+		if (crotte->GetHasParasite() == false) { //Si la crotte n'a pas eu son parasite
+			Parasite * p = new Parasite(m_world, crotte->Position, true); //Création d'un parasite
+			p->position = NYVert3Df(crotte->Position.X + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Y + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Z + 10); //Placement sur la crotte
 			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
-			cout << "Spawn de Parasite sur une crotte à la position" << (*crotte)->Position.X << "," << (*crotte)->Position.Y << "," << (int)m_world->_MatriceHeights[(int)(*crotte)->Position.X][(int)(*crotte)->Position.Y] << endl;
-			(*crotte)->SetHasParasite(true);
+			cout << "Spawn de Parasite sur une crotte à la position" << crotte->Position.X << "," << crotte->Position.Y << "," << (int)m_world->_MatriceHeights[(int)crotte->Position.X][(int)crotte->Position.Y] << endl;
+			crotte->SetHasParasite(true);
 		}
 	}
 }
