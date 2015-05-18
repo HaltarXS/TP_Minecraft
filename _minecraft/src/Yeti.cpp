@@ -9,7 +9,7 @@ IABase(_world), m_cone(m_viewAngle, m_viewDistance)
 	NYVert2Df arrival = NYVert2Df(rand_a_b(_positionInitiale.X - 40, _positionInitiale.X  + 40), rand_a_b(_positionInitiale.Y  - 40, _positionInitiale.Y  + 40));
 	int zStart = m_world->_MatriceHeights[(int)arrival.X][(int)arrival.Y]-1 ;
 
-	while (arrival.X <= 0 && arrival.Y <= 0 && m_world->getCube(arrival.X, arrival.Y, zStart)->_Type != CUBE_NEIGE)
+	while (arrival.X <= 0 || arrival.Y <= 0 || m_world->getCube(arrival.X, arrival.Y, zStart)->_Type != CUBE_NEIGE)
 	{
 		arrival = NYVert2Df(rand_a_b(_positionInitiale.X  - 40, _positionInitiale.X + 40), rand_a_b(_positionInitiale.Y - 40, _positionInitiale.Y  + 40));
 		 zStart = m_world->_MatriceHeights[(int)arrival.X][(int)arrival.Y] - 1;
@@ -100,13 +100,13 @@ void Yeti::UpdateIA()
 
 	UpdateTimers();
 
-	if (m_creaturesInSight.size() > 0 &&
-		target == NULL &&
-		m_creaturesInSight[0]->type == RADIATOSAURE)
-	{
-		target = m_creaturesInSight[0];
-		PushState(STATE_Dance);
-	}
+	//if (m_creaturesInSight.size() > 0 &&
+	//	target == NULL &&
+	//	m_creaturesInSight[0]->type == RADIATOSAURE)
+	//{
+	//	target = m_creaturesInSight[0];
+	//	PushState(STATE_Dance);
+	//}
 
 	if (m_creaturesInSight.size() > 0 && 
 		target == NULL &&
