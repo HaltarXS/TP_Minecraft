@@ -119,7 +119,7 @@ void Gendamour::UpdateIA(){
 		for (int i = 0; i < CREATURE_NUM; ++i){
 			eTypeCreature type = (eTypeCreature)i;
 			for (int j = 0; j < (*m_entities)[type].size(); ++j){
-				if ((*m_entities)[type][j] != this && ((*m_entities)[type][j]->position - position).getMagnitude() < 1000){
+				if ( (*m_entities)[type][j].getState() != STATE_DEAD && (*m_entities)[type][j] != this && ((*m_entities)[type][j]->position - position).getMagnitude() < 1000){
 					_target = (*m_entities)[type][j];
 					//cout << " found someone to follow" << endl;
 					_researhTime.start();
