@@ -64,7 +64,8 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 	int closestMoucheIndex=-1;
 	for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
 	{
-		if (((*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize()){
+		if (((*m_entities)[MOUCHE][i]->GetState()!=STATE_Dead && // if mouche is not dead
+			( (*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize() ) ){ // if mouche is in range
 			smallestDistance = ((*m_entities)[MOUCHE][i]->positionCube - positionCube);
 			closestMoucheIndex = i;
 		}
@@ -84,7 +85,10 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 	BeginStateMachine
 
-		OnMsg(MSG_Attack){}
+		OnMsg(MSG_Attack)
+		{
+			PushState(STATE_Dead);
+		}
 
 	//Initialize
 	State(STATE_Initialize)
