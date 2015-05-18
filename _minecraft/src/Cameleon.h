@@ -26,12 +26,12 @@ public:
 	Path m_path;
 	float m_speed = 0.7f;
 
+	int m_hunger = 0;
+	float m_hungerStepIncrement=0;
 
 	NYTimer m_timer;
 	NYVert3Df m_destination;
-
-	bool hasTargetedMouch = false;
-
+	
 	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;
 
 
@@ -43,6 +43,8 @@ public:
 	void UpdateIA();
 	virtual bool States(StateMachineEvent event, MSG_Object * msg, int state);
 	int  findClosestMoucheInRange(int _range);
+	void Cameleon::EatingMouch();
+
 
 };
 

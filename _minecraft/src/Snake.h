@@ -19,10 +19,14 @@ private:
 	float m_timerMove = 0.0f;
 
 	int m_life = 100;
+	float m_timerSleep = 0.0f;
+	float m_sleepDuration = 0.5f;
 
 	objectID m_entityToCommunicateWith;
 
 	int m_size;
+	NYWorld* world;
+
 	std::vector<NYVert3Df> m_listPosition;
 
 public:

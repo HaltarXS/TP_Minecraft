@@ -50,7 +50,7 @@ private:
 	// Gauge limitation
 	static const int m_maxHungerPoints = 200;
 	static const int m_maxLifePoints = 100;
-	static const int m_maxReproductionPoints = 10;
+	static const int m_maxReproductionPoints = 100;
 
 	// Optimisation
 	const float m_checkVisibilityTime = 0.5f;
