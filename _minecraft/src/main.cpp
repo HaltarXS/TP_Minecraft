@@ -112,6 +112,7 @@ void spawnCreatures()
 	// === Ajout des créatures ===
 
 	//Ajout des créatures
+	/*
 	//Wastedosaure
 	for (int i = 0; i < 6; ++i)
 	{
@@ -165,7 +166,7 @@ void spawnCreatures()
 		l->SetEntities( &g_CreatureMap);
 		l->m_drawDebug = true;
 		g_CreatureMap[LEMMING].push_back(l);
-	}
+	}*/
 
 	//Mouche
 	for (int i = 0; i < Mouche::MAX_MOUCHE; ++i)
@@ -174,7 +175,7 @@ void spawnCreatures()
 		g_CreatureMap[MOUCHE].push_back(mouche);
 	}
 	//Cameleon
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		int x = i % 10 + 15;
 		int y = i / 10 + 15;
@@ -182,6 +183,7 @@ void spawnCreatures()
 		leon->m_entities = &g_CreatureMap;
 		g_CreatureMap[CAMELEON].push_back(leon);
 	}
+	/*
 	// Crabe
 	for (int i = 0; i < 10; ++i)
 	{
@@ -201,7 +203,7 @@ void spawnCreatures()
 	g_CreatureMap[BIXI].push_back(bixi);
 
 	//Furz
-	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
+	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));*/
 }
 
 /** === Mise à jour des IA ===
