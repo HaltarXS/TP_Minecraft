@@ -7,6 +7,7 @@
 
 #define DEBUG		if (m_printDebug)
 
+int _called = 0;
 
 Lemming::Lemming(NYWorld * _world, NYVert2Df _spawnPos)
 	:IABase(_world), m_view(100.0f, 100)
@@ -200,6 +201,24 @@ void Lemming::Draw()
 	}
 }
 
+void Lemming::FindPath(int _x, int _y)
+{
+	DEBUG
+	std::cout << "Call find path " << _called++ << std::endl;
+
+	_y = min(max(1, _y), MAT_SIZE_CUBES - 1);
+	_x = min(max(1, _x), MAT_SIZE_CUBES - 1);
+
+	m_currentPathIndex = 0;
+
+	IABase::positionCube.X = min(max(1, IABase::positionCube.X), MAT_SIZE_CUBES - 1);
+	IABase::positionCube.Y = min(max(1, IABase::positionCube.Y), MAT_SIZE_CUBES - 1);
+
+	m_path.Clear();
+
+	m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+}
+
 void Lemming::GetTargetToFollow()
 {
 	// Select random creature sawed by the lemming
@@ -372,38 +391,20 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	// Find path for a random point on the map
 	State(STATE_FindPath)
 	OnUpdate
-
-	// Get random proximity point
-	int _x = IABase::positionCube.X + (10 - rand() % 20);
-	int _y = IABase::positionCube.Y + (10 - rand() % 20);
-
-	_y = min(max(1, _y), MAT_SIZE_CUBES - 1);
-	_x = min(max(1, _x), MAT_SIZE_CUBES - 1);
-
-	m_path.Clear();
-
-	if (IABase::positionCube.X <= 1)
-		IABase::positionCube.X = 1;
-	if (IABase::positionCube.Y <= 1)
-		IABase::positionCube.Y = 1;
-
-	m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
-
+	FindPath(IABase::positionCube.X + (10 - rand() % 20), IABase::positionCube.Y + (10 - rand() % 20));
 	PushState(STATE_Move);
 
 	// Reproduction for the lemming
 	State(STATE_Reproduction)
-		OnEnter
-		DEBUG
-		std::cout << "Lemming is reproducing with other" << std::endl;
+	OnEnter
+	DEBUG
+	std::cout << "Lemming is reproducing with other" << std::endl;
 
 	int _x = m_partner->positionCube.X;
 	int _y = m_partner->positionCube.Y;
 
-	m_path.Clear();
 	// Get the path between the lemming and the target
-
-	m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+	FindPath(_x, _y);
 
 	if (m_path.GetSize() > 1)
 	{
@@ -473,47 +474,42 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	DEBUG
 	std::cout << "Lemming follow target" << std::endl;
 	
-	
-	int _x = m_followedTarget->positionCube.X;
-	int _y = m_followedTarget->positionCube.Y;
-
 	m_path.Clear();
-	m_currentPathIndex = 0;	// Set the path index to 0
+	m_destination = m_followedTarget->position;
+	//FindPath(_x, _y);
 
-	m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
-
-	if (m_path.GetSize() > 1)
-	{
-		IABase::direction = m_path.GetWaypoint(0) - IABase::position;
-		IABase::direction.normalize();
-		m_currentPathIndex = 0;
-	}
-	else
-	{
-		PushState(STATE_Move);
-	}
+	IABase::direction = m_destination - IABase::position;
+	IABase::direction.normalize();
+	m_currentPathIndex = 0;
 
 	OnUpdate
 	// End of the path
-	if (!UpdatePosition())
-	{
-		m_path.Clear();
-		m_currentPathIndex = 0;	// Set the path index to 0
+	// Update the position with the direction path
+	IABase::position += IABase::direction * m_walkSpeed * m_timeElapsed;
+	IABase::positionCube = IABase::position / NYCube::CUBE_SIZE;
 
+	IABase::direction = m_destination - IABase::position;
+	IABase::direction.normalize();
+
+	NYVert3Df _dist = m_destination - IABase::position;
+
+	if (_dist.getSize() <= 5.f)
+	{
 		// If the creature still visible
 		if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
-		{
-			int _x = m_followedTarget->positionCube.X;
-			int _y = m_followedTarget->positionCube.Y;
-				
-			
+		{	
 			float _dist = NYVert3Df(m_followedTarget->position - position).getSize();
 
 			// Le monstre n'as pas bougé depuis la dernière fois
-			if (_dist <=10.f)				
+			if (_dist <= 10.f)				
 				PushState(STATE_Move);
 			else
-				m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+			{
+				DEBUG
+				std::cout << "Continuing follow the creature" << std::endl;
+
+				m_destination = m_followedTarget->position;
+			}
 		}
 		else	// Loose the followed creature
 		{

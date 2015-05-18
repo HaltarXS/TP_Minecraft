@@ -1,7 +1,6 @@
 //BY Guillaume Pastor
 #include "Pathfinding.h"
 
-int _call = 0;
 Pathfinding::Pathfinding()
 {
 	//Init nodes
@@ -392,7 +391,6 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 
 bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition, unsigned _step, Path & _outPath, bool _walkOnWater)
 {
-	std::cout << "CALL PATH FINDING : " << _call++ << " start : " << _startPosition.X << "," << _startPosition.Y << " arrival : " << _arrivalPosition.X << "," << m_arrivalPosition.Y << std::endl;
 
 	ClearNodes();
 

@@ -74,7 +74,7 @@ private:
 	Lemming * m_partner;	// Partner for the reproduction
 	Viewcone m_view;	// View of the creature
 	Path m_path;	// Path of the lemming
-	NYVert2Df m_destination;	// The destination of the player
+	NYVert3Df m_destination;	// The destination of the player
 	NYVert3Df m_movement;	// Movement vector
 	Pathfinding * m_pathfind;	// Pointer on the pathfind singleton
 	int m_currentPathIndex;	// Index of the lemming
@@ -91,6 +91,7 @@ private:
 	bool TargetIsVisible();	// If true : the target followed by the Lemming is visible
 	NYVert3Df GetMoveVector();	// Get the vector movement
 	bool UpdatePosition();	// Update the position for the Lemming (if true : End of the travel)
+	void FindPath(int _x, int _y);	// Find path to destination (update the m_path)
 
 };
 
