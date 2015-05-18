@@ -22,7 +22,7 @@ private:
 	float m_timeSleep = 0.0f;
 
 	//Active time, le parasite peut infecter les autres créatures en créant un fils parasite qui ira sur l'hôte cible
-	float m_durationReproduction = 40.0f;
+	float m_durationReproduction = 30.0f;
 	float m_timeReproduction = 0.0f;
 
 	//Timer de détection des animaux à proximité
@@ -34,7 +34,7 @@ private:
 	float m_timeCheckCrotte = 0.0f;
 
 	//Zone de détection des créatures proches à infecter, en nombre de cases (case courrante du virus incluse)
-	float m_areaEffect = 5.0f;
+	float m_areaEffect = 3.0f;
 
 	//Si le parasite est né dans une crotte (et non pas par transmission) 
 	bool m_isFirstBorn = false;
