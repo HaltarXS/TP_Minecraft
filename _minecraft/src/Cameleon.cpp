@@ -68,7 +68,7 @@ void Cameleon::UpdateIA()
 		PushState(STATE_Dead);
 
 	m_eggLayingClock = m_eggLayingClock + m_timer.getElapsedSeconds();	
-	if (m_eggLayingClock > 30){
+	if (m_eggLayingClock > 99){
 		m_eggLayingClock = 0;
 
 		Cameleon * minileon = new Cameleon(m_world, NYVert2Df(positionCube.X , positionCube.Y ));
