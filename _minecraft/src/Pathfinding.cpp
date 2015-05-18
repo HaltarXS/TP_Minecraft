@@ -1,7 +1,6 @@
 //BY Guillaume Pastor
 #include "Pathfinding.h"
 
-
 Pathfinding::Pathfinding()
 {
 	//Init nodes
@@ -144,6 +143,7 @@ int Pathfinding::DistanceManhattan(const NYVert3Df & _a, const NYVert3Df & _b)
 
 bool Pathfinding::AnalyseAdjacentNodes(int _cubeType)
 {
+
 	bool foundBetterNode = false;
 
 	m_betterNode = m_realActualNode;
@@ -391,6 +391,7 @@ bool Pathfinding::AnalyseAdjacentNodes2(int _step, bool _walkOnWater)
 
 bool Pathfinding::FindPath(NYVert2Df _startPosition, NYVert2Df _arrivalPosition, unsigned _step, Path & _outPath, bool _walkOnWater)
 {
+
 	ClearNodes();
 
 	bool PathNotFound = false;

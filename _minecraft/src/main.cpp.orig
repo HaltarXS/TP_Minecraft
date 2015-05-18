@@ -44,7 +44,6 @@
 #include "Cameleon.h"
 #include "Parasite.h"
 #include "BiXi.h"
-#include "Snake.h"
 
 NYWorld * g_world;
 
@@ -135,8 +134,8 @@ void spawnCreatures()
 	for (int i = 0; i < 10; ++i)
 	{
 		int x = i % 10 + 10;
-		int y = i / 10 + 10;
-		Gendamour * g = new Gendamour(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		int y = i * 10 + 10;
+		Gendamour * g = new Gendamour(g_world, NYVert2Df(x, y));
 		g->m_entities = &g_CreatureMap;
 		g_CreatureMap[GENDAMOUR].push_back(g);
 	}
@@ -162,11 +161,15 @@ void spawnCreatures()
 	}
 
 	// Lemming
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
 		l->SetEntities( &g_CreatureMap);
+		//l->m_drawDebug = true;
+<<<<<<< HEAD
 		//l->m_printDebug = true;
+=======
+>>>>>>> 30c9dc3ad2173aca22e12f9e5846ce58b253473f
 		g_CreatureMap[LEMMING].push_back(l);
 	}
 
@@ -195,10 +198,7 @@ void spawnCreatures()
 	// Parasite
 	for (int i = 0; i < 1; ++i)
 	{
-		Parasite * p = new Parasite(g_world, NYVert3Df(19 + i, 15, 0), true);
-		if (i == 0) {
-			p->m_isSpawner = true;
-		}
+		Parasite * p = new Parasite(g_world, NYVert2Df(19 + i, 15), true);
 		p->m_entities = &g_CreatureMap;
 		g_CreatureMap[PARASITE].push_back(p);
 	}
@@ -208,9 +208,6 @@ void spawnCreatures()
 
 	//Furz
 	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
-
-	//Snake
-	//g_CreatureMap[SNAKE].push_back(new Snake(g_world, NYVert2Df(20, 10),5));
 }
 
 /** === Mise à jour des IA ===
@@ -906,7 +903,7 @@ int main(int argc, char* argv[])
 	RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
 	pRessourceMgr->Create(HERBE, NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10), 1000);
 	pRessourceMgr->Create(HERBE, NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
-	pRessourceMgr->Create(CROTTE, NYVert3Df(110, 110, g_world->_MatriceHeights[12][12] * 10), 1000);
+	pRessourceMgr->Create(CROTTE, NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
 
 	//Init Timer
 	g_timer = new NYTimer();
