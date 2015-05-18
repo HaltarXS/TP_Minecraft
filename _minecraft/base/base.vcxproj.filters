@@ -104,6 +104,9 @@
     <ClCompile Include="..\src\Mouche.cpp">
       <Filter>Guillaume Dor</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Yeti.cpp">
+      <Filter>Guillermo Nunez</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -171,6 +174,9 @@
     </Filter>
     <Filter Include="Guillaume Dor">
       <UniqueIdentifier>{284f19a7-c264-42a1-9acd-125fd5e5dd05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillermo Nunez">
+      <UniqueIdentifier>{11d0c853-04e3-4a81-8cc9-d579885e027b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Mouche.h">
       <Filter>Guillaume Dor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Yeti.h">
+      <Filter>Guillermo Nunez</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

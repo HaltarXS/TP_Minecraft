@@ -45,6 +45,7 @@
 #include "Parasite.h"
 #include "BiXi.h"
 #include "Snake.h"
+#include "Yeti.h"
 
 NYWorld * g_world;
 
@@ -226,6 +227,11 @@ void spawnCreatures()
 	Snake* fruitInterdit = new Snake(g_world, NYVert2Df(25, 25), 5);
 	fruitInterdit->m_entities = &g_CreatureMap;
 	g_CreatureMap[SNAKE].push_back(fruitInterdit);
+	
+	//Yeti
+	Yeti * yeti = new Yeti(g_world, NYVert2Df(30, 30));
+	yeti->SetEntities( &g_CreatureMap);
+	g_CreatureMap[YETI].push_back(yeti);
 }
 
 /** === Mise à jour des IA ===

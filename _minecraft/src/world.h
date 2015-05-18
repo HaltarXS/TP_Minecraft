@@ -147,7 +147,7 @@ public :
 
 		if(height-1>0)
 		{
-			if(height >= 32)
+			if(height >= 11)
 			{
 				getCube(x,y,height-1)->_Draw = true;
 				getCube(x,y,height-1)->_Type = CUBE_NEIGE;
