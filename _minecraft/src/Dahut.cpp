@@ -30,8 +30,9 @@ m_pEntities(NULL)
 	//Init pathfinding singleton
 	m_pPathfinder = Pathfinding::GetSingleton();
 
-	//Init timer
+	//Init timers
 	m_lastUpdate.start();
+	m_lastPathfinding.start();
 }
 
 Dahut::~Dahut()
@@ -107,7 +108,7 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 	{
 		//Look for a path
 		bool pathFound = false;
-		while(!pathFound)
+		if(!pathFound && m_lastPathfinding.getElapsedSeconds() >= m_pathfindingInterval)
 		{
 			NYVert3Df newPosition;
 			if(m_goalState == STATE_FindPath)
@@ -131,6 +132,9 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 			   newPosition.Z > 1 && newPosition.Z < MAT_SIZE_CUBES - 1)
 			{
 				pathFound = m_pPathfinder->FindPathDahut(positionCube, newPosition, m_path);
+				m_lastPathfinding.start();
+				
+				//Reset goal state if inaccessible goal
 				if(!pathFound && m_goalState == STATE_Eat)
 				{
 					m_goalState = STATE_FindPath;
@@ -138,8 +142,11 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 			}
 		}
 
-		//Move to the new path
-		PushState(STATE_Move);
+		if(pathFound)
+		{
+			//Move to the new path
+			PushState(STATE_Move);
+		}
 	}
 
 	//Try to eat something on current block
@@ -207,7 +214,7 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 
 		//Check if we reached the next position
 		NYVert3Df distance = m_interPositions[m_interIndex] - position;
-		if(distance.scalProd(direction) < 0.0f)
+		if(distance.scalProd(direction) < 0.0f || direction.getSize() < 0.01f)
 		{
 			position = m_interPositions[m_interIndex];
 			if(++m_interIndex >= m_interMax)

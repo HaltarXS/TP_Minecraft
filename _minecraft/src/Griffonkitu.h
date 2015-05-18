@@ -20,18 +20,23 @@ public:
 	void ChangeHuntArea();
 	// Temps de vol en mode observation
 	NYTimer	_spentTime;
-	// temps total
+	// temps de l'update
 	NYTimer	_Time;
+	// temps de vie
+	NYTimer _lifeTime;
 	//liste des entitées
+
 	std::map<eTypeCreature, CreatureVector> * m_entities;
 	void SetEntities(std::map<eTypeCreature, CreatureVector> * entities);
 	//Algorithme qui sert à trouver les cubes sur la trajectoir de la ligne. Je l'utilise l'orsque le griffon à détécté une cible potentiel.
 	bool BresenhamRayCast(int x1, int y1, int z1, const int x2, const int y2, const int z2);
 
 private:
-	// coordonée monde X
+	// regarde les proies aux alentours et fait un test de visibilité
+	void Griffonkitu::CheckTarget();
+	// coordonée monde Cube X
 	int m_XWorldMap;
-	// coordonée monde Y
+	// coordonée monde Cube Y
 	int m_YWorldMap;
 	// flag qui indique si le griffon fait des cercles avant d'attaquer
 	bool m_observationMod;
@@ -41,7 +46,12 @@ private:
 	bool m_obsColor = false;
 	// flag pour savoir si le griffon à déjà fait une inspection au moin une fois
 	bool m_hasLooked = false;
+	// flag pour savoir si le griffon est en vie
+	bool m_dead = false;
+	//vitesse
 	float m_speed;
+	//nombre de victimes
+	int m_victims = 0;
 	NYVert3Df m_direction;
 
 	IABase* m_target = NULL; // creature que va suivre le griffon
