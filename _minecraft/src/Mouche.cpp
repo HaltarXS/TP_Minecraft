@@ -131,7 +131,7 @@ bool Mouche::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Dead)
 	OnEnter
 	{
-		cout << "Deaderino\n";
+		//cout << "Deaderino\n";
 		_isAlive = false;
 		PushState(STATE_Initialize);
 	}
