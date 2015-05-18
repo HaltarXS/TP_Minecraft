@@ -50,7 +50,7 @@ void Crabe::UpdateIA(){
 				if (ia->GetState() != STATE_Dead)
 				{
 					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
-					this->SendMsg(MSG_Attack, ia->GetID(), new int(ia->life));
+					this->SendMsg(MSG_Attack, ia->GetID(), new int(25));
 					this->Manger();
 					this->NextAttack = TimeBetweenAttack;
 					break;
@@ -151,21 +151,22 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 	OnEnter
 		std::cout << "--Crabe " << this->GetID() << "-- Ca y est, je suis mort." << endl;
-		std::vector<IABase*> crabes;
-		for (int i = 0; i < (*m_entities)[CRABE].size(); i++)
-		{
-			IABase* crabe = (*m_entities)[CRABE][i];
-			if (crabe->GetState() != STATE_Dead)
-			{
-				crabes.push_back(crabe);
-			}
-		}
-		(*m_entities)[CRABE] = crabes;
+	m_timerDeath.start();
 		
 
 	EndStateMachine
-		if (m_currentState == STATE_Dead)
+		if (m_currentState == STATE_Dead && m_timerDeath.getElapsedSeconds() > 30.0f )
 		{
+			std::vector<IABase*> crabes;
+			for (int i = 0; i < (*m_entities)[CRABE].size(); i++)
+			{
+				IABase* crabe = (*m_entities)[CRABE][i];
+				if (crabe->GetState() != STATE_Dead)
+				{
+					crabes.push_back(crabe);
+				}
+			}
+			(*m_entities)[CRABE] = crabes;
 			delete this;
 		}
 }
@@ -174,7 +175,10 @@ void Crabe::Draw()
 {
 	glPushMatrix();
 	glTranslatef(this->position.X + this->Size /2, this->position.Y + this->Size/2, this->position.Z - this->Size - 2);
-	glColor3f(1.0, 0.0, 0.0);
+	if (m_currentState != STATE_Dead)
+		glColor3f(1.0, 0.0, 0.0);
+	else
+		glColor3f(0.0, 0.0, 0.0);
 	glutSolidCube(this->Size);
 	glTranslatef(this->Size/2-1, 2, this->Size - 2);
 	glColor3f(200, 200, 200);
@@ -188,6 +192,7 @@ void Crabe::Draw()
 void Crabe::Manger()
 {
 	IABase::Manger();
+	this->life += 10;
 	if (this->AxeX)
 		AxeX = false;
 	else

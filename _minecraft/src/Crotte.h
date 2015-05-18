@@ -17,5 +17,8 @@ class Crotte : public Ressource
 
 		bool Crotte::GetHasFly();
 		void Crotte::SetHasFly(bool val);
+
+		virtual bool Crotte::GetHasParasite();
+		virtual void Crotte::SetHasParasite(bool val);
 };
 

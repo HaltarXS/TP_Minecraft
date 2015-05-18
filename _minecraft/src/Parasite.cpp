@@ -1,7 +1,7 @@
 #include "Parasite.h"
+#include "RessourcesManager.h"
 
-
-Parasite::Parasite(NYWorld *pWorld, NYVert2Df pos, bool firstBorn) : IABase(pWorld)
+Parasite::Parasite(NYWorld *pWorld, NYVert3Df pos, bool firstBorn) : IABase(pWorld)
 {
 	//Init FSM
 	Initialize();
@@ -45,6 +45,16 @@ void Parasite::UpdateIA()
 {
 	//Update FSM
 	Update();
+
+	if (m_isSpawner) {
+
+		if (m_timeCheckCrotte >= m_durationCheckCrotte)
+		{
+			m_timeCheckCrotte = 0.0f; //Reset du compteur
+			checkCrottesSpanw();
+		}
+		m_timeCheckCrotte += m_lastUpdate.getElapsedSeconds();
+	}
 
 	//Start timer
 	m_lastUpdate.start();
@@ -116,7 +126,7 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 		if (m_timeCheckProximity >= m_durationCheckProximity)
 		{
 			m_timeCheckProximity = 0.0f; //Reset du compteur
-			InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
+			//InfectCreaturesInArea(m_areaEffect); //Recherche de créatures à proximité
 		}
 		m_timeCheckProximity += m_lastUpdate.getElapsedSeconds();
 
@@ -148,9 +158,9 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 				//Si la créature n'est pas infectée et qu'elle est dans la zone de proximité du virus
 				if ((*m_entities)[type][j]->infected == false && getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) < (sizeArea * 10 * sizeArea * 10)) {
 					//cout << "Contamine " << m_type  << " - Distance : "<< getSquarredDistance(&this->position, &(*m_entities)[type][j]->position)<< endl;
-					
+					cout << "/!\\/!\\ Contamination en cours /!\\/!\\ " << endl;
 					//Création d'un parasite fils ayant pour cible la créature en cours
-					Parasite * p = new Parasite(m_world, NYVert2Df((*m_entities)[type][j]->position.X, (*m_entities)[type][j]->position.Y), false);
+					Parasite * p = new Parasite(m_world, (*m_entities)[type][j]->position, false);
 					p->m_target = (*m_entities)[type][j]; //Affectation de la cible
 					p->m_target->infected = true; //Contamination de la créature
 					(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
@@ -166,5 +176,20 @@ void Parasite::FollowTarget() {
 		this->position.Z += 10; //un peu au dessus pour être visible
 		//Il aurait fallu créer une variable taille pour chaque créature plutôt que de mettre une taille directement dans le code...
 		//ça m'aurait permis de le placer à une hauteur dépendante de la taille de la créature et pas juste une valeur arbitraire
+	}
+}
+
+void Parasite::checkCrottesSpanw() {
+	//Get through all eatable resources
+	RessourceList *pList = RessourcesManager::GetSingleton()->GetRessourcesByType(CROTTE);
+	for (auto crotte = pList->begin(); crotte != pList->end(); ++crotte)
+	{
+		if ((*crotte)->GetHasParasite() == false) {
+			Parasite * p = new Parasite(m_world, (*crotte)->Position, true);
+			p->position = (*crotte)->Position;
+			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
+			cout << "Spawn de Parasite sur une crotte à la position" << (*crotte)->Position.X << "," << (*crotte)->Position.Y << "," << (int)m_world->_MatriceHeights[(int)(*crotte)->Position.X][(int)(*crotte)->Position.Y] << endl;
+			(*crotte)->SetHasParasite(true);
+		}
 	}
 }
