@@ -77,11 +77,11 @@
     <ClCompile Include="..\src\Lemming.cpp">
       <Filter>Axel Deshors</Filter>
     </ClCompile>
-    <ClCompile Include="Neon.cpp">
-      <Filter>Lucas Le Gouic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\GlaceGouille.cpp">
       <Filter>Judicael Abecassis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Neon.cpp">
+      <Filter>Lucas Le Gouic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,11 +231,11 @@
     <ClInclude Include="..\src\Lemming.h">
       <Filter>Axel Deshors</Filter>
     </ClInclude>
-    <ClInclude Include="Neon.h">
-      <Filter>Lucas Le Gouic</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\GlaceGouille.h">
       <Filter>Judicael Abecassis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Neon.h">
+      <Filter>Lucas Le Gouic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
