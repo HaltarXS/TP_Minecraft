@@ -110,6 +110,9 @@
     <ClCompile Include="..\src\RessourcesManager.cpp">
       <Filter>Paul Gerst</Filter>
     </ClCompile>
+    <ClCompile Include="Gevaulol.cpp">
+      <Filter>Lucien Catonnet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="engine">
@@ -183,6 +186,9 @@
     </Filter>
     <Filter Include="Guillermo Nunez">
       <UniqueIdentifier>{11d0c853-04e3-4a81-8cc9-d579885e027b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lucien Catonnet">
+      <UniqueIdentifier>{b2dfdf3a-95b6-4237-b9b9-a634f0e525ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="..\src\RessourcesManager.h">
       <Filter>Paul Gerst</Filter>
+    </ClInclude>
+    <ClInclude Include="Gevaulol.h">
+      <Filter>Lucien Catonnet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
