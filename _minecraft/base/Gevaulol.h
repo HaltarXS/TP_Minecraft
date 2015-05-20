@@ -18,7 +18,6 @@ private:
 public:
 
 	Gevaulol(NYWorld *pWorld, NYVert2Df pos);
-	~Gevaulol();
 
 	//Overriden base class methods
 	virtual void UpdateIA();
