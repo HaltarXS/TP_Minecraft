@@ -154,14 +154,17 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	State(STATE_Reproduction)
 	OnUpdate
 	if (m_listPosition.size() >= 10){
-		cout << "SNAKE : verification reproduction" << endl;
-		Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
-		pommeDArgent->m_entities = m_entities;
-		(*m_entities)[SNAKE].push_back(pommeDArgent);
+		if ((*m_entities)[SNAKE].size() <= 20)
+		{
+			cout << "SNAKE : verification reproduction" << endl;
+			Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
+			pommeDArgent->m_entities = m_entities;
+			(*m_entities)[SNAKE].push_back(pommeDArgent);
 
-		//et on détruit les 5 dernières éléments
-		for (int i = 0; i < 5; i++)
-		m_listPosition.pop_back();
+			//et on détruit les 5 dernières éléments
+			for (int i = 0; i < 5; i++)
+				m_listPosition.pop_back();
+		}
 	}
 	
 	PushState(STATE_Move);

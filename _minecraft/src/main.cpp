@@ -208,7 +208,7 @@ void spawnCreatures()
 		int y = i / 10 + 15;
 		Cameleon * leon = new Cameleon(g_world, NYVert2Df(x, y));
 		leon->m_entities = &g_CreatureMap;
-		g_CreatureMap[CAMELEON].push_back(leon);
+		//g_CreatureMap[CAMELEON].push_back(leon);
 	}
 	// Crabe
 	for (int i = 0; i < 10; ++i)
