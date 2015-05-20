@@ -12,10 +12,9 @@
 
 class Gevaulol : public IABase
 {
-private:
-	static std::map<eTypeCreature, std::vector<IABase*>> *m_pEntities;
 
 public:
+	static std::map<eTypeCreature, std::vector<IABase*>> *creatureMap;
 
 	Gevaulol(NYWorld *pWorld, NYVert2Df pos);
 

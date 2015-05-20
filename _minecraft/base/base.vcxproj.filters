@@ -110,7 +110,7 @@
     <ClCompile Include="..\src\RessourcesManager.cpp">
       <Filter>Paul Gerst</Filter>
     </ClCompile>
-    <ClCompile Include="Gevaulol.cpp">
+    <ClCompile Include="..\src\Gevaulol.cpp">
       <Filter>Lucien Catonnet</Filter>
     </ClCompile>
   </ItemGroup>
@@ -323,7 +323,7 @@
     <ClInclude Include="..\src\RessourcesManager.h">
       <Filter>Paul Gerst</Filter>
     </ClInclude>
-    <ClInclude Include="Gevaulol.h">
+    <ClInclude Include="..\src\Gevaulol.h">
       <Filter>Lucien Catonnet</Filter>
     </ClInclude>
   </ItemGroup>

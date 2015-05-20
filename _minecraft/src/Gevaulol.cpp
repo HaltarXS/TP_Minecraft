@@ -1,5 +1,7 @@
 #include "Gevaulol.h"
 
+std::map<eTypeCreature, std::vector<IABase*>>* Gevaulol::creatureMap;
+
 Gevaulol::Gevaulol(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld){
 
 }

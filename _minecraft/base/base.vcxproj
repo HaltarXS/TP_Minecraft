@@ -23,6 +23,7 @@
     <ClCompile Include="..\src\Furz.cpp" />
     <ClCompile Include="..\src\gameobject.cpp" />
     <ClCompile Include="..\src\Gendamour.cpp" />
+    <ClCompile Include="..\src\Gevaulol.cpp" />
     <ClCompile Include="..\src\GlaceGouille.cpp" />
     <ClCompile Include="..\src\Griffonkitu.cpp" />
     <ClCompile Include="..\src\Herbe.cpp" />
@@ -50,7 +51,6 @@
     <ClCompile Include="..\src\Wastedosaure.cpp" />
     <ClCompile Include="..\src\WastedosaureManager.cpp" />
     <ClCompile Include="..\src\Yeti.cpp" />
-    <ClCompile Include="Gevaulol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\BiXi.h" />
@@ -69,6 +69,7 @@
     <ClInclude Include="..\src\Furz.h" />
     <ClInclude Include="..\src\gameobject.h" />
     <ClInclude Include="..\src\Gendamour.h" />
+    <ClInclude Include="..\src\Gevaulol.h" />
     <ClInclude Include="..\src\GlaceGouille.h" />
     <ClInclude Include="..\src\global.h" />
     <ClInclude Include="..\src\Griffonkitu.h" />
@@ -102,7 +103,6 @@
     <ClInclude Include="..\src\WastedosaureManager.h" />
     <ClInclude Include="..\src\world.h" />
     <ClInclude Include="..\src\Yeti.h" />
-    <ClInclude Include="Gevaulol.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>

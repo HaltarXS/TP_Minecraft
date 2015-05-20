@@ -47,6 +47,7 @@
 #include "BiXi.h"
 #include "Snake.h"
 #include "Yeti.h"
+#include "Gevaulol.h"
 
 NYWorld * g_world;
 
@@ -243,6 +244,11 @@ void spawnCreatures()
 	Yeti * yeti = new Yeti(g_world, NYVert2Df(30, 30));
 	yeti->SetEntities( &g_CreatureMap);
 	g_CreatureMap[YETI].push_back(yeti);
+
+	//Gevaulol
+	Gevaulol::creatureMap = &g_CreatureMap;
+	for (int i(0); i < 16; i++)
+		new Gevaulol(g_world, NYVert2Df(35, 35));
 }
 
 /** === Mise à jour des IA ===
