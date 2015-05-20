@@ -20,9 +20,6 @@
     <ClCompile Include="..\src\Herbe.cpp">
       <Filter>Ressources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RessourcesManager.cpp">
-      <Filter>Ressources</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\msgroute.cpp">
       <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
@@ -109,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Yeti.cpp">
       <Filter>Guillermo Nunez</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RessourcesManager.cpp">
+      <Filter>Paul Gerst</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,7 +218,6 @@
     <ClInclude Include="..\src\Herbe.h">
       <Filter>Ressources</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\RessourcesManager.h" />
     <ClInclude Include="..\src\msg.h">
       <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
@@ -314,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Yeti.h">
       <Filter>Guillermo Nunez</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RessourcesManager.h">
+      <Filter>Paul Gerst</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

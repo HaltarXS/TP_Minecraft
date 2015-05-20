@@ -1,3 +1,11 @@
+/**
+* File : RessourcesManager.cpp
+* Author : Paul Gerst
+* Description : Source file of the Resource Manager class
+* This class is a very basic container, and could be improved
+* to order Resources considering spatial repartition, etc.
+*/
+
 #include "RessourcesManager.h"
 #include "engine\render\renderer.h"
 #include "Herbe.h"
@@ -8,6 +16,7 @@ RessourcesManager* RessourcesManager::s_pInstance = NULL;
 
 RessourcesManager::RessourcesManager()
 {
+	//Init map with all resources types
 	for(int i = 0; i < RESSOURCE_NUM; ++i)
 	{
 		TypeRessource type = (TypeRessource) i;
@@ -17,6 +26,7 @@ RessourcesManager::RessourcesManager()
 
 RessourcesManager* RessourcesManager::GetSingleton()
 {
+	//Allocate instance if not already created
 	if(!s_pInstance)
 	{
 		s_pInstance = new RessourcesManager();
@@ -27,11 +37,13 @@ RessourcesManager* RessourcesManager::GetSingleton()
 
 void RessourcesManager::Destroy()
 {
+	//Delete instance
 	SAFEDELETE(s_pInstance);
 }
 
 Ressource* RessourcesManager::Create(TypeRessource type, NYVert3Df position, int maxQuantity)
 {
+	//Instantiate resource considering its type
 	Ressource *pRessource = NULL;
 	switch(type)
 	{
@@ -54,6 +66,7 @@ Ressource* RessourcesManager::Create(TypeRessource type, NYVert3Df position, int
 		break;
 	}
 
+	//Store it in the container if created
 	if(pRessource)
 	{
 		m_ressources[type].push_back(pRessource);
@@ -70,11 +83,13 @@ RessourceList* RessourcesManager::GetRessourcesByType(TypeRessource type)
 		return NULL;
 	}
 
+	//Return a pointer to the resource list
 	return &m_ressources[type];
 }
 
 void RessourcesManager::Delete(Ressource *pRessource)
 {
+	//Delete a resource
 	auto begin = m_ressources[pRessource->Type].begin();
 	auto end = m_ressources[pRessource->Type].end();
 	for(auto it = begin; it != end; ++it)
@@ -91,6 +106,7 @@ void RessourcesManager::Delete(Ressource *pRessource)
 
 void RessourcesManager::Update()
 {
+	//Update resources
 	float delta = NYRenderer::_DeltaTime;
 	for(int i = 0; i < RESSOURCE_NUM; ++i)
 	{
@@ -100,6 +116,8 @@ void RessourcesManager::Update()
 		while(it != end)
 		{
 			(*it)->Update(delta);
+
+			//If there is no resource left
 			if((*it)->Quantity <= 0)
 			{
 				auto prev = it++;
@@ -116,6 +134,7 @@ void RessourcesManager::Update()
 
 void RessourcesManager::Render()
 {
+	//Render all resources
 	for(int i = 0; i < RESSOURCE_NUM; ++i)
 	{
 		TypeRessource type = (TypeRessource) i;
