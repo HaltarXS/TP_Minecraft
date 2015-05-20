@@ -14,6 +14,16 @@ class Gendamour : public IABase
 		Gendamour(NYWorld *pWorld, NYVert2Df pos);
 		~Gendamour();
 
+		//Pathfinding singleton
+		int m_pathIndex;
+		Path m_path;
+		Pathfinding *m_pPathfinder;
+		NYVert3Df m_targetPosition;
+		std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game
+
+		//Timer to determine delta time
+		NYTimer m_lastUpdate;
+
 		//truc a override
 		virtual void Draw();
 		virtual bool States(StateMachineEvent event, MSG_Object *msg, int state);
@@ -25,6 +35,7 @@ class Gendamour : public IABase
 		float _reproductionTime = 1;//temps en minute qu'il faut passé avec un autre gendamour pour se reproduire
 		NYTimer	_spentTime ;// temps passé vivant
 		NYTimer	_spentTimeTogether;//temps passé avec un autre gendamour
+		NYTimer _researhTime; //temps avant la prochaine recherche
 		void setTarget(IABase* target);
 
 };

@@ -11,9 +11,11 @@
 
 enum TypeRessource
 {
-	NONE,
+	NONE = 0,
 	HERBE,
-	CROTTE
+	CROTTE,
+	//Cet identifiant doit rester à la fin de l'enumeration
+	RESSOURCE_NUM
 };
 
 
@@ -21,6 +23,7 @@ class Ressource
 {
 protected:
 	int MaxQuantity;
+	bool m_hasParasite = false;
 public:
 	TypeRessource Type;
 	static const int ILLIMITED_QUANTITY = -1;
@@ -40,6 +43,7 @@ public:
 	* Retourne la quantité manger.
 	*/
 	virtual int Use(int neededQuantity);
-	
 
+	virtual bool GetHasParasite();
+	virtual void SetHasParasite(bool val);
 };

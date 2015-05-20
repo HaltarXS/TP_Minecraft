@@ -28,3 +28,11 @@ int Ressource::Use(int neededQuantity)
 	}
 	return retQ;
 }
+bool Ressource::GetHasParasite()
+{
+	return m_hasParasite;
+}
+void Ressource::SetHasParasite(bool val)
+{
+	m_hasParasite = val;
+}

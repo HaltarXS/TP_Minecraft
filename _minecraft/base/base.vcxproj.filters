@@ -71,9 +71,6 @@
     <ClCompile Include="..\src\Gendamour.cpp">
       <Filter>Nicolas Leroy</Filter>
     </ClCompile>
-    <ClCompile Include="Snake.cpp">
-      <Filter>Vincent Swaenepoel</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Lemming.cpp">
       <Filter>Axel Deshors</Filter>
     </ClCompile>
@@ -82,6 +79,36 @@
     </ClCompile>
     <ClCompile Include="..\src\Neon.cpp">
       <Filter>Lucas Le Gouic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Griffonkitu.cpp">
+      <Filter>Martin Lagrange</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Furz.cpp">
+      <Filter>Bastien Besland</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Crabe.cpp">
+      <Filter>Cyril Malvaux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Parasite.cpp">
+      <Filter>Bastien Nanceau</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ProximityChecker.cpp">
+      <Filter>Bastien Nanceau</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Cameleon.cpp">
+      <Filter>Pierre Le Marchand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BiXi.cpp">
+      <Filter>Julien Daniel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Snake.cpp">
+      <Filter>Vincent Swaenepoel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Mouche.cpp">
+      <Filter>Guillaume Dor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Yeti.cpp">
+      <Filter>Guillermo Nunez</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +159,30 @@
     </Filter>
     <Filter Include="Lucas Le Gouic">
       <UniqueIdentifier>{e8ab6d3e-b4b5-4d21-847f-5f501ec8d1e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Martin Lagrange">
+      <UniqueIdentifier>{73ff9518-0a85-41f2-a04a-d34821c46641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bastien Besland">
+      <UniqueIdentifier>{cea04944-8a3f-4971-9f67-483946d7d6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cyril Malvaux">
+      <UniqueIdentifier>{248841c5-ee9b-4b6b-930d-14342716efe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pierre Le Marchand">
+      <UniqueIdentifier>{3a93bfd1-2147-4368-bbda-ea7ecd22cec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bastien Nanceau">
+      <UniqueIdentifier>{f1bb5843-c013-468c-bdc8-8226186177be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Julien Daniel">
+      <UniqueIdentifier>{5781b2f3-111f-4a2f-b954-1adab6d30fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillaume Dor">
+      <UniqueIdentifier>{284f19a7-c264-42a1-9acd-125fd5e5dd05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Guillermo Nunez">
+      <UniqueIdentifier>{11d0c853-04e3-4a81-8cc9-d579885e027b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,9 +276,6 @@
     <ClInclude Include="..\src\Gendamour.h">
       <Filter>Nicolas Leroy</Filter>
     </ClInclude>
-    <ClInclude Include="Snake.h">
-      <Filter>Vincent Swaenepoel</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Lemming.h">
       <Filter>Axel Deshors</Filter>
     </ClInclude>
@@ -236,6 +284,36 @@
     </ClInclude>
     <ClInclude Include="..\src\Neon.h">
       <Filter>Lucas Le Gouic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Griffonkitu.h">
+      <Filter>Martin Lagrange</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Furz.h">
+      <Filter>Bastien Besland</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Crabe.h">
+      <Filter>Cyril Malvaux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Parasite.h">
+      <Filter>Bastien Nanceau</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProximityChecker.h">
+      <Filter>Bastien Nanceau</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Cameleon.h">
+      <Filter>Pierre Le Marchand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BiXi.h">
+      <Filter>Julien Daniel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Snake.h">
+      <Filter>Vincent Swaenepoel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Mouche.h">
+      <Filter>Guillaume Dor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Yeti.h">
+      <Filter>Guillermo Nunez</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

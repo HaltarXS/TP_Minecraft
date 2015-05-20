@@ -2,7 +2,7 @@
 
 
 GlaceGouille::GlaceGouille(NYWorld *pWorld, NYVert2Df pos):
-IABase(pWorld), m_cone(90.0f, 30)
+IABase(pWorld), m_cone(90.0f, 50)
 {
 	//Init state machine
 	Initialize();
@@ -44,7 +44,9 @@ void GlaceGouille::Draw()
 {
 	//Basic rendering
 	//glColor3f(244.0/255.0, 250.0/255.0, 252.0/255.0);
-	glColor3f(1, 1, 1);
+	glColor3f(1., 1., 1.);
+	if (m_currentState == STATE_Sleep)
+		glColor3f(1., 0., 0.);
 	glPushMatrix();
 
 	glTranslatef(position.X, position.Y, position.Z);
@@ -75,6 +77,19 @@ void GlaceGouille::SetEntities(std::map<eTypeCreature, CreatureVector> * entitie
 bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 {
 	BeginStateMachine
+
+	OnMsg(MSG_Attack)//If i'm attacked
+	{
+		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
+		m_life -= *data;//I remove the value of the message data from my life.
+		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << m_life << std::endl;
+		delete data;//Delete the data
+
+		if (m_life <= 0)//If i don't have any life
+		{
+			PushState(STATE_Dead);//Use PushState to go in an other state
+		}
+	}//Message Attack
 
 	State(STATE_Initialize)
 	OnEnter
@@ -129,7 +144,7 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	OnEnter
 	{
 		m_currentPathIndex = 0;
-		cout << "Enter Move" << endl;
+		//cout << "Enter Move" << endl;
 	}
 	OnUpdate
 	{
@@ -214,7 +229,9 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	State(STATE_Eat)
 	OnEnter
 	{
-		SendMsg(MSG_Eat, m_targetID);
+		//cout << "Glacegouille attack lemming" << endl;
+		SendMsg(MSG_Eat, m_targetID, new int(1000));
+		PushState(STATE_Sleep);
 	}
 	OnExit
 	{
@@ -222,21 +239,39 @@ bool GlaceGouille::States(StateMachineEvent event, MSG_Object *msg, int state)
 	}
 
 	State(STATE_Dead)
+	//Override Messages you don't want to receive in this particular state
+	OnMsg(MSG_Attack)//i'm already dead, so no one can attack me anymore
+	{
+		std::cout << "--Entity " << this->GetID() << "-- Get message attack, but i'm already Dead :(" << std::endl;
+	}
 
+	OnEnter
+		std::cout << "--Entity " << this->GetID() << "-- I'm DEAD." << endl;
 	EndStateMachine
 }
 
 void GlaceGouille::GetCreaturesInSight()
 {
 	m_creaturesInSight.clear();
-
-	//eTypeCreature type = LEMMING;
-	//for (int j = 0; j < (*m_entities)[type].size(); ++j)
-	//{
-	//	if (m_cone.IsInSight((*m_entities)[type][j]->position) && (*m_entities)[type][j]->GetID() != this->GetID())
-	//	{
-	//		m_creaturesInSight.push_back((*m_entities)[type][j]);
-	//	}
-	//}
+	for (int i = 0; i < CREATURE_NUM; ++i)
+	{
+		eTypeCreature type = (eTypeCreature)i;
+		for (int j = 0; j < (*m_entities)[type].size(); ++j)
+		{
+			/////DEBUG
+			//if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
+			//	(*m_entities)[type][j]->GetID() != this->GetID() &&  //Si ce n'est pas moi. On ne sais jamais
+			//	type != WASTEDOSAURE)
+			//{
+			//	cout << (*m_entities)[type][j]->type << endl;
+			//}
+			/////DEBUG
+			if (m_cone.IsInSight((*m_entities)[type][j]->position) && //Si j'ai une entity dans mon champ de vision
+				type == LEMMING)
+			{
+				m_creaturesInSight.push_back((*m_entities)[type][j]);//...On le considère dans le champ de vision
+			}
+		}
+	}
 
 }

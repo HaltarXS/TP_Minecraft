@@ -20,6 +20,17 @@ enum eTypeCreature
 	GENDAMOUR,
 	SNAKE,
 	NEON,
+	GRIFFONKITU,
+	FURZ,
+	CRABE,
+	PARASITE,
+	VAUTOUR,
+	GEVAULOL,
+	NEON_BLEU,
+	BIXI,
+	NOKIA,
+	YETI,
+	RADIATOSAURE,
 	//Cet identifiant doit rester à la fin de l'enumeration
 	CREATURE_NUM
 };
@@ -46,7 +57,7 @@ public:
 	float faim;
 	float saciete;
 
-	bool infected; //If the entity is infected infected
+	bool infected = false; //If the entity is infected infected
 
 	int life = 100;
 

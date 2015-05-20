@@ -48,8 +48,11 @@ enum States_FSM
 	STATE_Suicide,
 	STATE_Reproduction,
 	STATE_Attack,
-	STATE_Wait
-
+	STATE_Wait,
+	STATE_FindSnow,
+	STATE_FindTarget,
+	STATE_Dance,
+	STATE_Follow
 };
 
 class StateMachine

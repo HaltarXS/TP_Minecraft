@@ -35,8 +35,18 @@
 #include "Wastedosaure.h"
 #include "Dahut.h"
 #include "Gendamour.h"
+#include "Griffonkitu.h"
 #include "GlaceGouille.h"
 #include "Neon.h"
+#include "Lemming.h"
+#include "Mouche.h"
+#include "Furz.h"
+#include "Crabe.h"
+#include "Cameleon.h"
+#include "Parasite.h"
+#include "BiXi.h"
+#include "Snake.h"
+#include "Yeti.h"
 
 NYWorld * g_world;
 
@@ -76,8 +86,6 @@ Herbe *herbe2;
 
 Crotte *crotte;
 
-RessourcesManager *ressourceManager;
-
 //State Machine
 FSM * master_FSM;
 
@@ -91,7 +99,7 @@ Path returnPath;
 //Vecteur de Creatures
 //static std::vector<IABase*> g_Creatures;
 
-//Stockage des créatures
+//Stockage des crÃ©atures
 typedef std::vector<IABase*> CreatureVector;
 std::map<eTypeCreature, CreatureVector> g_CreatureMap;
 
@@ -104,13 +112,13 @@ void spawnCreatures()
 		g_CreatureMap.insert(std::pair<eTypeCreature, CreatureVector>(type, CreatureVector()));
 	}
 
-	// === Ajout des créatures ===
+	// === Ajout des crÃ©atures ===
 
-	//Ajout des créatures
+	//Ajout des crÃ©atures
 	//Wastedosaure
 	for (int i = 0; i < 6; ++i)
 	{
-		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(20 + 2 * i, 20 + 2 * i));
+		Wastedosaure * w = new Wastedosaure(g_world, NYVert2Df(50 + 2 * i, 20 + 2 * i));
 		w->SetEntities(&g_CreatureMap);
 		g_CreatureMap[WASTEDOSAURE].push_back(w);
 	}
@@ -118,25 +126,44 @@ void spawnCreatures()
 	//Dahut
 	for(int i = 0; i < 10; ++i)
 	{
-		int x = i % 10 + 10;
-		int y = i / 10 + 10;
-		g_CreatureMap[DAHUT].push_back(new Dahut(g_world, NYVert2Df(x, y)));
+		//Random place in the world
+		int x = rand() % MAT_SIZE_CUBES;
+		int y = rand() % MAT_SIZE_CUBES;
+		int z = g_world->_MatriceHeights[x][y];
+
+		//If it's a safe place to spawn to
+		if(g_world->getCube(x, y, z - 1)->_Type == CUBE_HERBE ||
+		   g_world->getCube(x, y, z - 1)->_Type == CUBE_TERRE)
+		{
+			Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
+			pDahut->SetEntities(&g_CreatureMap);
+			g_CreatureMap[DAHUT].push_back(pDahut);
+		}
+		else
+		{
+			i--;
+		}
 	}
 
+	
 	//Gendamour
 	for (int i = 0; i < 10; ++i)
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+		Gendamour * g = new Gendamour(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		g->m_entities = &g_CreatureMap;
+		g_CreatureMap[GENDAMOUR].push_back(g);
 	}
 
-	//Gendamour
-	for (int i = 0; i < 10; ++i)
+	//Griffonkitu
+	for (int i = 0; i < 15; ++i)
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GENDAMOUR].push_back(new Gendamour(g_world, NYVert2Df(x, y)));
+		Griffonkitu * g = new Griffonkitu(g_world, NYVert2Df(x, y));
+		g->SetEntities(&g_CreatureMap);
+		g_CreatureMap[GRIFFONKITU].push_back(g);
 	}
 
 	//Glacegouille
@@ -144,7 +171,9 @@ void spawnCreatures()
 	{
 		int x = i % 10 + 10;
 		int y = i / 10 + 10;
-		g_CreatureMap[GLACEGOUILLE].push_back(new GlaceGouille(g_world, NYVert2Df(x, y)));
+		GlaceGouille * g = new GlaceGouille(g_world, NYVert2Df(x, y));
+		g->SetEntities(&g_CreatureMap);
+		g_CreatureMap[GLACEGOUILLE].push_back(g);
 	}
 
 	//Neon
@@ -156,16 +185,74 @@ void spawnCreatures()
 		neon->SetEntities(&g_CreatureMap);
 		g_CreatureMap[NEON].push_back(neon);
 	}
+
+	// Lemming
+	for (int i = 0; i < 10; ++i)
+	{
+		Lemming * l = new Lemming(g_world, NYVert2Df(i % 10 + 10, i * 10 + 10));
+		l->SetEntities( &g_CreatureMap);
+		//l->m_drawDebug = true;
+		g_CreatureMap[LEMMING].push_back(l);
+	}
+
+	//Mouche
+	for (int i = 0; i < Mouche::MAX_MOUCHE; ++i)
+	{
+		Mouche * mouche = new Mouche(g_world, NYVert2Df(0, 0));
+		g_CreatureMap[MOUCHE].push_back(mouche);
+	}
+	//Cameleon
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 15;
+		int y = i / 10 + 15;
+		Cameleon * leon = new Cameleon(g_world, NYVert2Df(x, y));
+		leon->m_entities = &g_CreatureMap;
+		g_CreatureMap[CAMELEON].push_back(leon);
+	}
+	// Crabe
+	for (int i = 0; i < 10; ++i)
+	{
+		Crabe * crabe = new Crabe(g_world, NYVert2Df(rand() % 100, rand() % 100),i%2);
+		crabe->m_entities = &g_CreatureMap;
+		g_CreatureMap[CRABE].push_back(crabe);
+	}
+	// Parasite
+	for (int i = 0; i < 1; ++i)
+	{
+		Parasite * p = new Parasite(g_world, NYVert3Df(19 + i, 15, 0), true);
+		if (i == 0) {
+			p->m_isSpawner = true;
+		}
+		p->m_entities = &g_CreatureMap;
+		g_CreatureMap[PARASITE].push_back(p);
+	}
+	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
+	bixi->_entities = &g_CreatureMap;
+	g_CreatureMap[BIXI].push_back(bixi);
+
+	//Furz
+	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
+
+	//Snake
+	Snake* fruitInterdit = new Snake(g_world, NYVert2Df(25, 25), 5);
+	fruitInterdit->m_entities = &g_CreatureMap;
+	g_CreatureMap[SNAKE].push_back(fruitInterdit);
+	
+	//Yeti
+	Yeti * yeti = new Yeti(g_world, NYVert2Df(30, 30));
+	yeti->SetEntities( &g_CreatureMap);
+	g_CreatureMap[YETI].push_back(yeti);
 }
 
-/** === Mise à jour des IA ===
+/** === Mise Ã  jour des IA ===
  * 
- * Afin d'éviter que le framerate ne diminue trop, un temps fixe
- * est alloué à la mise à jour des IA. A chaque appel, on effectue 
- * autant de mises à jour dans le temps imparti et on reprend là
- * où s'est arrêté à la frame suivante.
- * Les mises à jour s'arrêtent avant le temps imparti si on a
- * réussi à mettre à jour toutes les créatures.
+ * Afin d'Ã©viter que le framerate ne diminue trop, un temps fixe
+ * est allouÃ© Ã  la mise Ã  jour des IA. A chaque appel, on effectue 
+ * autant de mises Ã  jour dans le temps imparti et on reprend lÃ 
+ * oÃ¹ s'est arrÃªtÃ© Ã  la frame suivante.
+ * Les mises Ã  jour s'arrÃªtent avant le temps imparti si on a
+ * rÃ©ussi Ã  mettre Ã  jour toutes les crÃ©atures.
 **/
 void creatureUpdate(int computeTimeMS)
 {
@@ -244,14 +331,17 @@ void update(void)
 
 
 	//lapin->UpdateHunger(NYRenderer::_DeltaTime,NYRenderer::_DeltaTimeCumul);
-	herbe->Update(NYRenderer::_DeltaTime);
+	//herbe->Update(NYRenderer::_DeltaTime);
 
 	//Update State Machine example
 	//entityTest1->UpdateIA();
 	//entityTest2->UpdateIA();
 
+	//Update ressouces
+	RessourcesManager::GetSingleton()->Update();
+
 	//Update creatures (max 5ms)
-	creatureUpdate(5);
+	creatureUpdate(10);//J'ai mis 10, dÃ©solÃ©, Ã§a ramais trop :(
 
 	/*
 	//Update creatures
@@ -293,7 +383,7 @@ void renderObjects(void)
 
 	glColor3d(1,1,1);
 
-	//Active la lumière
+	//Active la lumiÃ¨re
 	glEnable(GL_LIGHTING);
 	glShadeModel ( GL_SMOOTH );
 
@@ -346,10 +436,13 @@ void renderObjects(void)
 	glUseProgram(0);
 	avatar->render();
 
-	herbe->Render();
-	herbe2->Render();
+	//Render ressources
+	RessourcesManager::GetSingleton()->Render();
+	
+	//herbe->Render();
+	//herbe2->Render();
 
-	crotte->Render();
+	//crotte->Render();
 
 	returnPath.DrawPath();
 
@@ -363,7 +456,7 @@ void renderObjects(void)
 		}
 	}
 
-	//Rendu des créatures
+	//Rendu des crÃ©atures
 	/*for (vector<IABase*>::iterator it = g_Creatures.begin(); it != g_Creatures.end(); ++it)
 	{
 		(*it)->Draw();
@@ -377,11 +470,11 @@ bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher)
 	SYSTEMTIME t;
 	GetLocalTime(&t);
 
-	//On borne le tweak time à une journée (cyclique)
+	//On borne le tweak time Ã  une journÃ©e (cyclique)
 	while(g_tweak_time > 60)
 		g_tweak_time -= 60;
 
-	//Temps écoulé depuis le début de la journée
+	//Temps Ã©coulÃ© depuis le dÃ©but de la journÃ©e
 	float fTime = (float) (t.wHour*60 + t.wMinute);
 	fTime += g_tweak_time;
 	while(fTime > 24*60)
@@ -406,7 +499,7 @@ bool getSunDirection(NYVert3Df & sun, float mnLever, float mnCoucher)
 		fTime *= M_PI;
 	}
 
-	//Position en fonction de la progression dans la journée
+	//Position en fonction de la progression dans la journÃ©e
 	sun.X = cos(fTime);
 	sun.Y = 0.2f;
 	sun.Z = sin(fTime);
@@ -423,11 +516,11 @@ void setLightsBasedOnDayTime(void)
 	//On recup la direciton du soleil
 	bool nuit = getSunDirection(g_sun_dir,g_mn_lever,g_mn_coucher);
 
-	//On définit une lumière directionelle (un soleil)
+	//On dÃ©finit une lumiÃ¨re directionelle (un soleil)
 	float position[4] = {g_sun_dir.X,g_sun_dir.Y,g_sun_dir.Z,0}; ///w = 0 donc c'est une position a l'infini
 	glLightfv(GL_LIGHT0, GL_POSITION, position );
 
-	//Pendant la journée
+	//Pendant la journÃ©e
 	if(!nuit)
 	{
 		//On definit la couleur
@@ -484,9 +577,6 @@ void specialDownFunction(int key, int p1, int p2)
 	if(key == GLUT_KEY_LEFT)
 	{
 	}
-
-	
-
 }
 
 void specialUpFunction(int key, int p1, int p2)
@@ -728,7 +818,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	//Affichage des capacités du système
+	//Affichage des capacitÃ©s du systÃ¨me
 	Log::log(Log::ENGINE_INFO,("OpenGL Version : " + std::string((char*)glGetString(GL_VERSION))).c_str());
 
 	glutDisplayFunc(update);
@@ -831,7 +921,7 @@ int main(int argc, char* argv[])
 
 
 
-	//On définit une lumière 
+	//On dÃ©finit une lumiÃ¨re 
 	lightPostion.Z = 7;
 
 	g_world = new NYWorld();
@@ -844,11 +934,11 @@ int main(int argc, char* argv[])
 	avatar->Speed = NYVert3Df(60,60,60);
 	//Init application
 	//lapin = new IABase();
-	
-	herbe = new Herbe(NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10),1000);
-	herbe2 = new Herbe(NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
 
-	crotte = new Crotte(NYVert3Df(110, 160, g_world->_MatriceHeights[12][12] * 10), 1000);
+	RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
+	pRessourceMgr->Create(HERBE, NYVert3Df(120,120,g_world->_MatriceHeights[12][12]*10), 1000);
+	pRessourceMgr->Create(HERBE, NYVert3Df(130, 130, g_world->_MatriceHeights[13][13] * 10), 1000);
+	pRessourceMgr->Create(CROTTE, NYVert3Df(110, 110, g_world->_MatriceHeights[12][12] * 10), 1000);
 
 	//Init Timer
 	g_timer = new NYTimer();
