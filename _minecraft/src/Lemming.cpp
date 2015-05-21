@@ -55,41 +55,48 @@ void Lemming::Update(float _elapsedTime)
 	m_tick += _elapsedTime;
 	m_timeElapsed = _elapsedTime;
 
-	if (m_tick >= 1.f)
+	if (m_currentState != STATE_Dead)
 	{
-		// Increase the hungerpoints
-		if (m_currentHungerPoints < m_maxHungerPoints)
-			m_currentHungerPoints++;
+		if (m_tick >= 1.f)
+		{
+			// Increase the hungerpoints
+			if (m_currentHungerPoints < m_maxHungerPoints)
+				m_currentHungerPoints++;
 
-		if (m_currentHungerPoints == m_maxHungerPoints)
-			PushState(STATE_Dead);
+			if (m_currentHungerPoints == m_maxHungerPoints)
+			{
+				std::cout << "DEATH BY HUNGER!!" << std::endl;
 
-		// Increase the Reproduction points
-		if (m_currentReproductionPoints < m_maxReproductionPoints)
-			m_currentReproductionPoints++;
+				PushState(STATE_Dead);
+			}
+			// Increase the Reproduction points
+			if (m_currentReproductionPoints < m_maxReproductionPoints)
+				m_currentReproductionPoints++;
 
-		m_tick = 0;
+			m_tick = 0;
+		}
+
+		if (m_currentState == STATE_Move)
+		{
+			m_checkVisibility += m_timeElapsed;
+
+			if (m_checkVisibility >= m_checkVisibilityTime)
+				m_checkVisibility = 0;
+		}
+
+		if (m_inactiveTimer >= 0.f)
+			m_inactiveTimer -= m_timeElapsed;
+
+		if (m_currentState == STATE_Dance)
+			m_dancingTime -= m_timeElapsed;
 	}
-
-	if (m_currentState == STATE_Move)
-	{
-		m_checkVisibility += m_timeElapsed;
-
-		if (m_checkVisibility >= m_checkVisibilityTime)
-			m_checkVisibility = 0;
-	}
-
-	if (m_inactiveTimer >= 0.f)
-		m_inactiveTimer -= m_timeElapsed;
-
-	if (m_currentState == STATE_Dance)
-		m_dancingTime -= m_timeElapsed;
 
 }
 
 void Lemming::Born()
 {
-	std::cout << "Lemming is Born!!" << std::endl;
+	DEBUG
+	std::cout << "New lemming is Born!!" << std::endl;
 
 	m_currentHungerPoints = 0;
 	IABase::life = m_maxLifePoints;
@@ -108,7 +115,12 @@ void Lemming::GetVisibleCreatures()
 	{
 		eTypeCreature type = (eTypeCreature)i;
 
-		if (type != eTypeCreature::YETI && type != eTypeCreature::GRIFFONKITU && type != eTypeCreature::MOUCHE)
+		if (type != eTypeCreature::YETI && 
+			type != eTypeCreature::GRIFFONKITU && 
+			type != eTypeCreature::MOUCHE &&
+			type != eTypeCreature::PARASITE &&
+			type != eTypeCreature::VAUTOUR &&
+			type != eTypeCreature::BIXI)
 		{
 			for (int j = 0; j < (*m_entities)[type].size(); ++j)
 			{
@@ -123,6 +135,20 @@ void Lemming::GetVisibleCreatures()
 
 void Lemming::Eat()
 {
+	if (m_drawDebug)
+	{
+		std::cout << "Eat some : ";
+		switch (m_world->getCube((int)IABase::positionCube.X, (int)IABase::positionCube.Y, m_world->_MatriceHeights[(int)IABase::positionCube.X][(int)IABase::positionCube.Y] - 1)->_Type)
+		{
+		case NYCubeType::CUBE_EAU: std::cout << "water"; break;
+		case NYCubeType::CUBE_AIR: std::cout << "wind"; break;
+		case NYCubeType::CUBE_NEIGE: std::cout << "snow"; break;	// Suppose to be snow but for the debug we test
+		case NYCubeType::CUBE_HERBE: std::cout << "grass"; break;
+		case NYCubeType::CUBE_TERRE: std::cout << "earth"; break;
+		}
+		std::cout << std::endl;
+	}
+
 	m_currentHungerPoints -= 100;
 	IABase::life += 10;
 	m_currentHungerPoints = max(m_currentHungerPoints, 0);
@@ -146,7 +172,7 @@ void Lemming::Reproduce()
 
 bool Lemming::IsHungry()
 {
-	return (m_currentHungerPoints >= 10);
+	return (m_currentHungerPoints >= m_maxHungerPoints / 2.f);
 }
 
 void Lemming::Draw()
@@ -154,7 +180,10 @@ void Lemming::Draw()
 	glPushMatrix();
 
 	// Draw the lemming
-	glTranslatef(position.X, position.Y, position.Z);
+	if (m_currentState != STATE_Follow)
+		glTranslatef(position.X, position.Y, position.Z);
+	else
+		glTranslatef(position.X, position.Y, position.Z + 5);
 
 	if (IsDancing())
 		glColor3f(1.f, 1.f, 0.9f);
@@ -213,22 +242,51 @@ void Lemming::Draw()
 	}
 }
 
-void Lemming::FindPath(int _x, int _y)
+bool Lemming::FindPath(int _x, int _y)
 {
-	DEBUG
-	std::cout << "Call find path " << _called++ << std::endl;
+	_called++;
+
+	float _elapsedTime = 0.f;
+
+	m_debugTimer.start();
 
 	_y = min(max(1, _y), MAT_SIZE_CUBES - 1);
 	_x = min(max(1, _x), MAT_SIZE_CUBES - 1);
+	
+	m_path.Clear();	// Clear the path
+
+	// If the cube is not water
+	if (m_world->getCube(_x, _y, m_world->_MatriceHeights[_x][_y] - 1)->_Type == NYCubeType::CUBE_EAU)	
+		return false;	// Not find the path (algorithm too long when the cube is water) Optimization
 
 	m_currentPathIndex = 0;
 
-	IABase::positionCube.X = min(max(1, IABase::positionCube.X), MAT_SIZE_CUBES - 1);
-	IABase::positionCube.Y = min(max(1, IABase::positionCube.Y), MAT_SIZE_CUBES - 1);
+	IABase::positionCube.X = (int)min(max(1, IABase::positionCube.X), MAT_SIZE_CUBES - 1);
+	IABase::positionCube.Y = (int)min(max(1, IABase::positionCube.Y), MAT_SIZE_CUBES - 1);
 
-	m_path.Clear();
-
+	// Pathfinding research
 	m_pathfind->FindPath(NYVert2Df(IABase::positionCube.X, IABase::positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+
+	_elapsedTime = m_debugTimer.getElapsedSeconds();
+
+	if (_elapsedTime > 0.01f && m_printDebug)
+	{
+		std::cout << "PATHFINDING num" << _called << ": (" << positionCube.X << ", " << positionCube.Y << ") TO : (" << _x << ", " << _y << ")" << " TAKE (SEC) : " << _elapsedTime << std::endl;
+		std::cout << "TYPE CUBE IS : ";
+
+		switch (m_world->getCube(_x, _y, m_world->_MatriceHeights[_x][_y] - 1)->_Type)
+		{
+		case NYCubeType::CUBE_EAU: std::cout << "WATER"; break;
+		case NYCubeType::CUBE_AIR: std::cout << "WIND"; break;
+		case NYCubeType::CUBE_NEIGE: std::cout << "SNOW"; break;
+		case NYCubeType::CUBE_HERBE: std::cout << "GRASS"; break;
+		case NYCubeType::CUBE_TERRE: std::cout << "EARTH"; break;
+		}
+
+		std::cout << std::endl;
+	}
+
+	return true;
 }
 
 void Lemming::GetTargetToFollow()
@@ -282,7 +340,6 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 
 	OnMsg(MSG_Eat)
 	{
-		Eat();
 
 	}
 
@@ -490,54 +547,61 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 	//m_currentPathIndex = 0;
 
 	OnUpdate
-	// End of the path
-	// Update the position with the direction path
-	IABase::position += IABase::direction * m_walkSpeed * m_timeElapsed;
-	IABase::positionCube = IABase::position / NYCube::CUBE_SIZE;
-
-	IABase::direction = m_destination - IABase::position;
-	IABase::direction.normalize();
-
-	NYVert3Df _dist = m_destination - IABase::position;
-
-	if (_dist.getSize() <= 5.f)
+	// If the creature still on sight :
+	if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
 	{
-		// If the creature still visible
-		if (m_followedTarget != NULL && m_view.IsInSight(m_followedTarget->position))
-		{	
-			float _dist = NYVert3Df(m_followedTarget->position - position).getSize();
+		// The followed target doesn't move
+		if (m_destination == m_followedTarget->position)
+		{
+			NYVert3Df _dist = m_destination - IABase::position;
 
-			// Le monstre n'as pas bougé depuis la dernière fois
-			if (_dist <= 10.f)				
-				PushState(STATE_Move);
-			else
+			// If the lemming is on the target (who don't move)
+			if (_dist.getSize() <= 10.f)
 			{
-				DEBUG
-				std::cout << "Continuing follow the creature" << std::endl;
+				PushState(STATE_Move);
 
-				m_destination = m_followedTarget->position;
+				return false;
 			}
 		}
-		else	// Loose the followed creature
-		{
-			DEBUG
-			std::cout << "Lemming loose his target at pos : " << positionCube.X << "," << positionCube.Y << "..." << std::endl;
 
-			PushState(STATE_Move);
-		}
-	}
-	else
-	{
 		// The lemming is following another lemming
 		if (m_followedTarget->type == LEMMING)
 		{
 			if (CanReproduce() && ((Lemming *)m_followedTarget)->IsDancing())
 			{
 				m_path.Clear();
-				PushState(STATE_Move);
+				PushState(STATE_Move);	// Go to move to detect the dancing lemming
 			}
 		}
+
+		m_destination = m_followedTarget->position;
 	}
+	else
+	{
+		PushState(STATE_Move);
+		return false;
+	}
+
+	// End of the path
+	// Update the position with the direction path
+	IABase::position += IABase::direction * m_walkSpeed * m_timeElapsed;
+	IABase::positionCube = IABase::position / NYCube::CUBE_SIZE;
+
+
+	if (IABase::positionCube.X >= 0 && IABase::positionCube.X < MAT_SIZE_CUBES && 
+		IABase::positionCube.Y >= 0 && IABase::positionCube.Y < MAT_SIZE_CUBES)
+	{
+		IABase::position.Z = m_world->_MatriceHeights[(int)IABase::positionCube.X][(int)IABase::positionCube.Y] * NYCube::CUBE_SIZE;
+		IABase::positionCube.Z = IABase::position.Z / NYCube::CUBE_SIZE;
+	}
+
+	IABase::direction = m_destination - IABase::position;
+	IABase::direction.normalize();
+
+
+	State(STATE_Dead)
+	OnUpdate
+	// Nothing is dead!
 
 	EndStateMachine
 }

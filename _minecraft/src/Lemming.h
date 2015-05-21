@@ -64,9 +64,9 @@ private:
 	float m_timeElapsed = 0.f;	// Time elapsed
 	float m_tick = 0.f;	// Tick every one second for the gauge
 	float m_dancingTime = 0.f;	// Time the lemming passed to dance
-	float m_inactiveTimer = 10.f;	// Time during the lemming is following anybody
+	float m_inactiveTimer = 5.f;	// Time during the lemming is following anybody
 	NYTimer m_timer;	// Timer of the entity
-
+	NYTimer m_debugTimer;	// Timer to find path!
 	// Times :
 	const float m_danceTime = 10.f;
 
@@ -92,7 +92,7 @@ private:
 	bool TargetIsVisible();	// If true : the target followed by the Lemming is visible
 	NYVert3Df GetMoveVector();	// Get the vector movement
 	bool UpdatePosition();	// Update the position for the Lemming (if true : End of the travel)
-	void FindPath(int _x, int _y);	// Find path to destination (update the m_path)
+	bool FindPath(int _x, int _y);	// Find path to destination (update the m_path) return true if the path is possible
 
 };
 
