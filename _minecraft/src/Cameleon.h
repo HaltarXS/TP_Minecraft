@@ -27,7 +27,9 @@ public:
 	float m_speed = 0.7f;
 
 	int m_hunger = 0;
-	float m_hungerStepIncrement=0;
+	float m_hungerStepIncrement = 0;
+
+	float m_UpdateIAIncrement = 0;
 
 	int m_eggLayingClock = 0;
 

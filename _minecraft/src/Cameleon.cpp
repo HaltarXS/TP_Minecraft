@@ -77,6 +77,7 @@ void Cameleon::UpdateIA()
 	}
 
 	//Update FSM
+	if (m_hungerStepIncrement)
 	Update();
 
 	//Start timer
@@ -88,7 +89,7 @@ int  Cameleon::findClosestMoucheInRange(int _range){
 	int closestMoucheIndex=-1;
 	for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
 	{
-		if (((*m_entities)[MOUCHE][i]->GetState()!=STATE_Dead && // if mouche is not dead
+		if (((*m_entities)[MOUCHE][i]->GetState() != STATE_Initialize && // if mouche is not dead
 			( (*m_entities)[MOUCHE][i]->positionCube - positionCube).getSize() < smallestDistance.getSize() ) ){ // if mouche is ccloser than previous closest mouche
 			smallestDistance = ((*m_entities)[MOUCHE][i]->positionCube - positionCube);
 			closestMoucheIndex = i;
@@ -136,9 +137,11 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 			int _x ,_y;
 			int _closestMoucheIndex = findClosestMoucheInRange(5);
 			if (_closestMoucheIndex == -1){ // if no mouche in a range of 5
-
-				 _x = positionCube.X+ rand( )% 5; // then cameleon goes wandering around
-				 _y = positionCube.Y+ rand() % 5;
+				int i = rand() % 2;
+				int j = 1;
+				if (i == 0) j = -1;
+				 _x = positionCube.X+ (rand( )% 5)*j; // then cameleon goes wandering around
+				 _y = positionCube.Y+ (rand() % 5)*j;
 
 			}
 			else{// else he goes to the closest mouche
@@ -172,7 +175,7 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnUpdate
 		{
 			int _closestMoucheIndex = findClosestMoucheInRange(1);
-			if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState()!=STATE_Dead){ // living mouche in range ! Fire at will !
+			if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState()!=STATE_Initialize){ // living mouche in range ! Fire at will !
 				(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
 				m_hunger--;
 			}
