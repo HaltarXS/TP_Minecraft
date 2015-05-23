@@ -231,10 +231,15 @@ void spawnCreatures()
 	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
 	bixi->_entities = &g_CreatureMap;
 	g_CreatureMap[BIXI].push_back(bixi);
-
+	
 	//Furz
-	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
-
+	for (int i = 0; i < 4; ++i)
+	{
+		Furz* pet = new Furz(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		pet->m_entities = &g_CreatureMap;
+		g_CreatureMap[FURZ].push_back(pet);
+	}
+	
 	//Snake
 	Snake* fruitInterdit = new Snake(g_world, NYVert2Df(25, 25), 5);
 	fruitInterdit->m_entities = &g_CreatureMap;
