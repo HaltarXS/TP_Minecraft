@@ -37,6 +37,7 @@
 #include "Gendamour.h"
 #include "Griffonkitu.h"
 #include "GlaceGouille.h"
+#include "Neon.h"
 #include "Lemming.h"
 #include "Mouche.h"
 #include "Furz.h"
@@ -46,6 +47,7 @@
 #include "BiXi.h"
 #include "Snake.h"
 #include "Yeti.h"
+#include "Gevaulol.h"
 
 NYWorld * g_world;
 
@@ -175,6 +177,16 @@ void spawnCreatures()
 		g_CreatureMap[GLACEGOUILLE].push_back(g);
 	}
 
+	//Neon
+	for (int i = 0; i < 10; ++i)
+	{
+		int x = i % 10 + 15;
+		int y = i / 10 + 15;
+		Neon * neon = new Neon(g_world, NYVert2Df(x, y));
+		neon->SetEntities(&g_CreatureMap);
+		g_CreatureMap[NEON].push_back(neon);
+	}
+
 	// Lemming
 	for (int i = 0; i < 10; ++i)
 	{
@@ -197,7 +209,7 @@ void spawnCreatures()
 		int y = i / 10 + 15;
 		Cameleon * leon = new Cameleon(g_world, NYVert2Df(x, y));
 		leon->m_entities = &g_CreatureMap;
-		g_CreatureMap[CAMELEON].push_back(leon);
+		//g_CreatureMap[CAMELEON].push_back(leon);
 	}
 	// Crabe
 	for (int i = 0; i < 10; ++i)
@@ -232,6 +244,11 @@ void spawnCreatures()
 	Yeti * yeti = new Yeti(g_world, NYVert2Df(30, 30));
 	yeti->SetEntities( &g_CreatureMap);
 	g_CreatureMap[YETI].push_back(yeti);
+
+	//Gevaulol
+	Gevaulol::creatureMap = &g_CreatureMap;
+	for (int i(0); i < 16; i++)
+		new Gevaulol(g_world, NYVert2Df(35, 35));
 }
 
 /** === Mise à jour des IA ===

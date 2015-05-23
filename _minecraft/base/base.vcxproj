@@ -23,6 +23,7 @@
     <ClCompile Include="..\src\Furz.cpp" />
     <ClCompile Include="..\src\gameobject.cpp" />
     <ClCompile Include="..\src\Gendamour.cpp" />
+    <ClCompile Include="..\src\Gevaulol.cpp" />
     <ClCompile Include="..\src\GlaceGouille.cpp" />
     <ClCompile Include="..\src\Griffonkitu.cpp" />
     <ClCompile Include="..\src\Herbe.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="..\src\Mouche.cpp" />
     <ClCompile Include="..\src\msg.cpp" />
     <ClCompile Include="..\src\msgroute.cpp" />
+    <ClCompile Include="..\src\Neon.cpp" />
     <ClCompile Include="..\src\ny_utils.cpp" />
     <ClCompile Include="..\src\Parasite.cpp" />
     <ClCompile Include="..\src\Path.cpp" />
@@ -67,6 +69,7 @@
     <ClInclude Include="..\src\Furz.h" />
     <ClInclude Include="..\src\gameobject.h" />
     <ClInclude Include="..\src\Gendamour.h" />
+    <ClInclude Include="..\src\Gevaulol.h" />
     <ClInclude Include="..\src\GlaceGouille.h" />
     <ClInclude Include="..\src\global.h" />
     <ClInclude Include="..\src\Griffonkitu.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="..\src\msg.h" />
     <ClInclude Include="..\src\msgroute.h" />
     <ClInclude Include="..\src\my_physics.h" />
+    <ClInclude Include="..\src\Neon.h" />
     <ClInclude Include="..\src\ny_utils.h" />
     <ClInclude Include="..\src\Parasite.h" />
     <ClInclude Include="..\src\Path.h" />

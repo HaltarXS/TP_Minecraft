@@ -26,7 +26,7 @@ private:
 	float m_timeReproduction = 0.0f;
 
 	//Timer de détection des animaux à proximité
-	float m_durationCheckProximity = 1.0f;
+	float m_durationCheckProximity = .5f;
 	float m_timeCheckProximity = 0.0f;
 
 	//Timer de détection des animaux à proximité

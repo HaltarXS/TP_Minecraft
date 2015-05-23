@@ -33,6 +33,11 @@ void Snake::UpdateIA(){
 	Update();
 }
 
+//Mange les monstres à une case de sa tête
+bool Snake::Proximity(NYVert3Df food){
+	return sqrt(pow(food.X - m_listPosition[0].X, 2) + pow(food.Y - m_listPosition[0].Y, 2) + pow(food.Z - m_listPosition[0].Z, 2)) < NYCube::CUBE_SIZE + 1;
+}
+
 void Snake::Draw(){
 
 	glColor3f(255, 255, 255);
@@ -54,20 +59,23 @@ void Snake::Draw(){
 
 bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 
+	//Etats : Move -> Sleep -> Eat -> Reproduction -> Move -> ...
+
 	BeginStateMachine
 
 	//MESSAGES
-	//Get the messages first in the global scope
-	OnMsg(MSG_Attack)//If i'm attacked
+	OnMsg(MSG_Attack)//Si le snake se fait attaquer par un vautour, il perd un bloque jusqu'à arriver à zéro
 	{
-		int * data = (int*)msg->GetMsgData();//We get the value in the message.  /!\ If i receive this message, i know that the message data will be an int !
-		m_life -= *data;//I remove the value of the message data from my life.
-		std::cout << "--Entity " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life removed : " << *data << ". Life remaining : " << m_life << std::endl;
+		int * data = (int*)msg->GetMsgData();
+		
+		m_listPosition.pop_back();
+
+		std::cout << "--Entity SNAKE " << this->GetID() << "-- Attack from entity " << msg->GetSender() << ". Life remaining : " << m_listPosition.size() << std::endl;
 		delete data;//Delete the data
 
-		if (m_life <= 0)//If i don't have any life
+		if (m_listPosition.size() <= 0 ) // à zéro bloque, le snake meurt
 		{
-			PushState(STATE_Dead);//Use PushState to go in an other state
+			PushState(STATE_Dead); //il sert plus à rien
 		}
 	}//Message Attack
 
@@ -76,7 +84,7 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Initialise : ALWAYS MUST BE HERE
 	State(STATE_Initialize)
 	OnEnter
-	std::cout << "--Entity " << this->GetID() << "-- Initialisation " << std::endl;
+	std::cout << "--Entity SNAKE : " << this->GetID() << "-- Initialisation " << std::endl;
 	PushState(STATE_Move); //Go to STATE_Move state
 
 
@@ -88,6 +96,7 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 	if (m_currentState != STATE_Dead){
 
+		//Tant que le snake n'est pas mort il choisi une position aléatoire
 		int direction = rand() % 4;
 		NYVert3Df newPosition;
 		bool isValideMove = true;
@@ -104,7 +113,7 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 		for (int i = 0; i < m_listPosition.size(); i++){
 			if (newPosition == m_listPosition[i] && isValideMove){
 				isValideMove = false;
-				//bloque le déplacement et choisi une nouvelle direction
+				//bloque le déplacement et choisi une nouvelle direction si le snake veut se mordre la queue
 			}
 		}
 
@@ -117,10 +126,6 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 					m_listPosition[i] = m_listPosition[i - 1];
 				else
 					m_listPosition[i] = newPosition;
-				
-
-				
-
 			}
 			PushState(STATE_Sleep);
 		}
@@ -129,10 +134,31 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//Eat
 	State(STATE_Eat)
 	OnUpdate
-	//Pour l'instant on fait comme ça, mais faudrait trouver mieux
-	if (rand() % 10 == 0){
-	NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
-	m_listPosition.push_back(push);
+
+	for (int i = 0; i < CREATURE_NUM; ++i)
+	{
+		eTypeCreature type = (eTypeCreature)i;
+		if (type != eTypeCreature::SNAKE) {
+			for (int j = 0; j < (*m_entities)[type].size(); ++j)
+			{
+				//On parcourt la liste des créatures.
+
+				//Si la créature à proximité n'est pas un snake, on la mange
+				if (Proximity((*m_entities)[type][j]->position)) {
+					//TODO: vérifier si ça casse pas le code des autres
+					//(*m_entities).erase(advance((*m_entities).begin(),j));
+
+					//Et on grandi
+					NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
+					m_listPosition.push_back(push);
+
+					//faire caca
+					RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
+					m_listPosition.back().X;
+					*pRessourceMgr->Create(CROTTE, NYVert3Df(m_listPosition.back().X, m_listPosition.back().Y, m_listPosition.back().Z), 1000);
+				}
+			}
+		}
 	}
 
 	PushState(STATE_Reproduction);
@@ -141,27 +167,29 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	OnUpdate
 	if (m_timerSleep >= m_sleepDuration)
 	{
-		//Si un autre monstre est à portée de sa bouche
 		PushState(STATE_Eat);
 	}
 	m_timerSleep += NYRenderer::_DeltaTime;
-	//Sleep. Do nothing
 
 	OnExit
-	m_timerSleep = 0.0f; //Reinitialisation of the timer when exiting
+	m_timerSleep = 0.0f;
 
 
 	State(STATE_Reproduction)
 	OnUpdate
 	if (m_listPosition.size() >= 10){
-		cout << "SNAKE : verification reproduction" << endl;
-		Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
-		pommeDArgent->m_entities = m_entities;
-		(*m_entities)[SNAKE].push_back(pommeDArgent);
+		if ((*m_entities)[SNAKE].size() <= 20)
+		{
+			//Si un snake est trop grand, il se coupe en deux
+			cout << "SNAKE : verification reproduction" << endl;
+			Snake * pommeDArgent = new Snake(m_world, NYVert2Df(m_listPosition[5].X / NYCube::CUBE_SIZE, m_listPosition[5].Y / NYCube::CUBE_SIZE), 5);
+			pommeDArgent->m_entities = m_entities;
+			(*m_entities)[SNAKE].push_back(pommeDArgent);
 
-		//et on détruit les 5 dernières éléments
-		for (int i = 0; i < 5; i++)
-		m_listPosition.pop_back();
+			//et on détruit les 5 dernières éléments
+			for (int i = 0; i < 5; i++)
+				m_listPosition.pop_back();
+		}
 	}
 	
 	PushState(STATE_Move);

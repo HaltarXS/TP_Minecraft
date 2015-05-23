@@ -10,6 +10,9 @@
 #include "IABase.h"
 #include "Pathfinding.h"
 #include "engine/timer.h"
+#include <math.h>
+#include "Crotte.h"
+#include "RessourcesManager.h"
 
 class Snake : public IABase
 {
@@ -32,6 +35,8 @@ public:
 
 	Snake(NYWorld *pWorld, NYVert2Df pos, int size);
 	~Snake();
+
+	bool Proximity(NYVert3Df food);
 
 	void UpdateIA();
 	void Draw();

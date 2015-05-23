@@ -1,3 +1,11 @@
+/**
+* File : RessourcesManager.h
+* Author : Paul Gerst
+* Description : Header file of the Resource Manager class
+* This class is a very basic container, and could be improved
+* to order Resources considering spatial repartition, etc.
+*/
+
 #ifndef RESSOURCESMANAGER_H
 #define RESSOURCESMANAGER_H
 
@@ -40,6 +48,3 @@ private :
 };
 
 #endif
-
-//res * tmp = createT("nom");
-//res * tmp = createT<nom>

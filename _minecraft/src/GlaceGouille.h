@@ -22,10 +22,10 @@ private :
 	Path m_path;
 	Pathfinding *m_pathfinding;
 
-	float m_speed = 0.5f; //Vitesse de déplacement
+	float m_speed = 0.05f; //Vitesse de déplacement
 	float m_eggTime = 3.0f;//* 60; //temps passé en oeuf
 	float m_reproductionTime = 5.0f * 60; //Temps de vie avant de pondre un oeuf
-	float m_starvationTime = .0f * 60; //Temps avant de mourir de faim
+	float m_starvationTime = 10.f * 60; //Temps avant de mourir de faim
 	float m_rotationTime = 0.5; //temps avant chaque rotation de la vue
 	float m_lifeTime = 10 * 60; // temps de vie
 

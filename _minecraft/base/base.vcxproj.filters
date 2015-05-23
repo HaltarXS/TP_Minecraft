@@ -20,9 +20,6 @@
     <ClCompile Include="..\src\Herbe.cpp">
       <Filter>Ressources</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RessourcesManager.cpp">
-      <Filter>Ressources</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\msgroute.cpp">
       <Filter>Guillaume Pastor\State Machine</Filter>
     </ClCompile>
@@ -77,6 +74,9 @@
     <ClCompile Include="..\src\GlaceGouille.cpp">
       <Filter>Judicael Abecassis</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Neon.cpp">
+      <Filter>Lucas Le Gouic</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Griffonkitu.cpp">
       <Filter>Martin Lagrange</Filter>
     </ClCompile>
@@ -106,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Yeti.cpp">
       <Filter>Guillermo Nunez</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RessourcesManager.cpp">
+      <Filter>Paul Gerst</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Gevaulol.cpp">
+      <Filter>Lucien Catonnet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +160,9 @@
     <Filter Include="Axel Deshors">
       <UniqueIdentifier>{1f7b40c5-57c0-4c12-bdbc-185376ad47f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lucas Le Gouic">
+      <UniqueIdentifier>{e8ab6d3e-b4b5-4d21-847f-5f501ec8d1e7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Martin Lagrange">
       <UniqueIdentifier>{73ff9518-0a85-41f2-a04a-d34821c46641}</UniqueIdentifier>
     </Filter>
@@ -177,6 +186,9 @@
     </Filter>
     <Filter Include="Guillermo Nunez">
       <UniqueIdentifier>{11d0c853-04e3-4a81-8cc9-d579885e027b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lucien Catonnet">
+      <UniqueIdentifier>{b2dfdf3a-95b6-4237-b9b9-a634f0e525ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +224,6 @@
     <ClInclude Include="..\src\Herbe.h">
       <Filter>Ressources</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\RessourcesManager.h" />
     <ClInclude Include="..\src\msg.h">
       <Filter>Guillaume Pastor\State Machine</Filter>
     </ClInclude>
@@ -276,6 +287,9 @@
     <ClInclude Include="..\src\GlaceGouille.h">
       <Filter>Judicael Abecassis</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Neon.h">
+      <Filter>Lucas Le Gouic</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Griffonkitu.h">
       <Filter>Martin Lagrange</Filter>
     </ClInclude>
@@ -305,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="..\src\Yeti.h">
       <Filter>Guillermo Nunez</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RessourcesManager.h">
+      <Filter>Paul Gerst</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Gevaulol.h">
+      <Filter>Lucien Catonnet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

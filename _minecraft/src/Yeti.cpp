@@ -9,7 +9,7 @@ IABase(_world), m_cone(m_viewAngle, m_viewDistance)
 	NYVert2Df arrival = NYVert2Df(rand_a_b(_positionInitiale.X - 40, _positionInitiale.X  + 40), rand_a_b(_positionInitiale.Y  - 40, _positionInitiale.Y  + 40));
 	int zStart = m_world->_MatriceHeights[(int)arrival.X][(int)arrival.Y]-1 ;
 
-	while (arrival.X != 0 && arrival.Y != 0 && m_world->getCube(arrival.X, arrival.Y, zStart)->_Type != CUBE_NEIGE)
+	while (arrival.X <= 0 || arrival.Y <= 0 || m_world->getCube(arrival.X, arrival.Y, zStart)->_Type != CUBE_NEIGE)
 	{
 		arrival = NYVert2Df(rand_a_b(_positionInitiale.X  - 40, _positionInitiale.X + 40), rand_a_b(_positionInitiale.Y - 40, _positionInitiale.Y  + 40));
 		 zStart = m_world->_MatriceHeights[(int)arrival.X][(int)arrival.Y] - 1;
@@ -100,8 +100,17 @@ void Yeti::UpdateIA()
 
 	UpdateTimers();
 
+	//if (m_creaturesInSight.size() > 0 &&
+	//	target == NULL &&
+	//	m_creaturesInSight[0]->type == RADIATOSAURE)
+	//{
+	//	target = m_creaturesInSight[0];
+	//	PushState(STATE_Dance);
+	//}
+
 	if (m_creaturesInSight.size() > 0 && 
-		target == NULL)
+		target == NULL &&
+		m_creaturesInSight[0]->type != RADIATOSAURE)
 	{
 		target = m_creaturesInSight[0];
 		PushState(STATE_Attack);
@@ -328,11 +337,63 @@ bool Yeti::States(StateMachineEvent event, MSG_Object * msg, int state)
 	OnExit
 	m_path.Clear();
 	
+	//Fuite
+	State(STATE_Dance)
+		OnEnter
+
+		m_timeElapsedBetween2Attacks = 0;
+	OnUpdate
+
+		m_path.Clear();
+
+//	NYVert2Df arrival = NYVert2Df(rand_a_b(position.X / NYCube::CUBE_SIZE - 6, position.X / NYCube::CUBE_SIZE + 6), rand_a_b((position.Y) / NYCube::CUBE_SIZE - 6, position.Y / NYCube::CUBE_SIZE + 6));
+		//NYVert2Df arrival = NYVert2Df(target->position.X / NYCube::CUBE_SIZE, target->position.Y / NYCube::CUBE_SIZE);
+
+	m_distanceToTarget = NYVert3Df(position / NYCube::CUBE_SIZE - target->position / NYCube::CUBE_SIZE).getSize();
+
+	if (m_distanceToTarget >= m_viewDistance)
+	{
+		target = NULL;
+		PushState(STATE_FindPath);
+	}
+	else
+	{
+		direction = target->position - position;
+		direction.normalize();
+
+		NYVert2Df arrival = NYVert2Df(rand_a_b((position.X - direction.X) / NYCube::CUBE_SIZE - 3, (position.X - direction.X) / NYCube::CUBE_SIZE + 3), rand_a_b((position.Y - direction.Y) / NYCube::CUBE_SIZE - 6, (position.Y - direction.Y) / NYCube::CUBE_SIZE + 3));
+		int zStart = m_world->_MatriceHeights[(int) arrival.X][(int) arrival.Y] - 1;
+
+		if (arrival.X > 0 && arrival.Y > 0)
+		{
+			int zStart = m_world->_MatriceHeights[(int) arrival.X][(int) arrival.Y] - 1;
+
+			if (m_world->getCube(arrival.X, arrival.Y, zStart)->_Type == CUBE_NEIGE)
+			{
+				m_pf->FindPath(NYVert2Df(position.X / NYCube::CUBE_SIZE, position.Y / NYCube::CUBE_SIZE), arrival, 1, m_path);
+				m_currentIndex = FindClosestWaypoint(m_path);
+			}
+		}
+		isArrived = false;
+
+		//if (HasAPath())
+	//	{
+		//	PushState(STATE_Move);
+		//}
+
+		if (m_world->getCube(arrival.X, arrival.Y, zStart)->_Type == CUBE_NEIGE)
+		{
+				position -= direction * m_speed * m_lastUpdate.getElapsedSeconds();	
+		}
+	}
+
+	OnExit
+		m_path.Clear();
 	//Dead
 	//State(STATE_Dead)
 	//OnMsg(MSG_Attack)
 	//OnMsg(MSG_PrepareAttack)
-	OnEnter
+	//OnEnter
 	
 	EndStateMachine
 }

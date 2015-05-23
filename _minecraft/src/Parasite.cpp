@@ -132,7 +132,7 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 		if (m_timeReproduction >= m_durationReproduction)
 		{
 			if (m_target != NULL) { m_target->infected = false; } //La cible du parasite n'est plus infectée (elle pourra dont l'être de nouveau).
-			if (m_isSpawner == false) { (STATE_Dead); } //Fin de la durée de reproduction, le parasite meurt...en espérant que sa race perdure grâce à ses frères...Le spawner reste pour checker les crottes
+			if (m_isSpawner == false) { PushState(STATE_Dead); } //Fin de la durée de reproduction, le parasite meurt...en espérant que sa race perdure grâce à ses frères...Le spawner reste pour checker les crottes
 		}
 		m_timeReproduction += m_lastUpdate.getElapsedSeconds();
 	}
@@ -160,8 +160,10 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 					cout << "/!\\/!\\ Contamination en cours ;_; /!\\/!\\ " << endl;
 					//Création d'un parasite fils ayant pour cible la créature en cours
 					Parasite * p = new Parasite(m_world, (*m_entities)[type][j]->position, false);
+					p->m_entities = this->m_entities;
 					p->m_target = (*m_entities)[type][j]; //Affectation de la cible
 					p->m_target->infected = true; //Contamination de la créature
+					p->m_isSpawner = false;
 					(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
 				}
 			}
@@ -172,7 +174,7 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 void Parasite::FollowTarget() {
 	if (m_target != NULL) {
 		this->position = m_target->position;//Le parasite se place à la même position que sa cible,
-		this->position.Z += 10; //un peu au dessus pour être visible
+		this->position.Z += 20; //un peu au dessus pour être visible
 		//Il aurait fallu créer une variable taille pour chaque créature plutôt que de mettre une taille directement dans le code...
 		//ça m'aurait permis de le placer à une hauteur dépendante de la taille de la créature et pas juste une valeur arbitraire
 	}
@@ -186,6 +188,8 @@ void Parasite::checkCrottesSpanw() {
 		Crotte* crotte = (Crotte*)(*i);
 		if (crotte->GetHasParasite() == false) { //Si la crotte n'a pas eu son parasite
 			Parasite * p = new Parasite(m_world, crotte->Position, true); //Création d'un parasite
+			p->m_isSpawner = true;
+			p->m_entities = this->m_entities;
 			p->position = NYVert3Df(crotte->Position.X + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Y + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Z + 10); //Placement sur la crotte
 			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
 			cout << "Spawn de Parasite sur une crotte à la position" << crotte->Position.X << "," << crotte->Position.Y << "," << (int)m_world->_MatriceHeights[(int)crotte->Position.X][(int)crotte->Position.Y] << endl;
