@@ -129,7 +129,7 @@ void Yeti::UpdateIA()
 	{
 		if (m_creaturesInSight.size() > 0 &&
 			target == NULL &&
-			m_creaturesInSight[0]->type == RADIATOSAURE)
+			m_creaturesInSight[0]->type == RADIATOSAURE && !infected)
 		{
 			target = m_creaturesInSight[0];
 			PushState(STATE_Dance);
