@@ -21,8 +21,8 @@ public:
 	static const float breedingWaitTime, breedingRadius;
 
 	Gevaulol(NYWorld *pWorld, NYVert2Df pos);
-	float repulsionFactor, orientationFactor, attractionFactor;
-	float repulsionRadius, orientationRadius, attractionRadius;
+	float repulsionFactor, orientationFactor, attractionFactor, attackFactor;
+	float repulsionRadius, orientationRadius, attractionRadius, attackRadius;
 	float maxSpeed, perceptionRadius;
 
 	inline bool canBreed(){ return m_lastbreeding.getElapsedSeconds() > breedingWaitTime; }
