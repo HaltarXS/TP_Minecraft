@@ -17,10 +17,13 @@ class Dahut : public IABase
 private :
 
 	//Constant parameters
+	const int m_startingLife = 100;
+	const int m_eatingRegen = 20;
 	const int m_eatingQty = 100;
 	const int m_hungerThreshold = 100;
 	const int m_smellDistance = 15;
 	const float m_pathfindingInterval = 0.5f;
+	const int m_starvationThreshold = 5000;
 
 	//Pathfinding singleton
 	int m_pathIndex;

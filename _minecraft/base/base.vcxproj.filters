@@ -327,4 +327,9 @@
       <Filter>Lucien Catonnet</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Note.txt">
+      <Filter>Paul Gerst</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

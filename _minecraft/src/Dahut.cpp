@@ -27,6 +27,9 @@ m_pEntities(NULL)
 	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE/2.0f;
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
 
+	//Init life parameter
+	life = m_startingLife;
+
 	//Init pathfinding singleton
 	m_pPathfinder = Pathfinding::GetSingleton();
 
@@ -52,8 +55,12 @@ void Dahut::UpdateIA()
 		return;
 	}
 
-	//Update hunger
+	//Update hunger and check if starving
 	UpdateHunger(m_lastUpdate.getElapsedSeconds(), NYRenderer::_DeltaTimeCumul);
+	if(faim > m_starvationThreshold)
+	{
+		PushState(STATE_Dead);
+	}
 
 	//Update FSM
 	Update();
@@ -176,6 +183,9 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 				int qty = (int) m_lastUpdate.getElapsedSeconds() * m_eatingQty;
 				(*it)->Use(qty);
 
+				//Regen some life
+				life = min(life + m_eatingRegen, m_startingLife);
+
 				//Reset hunger
 				Manger();
 				break;
@@ -245,6 +255,9 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		positionCube.Y = (int) position.Y/NYCube::CUBE_SIZE;
 		positionCube.Z = (int) position.Z/NYCube::CUBE_SIZE;
 	}
+
+	//Empty state
+	State(STATE_Dead)
 
 	EndStateMachine
 }

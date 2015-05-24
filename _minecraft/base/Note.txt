@@ -1,0 +1,6 @@
+=== ADDITIONAL WORK ===
+
+In addition to the files in the current filter, I also 
+worked on the creatures update system (main.cpp : 268)
+and the Dahut's specific pathfinding system
+(Pathfinding.cpp : 471)

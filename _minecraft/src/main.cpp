@@ -125,7 +125,7 @@ void spawnCreatures()
 	}
 
 	//Dahut
-	for(int i = 0; i < 10; ++i)
+	for(int i = 0; i < 20;)
 	{
 		//Random place in the world
 		int x = rand() % MAT_SIZE_CUBES;
@@ -139,14 +139,10 @@ void spawnCreatures()
 			Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
 			pDahut->SetEntities(&g_CreatureMap);
 			g_CreatureMap[DAHUT].push_back(pDahut);
-		}
-		else
-		{
-			i--;
+			++i;
 		}
 	}
 
-	
 	//Gendamour
 	for (int i = 0; i < 10; ++i)
 	{
