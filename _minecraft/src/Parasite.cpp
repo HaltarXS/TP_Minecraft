@@ -139,7 +139,7 @@ bool Parasite::States(StateMachineEvent event, MSG_Object *msg, int state)
 		State(STATE_Dead)
 		OnEnter
 	{
-		cout << "One parasite is dead, but the war is not over. His brothers will infect you all\n";
+		//cout << "One parasite is dead, but the war is not over. His brothers will infect you all\n";
 	}
 		EndStateMachine
 }
@@ -157,7 +157,7 @@ void Parasite::InfectCreaturesInArea(float sizeArea) {
 				//Si la créature n'est pas infectée et qu'elle est dans la zone de proximité du virus
 				if ((*m_entities)[type][j]->infected == false && getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) < (sizeArea * 10 * sizeArea * 10)) {
 					//cout << "Contamine " << m_type << " - Distance : " << getSquarredDistance(&this->position, &(*m_entities)[type][j]->position) << "test " << &this->position - &(*m_entities)[type][j]->position << endl;
-					cout << "/!\\/!\\ Contamination en cours ;_; /!\\/!\\ " << endl;
+					//cout << "/!\\/!\\ Contamination en cours ;_; /!\\/!\\ " << endl;
 					//Création d'un parasite fils ayant pour cible la créature en cours
 					Parasite * p = new Parasite(m_world, (*m_entities)[type][j]->position, false);
 					p->m_entities = this->m_entities;
@@ -192,7 +192,7 @@ void Parasite::checkCrottesSpanw() {
 			p->m_entities = this->m_entities;
 			p->position = NYVert3Df(crotte->Position.X + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Y + NYCube::CUBE_SIZE / 2.0f, crotte->Position.Z + 10); //Placement sur la crotte
 			(*m_entities)[PARASITE].push_back(p); //Ajout du parasite à la liste des parasites du monde
-			cout << "Spawn de Parasite sur une crotte à la position" << crotte->Position.X << "," << crotte->Position.Y << "," << (int)m_world->_MatriceHeights[(int)crotte->Position.X][(int)crotte->Position.Y] << endl;
+			//cout << "Spawn de Parasite sur une crotte à la position" << crotte->Position.X << "," << crotte->Position.Y << "," << (int)m_world->_MatriceHeights[(int)crotte->Position.X][(int)crotte->Position.Y] << endl;
 			crotte->SetHasParasite(true);
 		}
 	}
