@@ -1,7 +1,7 @@
 #include "Gevaulol.h"
 
 std::map<eTypeCreature, std::vector<IABase*>>* Gevaulol::creatureMap;
-const float Gevaulol::breedingWaitTime(32), Gevaulol::breedingRadius(NYCube::CUBE_SIZE);
+const float Gevaulol::breedingWaitTime(64), Gevaulol::breedingRadius(NYCube::CUBE_SIZE);
 
 Gevaulol::Gevaulol(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld){
 	(*creatureMap)[GEVAULOL].push_back(this);
