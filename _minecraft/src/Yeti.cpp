@@ -37,7 +37,11 @@ void Yeti::GetCreaturesInSight()
 	for (int i = 0; i < CREATURE_NUM; ++i)
 	{
 		eTypeCreature type = (eTypeCreature) i;
-		if (type != YETI && type != GRIFFONKITU)
+		if (type != YETI && type != GRIFFONKITU
+			&&
+			type != MOUCHE &&
+			type != PARASITE
+			&& type != VAUTOUR )
 		{
 			for (int j = 0; j < (*m_entities)[type].size(); ++j)
 			{
@@ -121,28 +125,34 @@ void Yeti::UpdateIA()
 
 	UpdateTimers();
 
-	if (m_creaturesInSight.size() > 0 &&
-		target == NULL &&
-		m_creaturesInSight[0]->type == RADIATOSAURE)
+	if (m_initialDuration > m_initialWait)
 	{
-		target = m_creaturesInSight[0];
-		PushState(STATE_Dance);
-	}
+		if (m_creaturesInSight.size() > 0 &&
+			target == NULL &&
+			m_creaturesInSight[0]->type == RADIATOSAURE)
+		{
+			target = m_creaturesInSight[0];
+			PushState(STATE_Dance);
+		}
 
-	else if (m_creaturesInSight.size() > 0 &&
-		target == NULL &&
-		m_creaturesInSight[0]->type != RADIATOSAURE)
-	{
-		target = m_creaturesInSight[0];
+		else if (m_creaturesInSight.size() > 0 &&
+			target == NULL &&
+			m_creaturesInSight[0]->type != RADIATOSAURE)
+		{
+			target = m_creaturesInSight[0];
 
-		PushState(STATE_Attack);
+			PushState(STATE_Attack);
+		}
+		
 	}
-	else
-	{
+	else m_initialDuration += m_lastUpdate.getElapsedSeconds();
+
+	
+
 		Update();//Update the state machine
 
 		m_lastUpdate.start();
-	}
+	
 }
 
 void Yeti::UpdateTimers()
@@ -222,11 +232,11 @@ bool Yeti::States(StateMachineEvent event, MSG_Object * msg, int state)
 
 	}//Message Attack
 
-	OnMsg(MSG_PrepareAttack)
-	{
-		PushState(STATE_Attack);
-		m_timerAttack = 0.0f;
-	}//Message Attack
+	//OnMsg(MSG_PrepareAttack)
+	//{
+	//	PushState(STATE_Attack);
+	//	m_timerAttack = 0.0f;
+	//}//Message Attack
 
 	//Initialize
 	State(STATE_Initialize)
@@ -318,7 +328,7 @@ bool Yeti::States(StateMachineEvent event, MSG_Object * msg, int state)
 		{
 			m_distanceToTarget = NYVert3Df(position / NYCube::CUBE_SIZE - target->position / NYCube::CUBE_SIZE).getSize();
 
-			if ((int) m_distanceToTarget >= (int) m_viewDistance)
+			if ((int) m_distanceToTarget >= (int) m_viewDistance/2)
 			{
 				target = NULL;
 				PushState(STATE_FindPath);
@@ -349,7 +359,7 @@ bool Yeti::States(StateMachineEvent event, MSG_Object * msg, int state)
 		}
 		OnExit
 			m_path.Clear();
-			//target = NULL;
+			target = NULL;
 
 		//Fuite
 		State(STATE_Dance)

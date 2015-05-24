@@ -31,6 +31,9 @@ private:
 	//Wandering/Attacking
 	const float m_durationWandering = 4.0f;
 	float m_timerWandering = 0.0f;
+	const float m_initialWait = 5.0f;
+	 float m_initialDuration = 0.0f;
+
 
 	//Attack 
 	const float m_durationAttack = 10.0f;
