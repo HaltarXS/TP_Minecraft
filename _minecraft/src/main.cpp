@@ -311,6 +311,8 @@ void creatureUpdate(int computeTimeMS)
 			timedOut = true;
 		}
 	}
+	if (updateTimer.getElapsedMs()>computeTimeMS*2) // The last creature took at least computeTimeMS
+		printf("%s took more time than allowed\n", g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->GetName());
 }
 
 //////////////////////////////////////////////////////////////////////////
