@@ -275,7 +275,9 @@ bool Dahut::Senses()
 		std::vector<IABase*> *pVector = &((*m_pEntities)[VAUTOUR]);
 		for(int i = 0; i < (*pVector).size(); ++i)
 		{
-			if(m_viewCone.IsInSight((*pVector)[i]->position))
+			//If predator is in sight and living
+			if(m_viewCone.IsInSight((*pVector)[i]->position) &&
+			   (*pVector)[i]->GetState() != STATE_Dead)
 			{
 				//Change goal position
 				m_goalPosition.X = 2.0f * positionCube.X - (*pVector)[i]->positionCube.X;
