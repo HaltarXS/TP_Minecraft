@@ -312,7 +312,7 @@ void creatureUpdate(int computeTimeMS)
 		}
 	}
 	if (updateTimer.getElapsedMs()>computeTimeMS*2) // The last creature took at least computeTimeMS
-		printf("%s took more time than allowed\n", g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->GetName());
+		printf("%s took more time than allowed (%dms)\n", g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->GetName(), updateTimer.getElapsedMs()-computeTimeMS);
 }
 
 //////////////////////////////////////////////////////////////////////////
