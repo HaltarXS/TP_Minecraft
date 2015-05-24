@@ -20,10 +20,13 @@ Gevaulol::Gevaulol(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld){
 	repulsionFactor = 2;
 	orientationFactor = 1;
 	attractionFactor = 4;
+	attackFactor = 4;
 	repulsionRadius = NYCube::CUBE_SIZE;
 	orientationRadius = 4 * NYCube::CUBE_SIZE;
-	attractionRadius = 16 * NYCube::CUBE_SIZE;
-	maxSpeed = 16;
+	attractionRadius = 8 * NYCube::CUBE_SIZE;
+	perceptionRadius = 24 * NYCube::CUBE_SIZE;
+	attackRadius = 2 * NYCube::CUBE_SIZE;
+	maxSpeed = 3 * NYCube::CUBE_SIZE;
 	m_timer.start();
 	m_lastbreeding.start();
 }
@@ -33,6 +36,7 @@ void Gevaulol::breed(Gevaulol& a, Gevaulol& b){
 	b.m_lastbreeding.start();
 	NYVert3Df center((a.positionCube + b.positionCube) / 2);
 	Gevaulol* gevaulol(new Gevaulol(a.m_world, NYVert2Df(center.X, center.Y)));
+	gevaulol->attackRadius = mutate(a.attackRadius, b.attackRadius);
 	gevaulol->attractionFactor = mutate(a.attractionFactor, b.attractionFactor);
 	gevaulol->attractionRadius = mutate(a.attractionRadius, b.attractionRadius);
 	gevaulol->maxSpeed = mutate(a.maxSpeed, b.maxSpeed);
@@ -55,7 +59,6 @@ float Gevaulol::mutate(float a, float b){
 
 void Gevaulol::UpdateIA(){
 	if (GetState() == STATE_Dead) return; // Stop right there if dead
-	//else if (randFloat() > .999f) PushState(STATE_Dead);
 	float delta(m_timer.getElapsedSeconds());
 	m_timer.start();
 	position += speed*delta;
@@ -78,6 +81,23 @@ void Gevaulol::UpdateIA(){
 				breed(*this, *gevaulol);
 		}
 	}
+	IABase* targetWastedosaure(NULL);
+	for (int i(0); i < (*creatureMap)[WASTEDOSAURE].size(); i++){ // For all wastedosaures
+		IABase* wastedosaure((*creatureMap)[WASTEDOSAURE][i]);
+		if (wastedosaure->GetState() == STATE_Dead) continue; // Don't care about dead wastedosaures
+		NYVert3Df toWastedosaure(wastedosaure->position - position);
+		float distSq(toWastedosaure.getMagnitude());
+		if (distSq < attackRadius*attackRadius){
+			targetWastedosaure = wastedosaure;
+			break;
+		}
+		else if (distSq < perceptionRadius*perceptionRadius){
+			toWastedosaure.normalize();
+			speed += toWastedosaure*delta * attackFactor;
+		}
+	}
+	if (targetWastedosaure)
+		SendMsg(MSG_Attack, targetWastedosaure->GetID(), new int(1));
 	if (positionCube.X < 0)
 		speed.X = abs(speed.X);
 	else if (positionCube.X >= MAT_SIZE_CUBES)
@@ -86,12 +106,6 @@ void Gevaulol::UpdateIA(){
 		speed.Y = abs(speed.Y);
 	else if (positionCube.Y >= MAT_SIZE_CUBES)
 		speed.Y = -abs(speed.Y);
-	/*
-	else if (m_world->getCube(positionCube.X, positionCube.Y, positionCube.Z)->isSolid()){ // Collision with cube
-	speed = NYVert3Df((rand() % 200) - 100, (rand() % 200) - 100, 50);
-	speed.normalize();
-	speed *= 8;
-	}*/
 	else if (positionCube.Z < m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y] + 2) // Too low
 		speed.Z = abs(speed.Z);
 	else if (positionCube.Z > m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y] + 8) // Too high

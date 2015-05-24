@@ -16,6 +16,7 @@
 #include "world.h"
 #include "Pathfinding.h"
 #include "Viewcone.h"
+#include "RessourcesManager.h"
 
 typedef std::vector<IABase*> CreatureVector;
 
@@ -28,7 +29,7 @@ private:
 	//Timers
 
 	//Wandering/Attacking
-	const float m_durationWandering = 50.0f;
+	const float m_durationWandering = 4.0f;
 	float m_timerWandering = 0.0f;
 
 	//Attack 
@@ -44,13 +45,13 @@ private:
 	Path m_path;
 	int m_currentIndex = 0;
 
-	float m_timeTryFindPath = 2.0f;
+	float m_timeTryFindPath = 0.5f;
 	float m_timerTryFindPath = 0.0f;
 
 	float m_currentSize = 25.0f;
 
 	//View Cone
-	const float m_viewDistance = 60.0f;
+	const float m_viewDistance = 30.0f;
 	const float m_viewAngle = 80.0f;
 
 	//Distance to target
@@ -71,15 +72,33 @@ private:
 	bool m_debugDraw = true;
 
 	NYVert3Df FindClosestCubeSnow();
+	vector<NYVert2Df> FindClosestCubesSnow(NYVert2Df pos);
 
 	void UpdateTimers();
 
 	void PrepareAttack(IABase * target);
 
 	inline int rand_a_b(int a, int b){
-		return rand() % (b - a) + a;
+		int result;
+
+
+		if (b < 1)
+			result = rand() % (1) + 1;
+		
+		else if (a > 0)
+			result = rand() % (b - a) + a;
+		else 
+			result = rand() % (b)+ 1;
+
+		return result;
+
+			
 	}
 
+	//Check senses to avoid predators and smell poop
+	bool Senses();
+	float m_smellDistance = 20.0f;
+	bool fuite = false;
 public:
 	Yeti(NYWorld * _world, NYVert2Df _positionInitiale);
 	~Yeti();
