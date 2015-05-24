@@ -34,13 +34,16 @@ void Cameleon::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glPushMatrix();
-	glTranslatef(position.X, position.Y, position.Z);
-		if (GetState() == STATE_Dead)
-			glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
+
+		//body
+		glTranslatef(position.X, position.Y, position.Z);
+		if (GetState() == STATE_Dead) // if cameleon is dead
+			glColor4f(0.5f, 0.5f, 0.5f, 0.5f); // then his corpse his grey
 		else
 			glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-
 		glutSolidCube(NYCube::CUBE_SIZE / 4.0f);
+
+		//eyes
 		glColor4f(0.0f,0.0f, 0.0f, 1.0f);
 		glPushMatrix();
 			glTranslatef(1,1,1);
@@ -50,41 +53,43 @@ void Cameleon::Draw()
 			glTranslatef(-1, 1, 1);
 			glutSolidCube(NYCube::CUBE_SIZE / 16.0f);
 		glPopMatrix();
+
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
 
-	//if (m_path.GetSize() > 0)		m_path.DrawPath();
+	if (m_debug && m_path.GetSize() > 0)m_path.DrawPath();
 }
 
 void Cameleon::UpdateIA()
 {
-	m_hungerStepIncrement = m_hungerStepIncrement + m_timer.getElapsedSeconds();
-	if (m_hungerStepIncrement > 1){// every second Leon get hungrier
+	m_hungerClock = m_hungerClock + m_timer.getElapsedSeconds();
+	m_reproductionClock = m_reproductionClock + m_timer.getElapsedSeconds();
+	m_mouchFindingClock = m_mouchFindingClock + m_timer.getElapsedSeconds();
+	m_pathFindingClock = m_pathFindingClock + m_timer.getElapsedSeconds();
+	if (m_hungerClock > m_hungerClockStep){// every second Leon get hungrier
 		m_hunger++;
-		m_hungerStepIncrement = 0;
+		m_hungerClock = 0;
 	}
-	if (m_hunger >= 100) // if leon hasn't eaten since the last 100 seconds, he will die !
+	if (m_hunger >= m_starvationLimit) // if leon hasn't eaten since the last 100 seconds, he will die !
 		PushState(STATE_Dead);
 
-	m_eggLayingClock = m_eggLayingClock + m_timer.getElapsedSeconds();	
-	if (m_eggLayingClock > 99){ // after 99 seconds, leon lay an egg
-		m_eggLayingClock = 0;
 
-		Cameleon * minileon = new Cameleon(m_world, NYVert2Df(positionCube.X , positionCube.Y ));
+	if (m_reproductionClock >m_reproductionClockStep){ // after m_reproductionClockStep seconds, leon lay an egg
+		m_reproductionClock = 0;
+
+		Cameleon * minileon = new Cameleon(m_world, NYVert2Df(positionCube.X , positionCube.Y )); // spawning of a new cameleon
 		(*m_entities)[CAMELEON].push_back(minileon);
-
 	}
 
 	//Update FSM
-	if (m_hungerStepIncrement)
 	Update();
 
 	//Start timer
 	m_timer.start();
 }
 
-int  Cameleon::findClosestMoucheInRange(int _range){
+int  Cameleon::MoucheFinding(int _range){
 	NYVert3Df smallestDistance = NYVert3Df(_range, _range, _range);
 	int closestMoucheIndex=-1;
 	for (int i = 0; i < (*m_entities)[MOUCHE].size(); i++)
@@ -133,27 +138,36 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		}
 		OnUpdate
 		{
+			if (m_pathFindingClock > m_pathFindingClockStep){ // if it's time to look for a path
+				m_pathFindingClock = 0;
 
-			int _x ,_y;
-			int _closestMoucheIndex = findClosestMoucheInRange(5);
-			if (_closestMoucheIndex == -1){ // if no mouche in a range of 5
-				int i = rand() % 2;
-				int j = 1;
-				if (i == 0) j = -1;
-				 _x = positionCube.X+ (rand( )% 5)*j; // then cameleon goes wandering around
-				 _y = positionCube.Y+ (rand() % 5)*j;
+				int _x, _y;
+				int _closestMoucheIndex = MoucheFinding(m_moucheFindingRange);
+				if (_closestMoucheIndex == -1){ // if no mouche in a range
+					int i = rand() % 2;
+					int j = 1;
+					if (i == 0) j = -1;
+					_x = positionCube.X + (rand() % pathFindingRange)*j; // then cameleon goes wandering around
+					_y = positionCube.Y + (rand() % pathFindingRange)*j;
 
+					// checking if not out of bounds 
+					if (_x < 1)_x = 1;
+					if (_y < 1)_y = 1;
+					if (_x > MAT_SIZE_CUBES)_x = MAT_SIZE_CUBES - 1;
+					if (_y > MAT_SIZE_CUBES)_y = MAT_SIZE_CUBES - 1;
+
+				}
+				else{// else he goes to the closest Mouche
+
+					m_destination = (*m_entities)[MOUCHE][_closestMoucheIndex]->positionCube;
+					_x = m_destination.X;
+					_y = m_destination.Y;
+				}
+
+				m_pathFinding->FindPath(NYVert2Df(positionCube.X, positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
+
+				PushState(STATE_Move);
 			}
-			else{// else he goes to the closest mouche
-
-				m_destination = (*m_entities)[MOUCHE][_closestMoucheIndex]->positionCube;
-				 _x = m_destination.X;
-				 _y = m_destination.Y;
-			}
-
-			m_pathFinding->FindPath(NYVert2Df(positionCube.X, positionCube.Y), NYVert2Df(_x, _y), 1, m_path);
-
-			PushState(STATE_Move);
 
 		}
 		OnExit{}
@@ -162,42 +176,45 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnEnter
 		{
 
-			if (m_path.GetSize() > 1)
+			if (m_path.GetSize() > 1) // if our path is not empty
 			{
-				direction = m_path.GetWaypoint(0) - position;
+				direction = m_path.GetWaypoint(0) - position; // we determine the direction
 				direction.normalize();
-				m_waypointIndex = 0;
+				m_waypointIndex = 0; // and start aiming for the first waypoint
 			}
-			else 
+			else // else we need to find a new path
 				PushState(STATE_FindPath);
 		}
 
 		OnUpdate
 		{
-			int _closestMoucheIndex = findClosestMoucheInRange(1);
-			if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState()!=STATE_Initialize){ // living mouche in range ! Fire at will !
-				(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
-				m_hunger--;
+			if (m_mouchFindingClock > m_moucheFindingClockStep){ // if it's time to look for a Mouche
+				m_mouchFindingClock = 0;
+				int _closestMoucheIndex = MoucheFinding(m_moucheEatingRange);
+				if (_closestMoucheIndex != -1 && (*m_entities)[MOUCHE][_closestMoucheIndex]->GetState() != STATE_Initialize){ // living mouche in range ! Fire at will !
+					(*m_entities)[MOUCHE][_closestMoucheIndex]->SendMsg(MSG_Attack, (*m_entities)[MOUCHE][_closestMoucheIndex]->GetID());
+					m_hunger--; // the cameleon is less hungry
+				}
 			}
 			else{ // no mouche in range, let's move
 
-				position += direction * m_speed * m_timer.getElapsedSeconds() * 30;
+				position += direction * m_speed *NYCube::CUBE_SIZE* m_timer.getElapsedSeconds() ;
 				positionCube = position / NYCube::CUBE_SIZE;
 
 				NYVert3Df _dist = m_path.GetWaypoint(m_waypointIndex) - position;
 
-				if (_dist.getSize() <= 5.f)
-					m_waypointIndex++;
+				if (_dist.getSize() <= 5.f)// if we are near enough the destination waypoint 
+					m_waypointIndex++; // we switch to next waypoint
 
-				if (m_waypointIndex < m_path.GetSize())
+				if (m_waypointIndex < m_path.GetSize()) // as long as we haven't reach the last waypoint
 				{
-					direction = m_path.GetWaypoint(m_waypointIndex) - position;
+					direction = m_path.GetWaypoint(m_waypointIndex) - position; // we aim for the next
 					direction.normalize();
 				}
-				else
+				else //if we have reached our destination
 				{
 					m_path.Clear();	
-					PushState(STATE_FindPath);
+					PushState(STATE_FindPath); // we try to find a new path
 				}
 			}
 		}
@@ -214,8 +231,7 @@ bool Cameleon::States(StateMachineEvent event, MSG_Object * msg, int state){
 		OnExit{}
 
 		State(STATE_Dead)
-		OnMsg(MSG_Attack){}
-	OnEnter{}
+		OnEnter{}
 		OnUpdate{}
 		OnExit{}
 
