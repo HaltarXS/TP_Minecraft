@@ -292,9 +292,12 @@ bool Lemming::FindPath(int _x, int _y)
 void Lemming::GetTargetToFollow()
 {
 	// Select random creature sawed by the lemming
-	int _index = rand() % m_visibleCreatures.size();
+	int _rand = rand() % m_visibleCreatures.size();
+	m_followedTarget = m_visibleCreatures.at(_rand);
 
-	m_followedTarget = m_visibleCreatures.at(_index);
+	DEBUG
+	std::cout << "Follow : : " << _rand << " index" << std::endl;
+
 }
 
 bool Lemming::TargetIsVisible()
@@ -443,11 +446,7 @@ bool Lemming::States(StateMachineEvent event, MSG_Object * msg, int state)
 				}
 			}
 			// Else the lemming follow a random creature
-			int _rand = rand() % m_visibleCreatures.size();
-			m_followedTarget = m_visibleCreatures.at(_rand);
-
-			DEBUG
-			std::cout << "Follow : : " << _rand << " index" << std::endl;
+			GetTargetToFollow();
 
 			PushState(STATE_Follow);
 		}
