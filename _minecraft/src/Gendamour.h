@@ -19,7 +19,7 @@ class Gendamour : public IABase
 		Path m_path;
 		Pathfinding *m_pPathfinder;
 		NYVert3Df m_targetPosition;
-		std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game
+		std::map<eTypeCreature, std::vector<IABase *>> * m_entities;// All entities of the game
 
 		//Timer to determine delta time
 		NYTimer m_lastUpdate;

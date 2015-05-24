@@ -19,6 +19,7 @@ private:
 	float Speed;
 	float Reproduction = 60.0f;
 	float MaxTimeReprod;
+	float lifeTime;
 	NYTimer m_timer;
 	float NextAttack;
 	float TimeBetweenAttack;
@@ -26,6 +27,7 @@ private:
 	NYTimer m_timerDeath;
 	bool LeftToRight;
 	bool AxeX;
+	bool HasEat;
 	void Update(float _elapsedTime);
 
 	void Manger();

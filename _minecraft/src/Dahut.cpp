@@ -27,6 +27,9 @@ m_pEntities(NULL)
 	position.Y = positionCube.Y*NYCube::CUBE_SIZE + NYCube::CUBE_SIZE/2.0f;
 	position.Z = positionCube.Z*NYCube::CUBE_SIZE;
 
+	//Init life parameter
+	life = m_startingLife;
+
 	//Init pathfinding singleton
 	m_pPathfinder = Pathfinding::GetSingleton();
 
@@ -52,8 +55,12 @@ void Dahut::UpdateIA()
 		return;
 	}
 
-	//Update hunger
+	//Update hunger and check if starving
 	UpdateHunger(m_lastUpdate.getElapsedSeconds(), NYRenderer::_DeltaTimeCumul);
+	if(faim > m_starvationThreshold)
+	{
+		PushState(STATE_Dead);
+	}
 
 	//Update FSM
 	Update();
@@ -114,8 +121,8 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 			if(m_goalState == STATE_FindPath)
 			{
 				//Randomize a new path
-				newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
-				newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 50.0f - 25.0f);
+				newPosition.X = (int) (positionCube.X + rand()/((float)RAND_MAX) * 20.0f - 10.0f);
+				newPosition.Y = (int) (positionCube.Y + rand()/((float)RAND_MAX) * 20.0f - 10.0f);
 				newPosition.Z = (int) m_world->_MatriceHeights[(int) newPosition.X][(int) newPosition.Y];
 			}
 			else
@@ -175,6 +182,9 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 				//Eat it
 				int qty = (int) m_lastUpdate.getElapsedSeconds() * m_eatingQty;
 				(*it)->Use(qty);
+
+				//Regen some life
+				life = min(life + m_eatingRegen, m_startingLife);
 
 				//Reset hunger
 				Manger();
@@ -246,6 +256,9 @@ bool Dahut::States(StateMachineEvent event, MSG_Object *msg, int state)
 		positionCube.Z = (int) position.Z/NYCube::CUBE_SIZE;
 	}
 
+	//Empty state
+	State(STATE_Dead)
+
 	EndStateMachine
 }
 
@@ -262,7 +275,9 @@ bool Dahut::Senses()
 		std::vector<IABase*> *pVector = &((*m_pEntities)[VAUTOUR]);
 		for(int i = 0; i < (*pVector).size(); ++i)
 		{
-			if(m_viewCone.IsInSight((*pVector)[i]->position))
+			//If predator is in sight and living
+			if(m_viewCone.IsInSight((*pVector)[i]->position) &&
+			   (*pVector)[i]->GetState() != STATE_Dead)
 			{
 				//Change goal position
 				m_goalPosition.X = 2.0f * positionCube.X - (*pVector)[i]->positionCube.X;

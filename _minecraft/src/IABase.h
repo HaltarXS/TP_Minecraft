@@ -74,6 +74,8 @@ public:
 	{
 		return this->GetOwner()->GetID();
 	}
+	//Get a string version of the type of the creature
+	const char* GetName() const;
 
 	//Override this method !
 	virtual void UpdateIA() = 0;

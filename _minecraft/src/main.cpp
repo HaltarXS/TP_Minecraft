@@ -125,7 +125,7 @@ void spawnCreatures()
 	}
 
 	//Dahut
-	for(int i = 0; i < 10; ++i)
+	for(int i = 0; i < 20;)
 	{
 		//Random place in the world
 		int x = rand() % MAT_SIZE_CUBES;
@@ -139,14 +139,10 @@ void spawnCreatures()
 			Dahut *pDahut = new Dahut(g_world, NYVert2Df(x, y));
 			pDahut->SetEntities(&g_CreatureMap);
 			g_CreatureMap[DAHUT].push_back(pDahut);
-		}
-		else
-		{
-			i--;
+			++i;
 		}
 	}
 
-	
 	//Gendamour
 	for (int i = 0; i < 10; ++i)
 	{
@@ -231,10 +227,15 @@ void spawnCreatures()
 	BiXi* bixi = new BiXi (g_world, NYVert2Df (15, 15));
 	bixi->_entities = &g_CreatureMap;
 	g_CreatureMap[BIXI].push_back(bixi);
-
+	
 	//Furz
-	g_CreatureMap[FURZ].push_back(new Furz(g_world, NYVert2Df(40,40)));
-
+	for (int i = 0; i < 4; ++i)
+	{
+		Furz* pet = new Furz(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		pet->m_entities = &g_CreatureMap;
+		g_CreatureMap[FURZ].push_back(pet);
+	}
+	
 	//Snake
 	Snake* fruitInterdit = new Snake(g_world, NYVert2Df(25, 25), 5);
 	fruitInterdit->m_entities = &g_CreatureMap;
@@ -248,7 +249,7 @@ void spawnCreatures()
 	//Gevaulol
 	Gevaulol::creatureMap = &g_CreatureMap;
 	for (int i(0); i < 16; i++)
-		new Gevaulol(g_world, NYVert2Df(35, 35));
+		new Gevaulol(g_world, NYVert2Df(35 + Gevaulol::randFloat() * 16, 35 + Gevaulol::randFloat() * 16));
 }
 
 /** === Mise à jour des IA ===
@@ -310,6 +311,8 @@ void creatureUpdate(int computeTimeMS)
 			timedOut = true;
 		}
 	}
+	if (updateTimer.getElapsedMs()>computeTimeMS*2) // The last creature took at least computeTimeMS
+		printf("%s took more time than allowed (%dms)\n", g_CreatureMap[(eTypeCreature)typeIt][creatureIt]->GetName(), updateTimer.getElapsedMs()-computeTimeMS);
 }
 
 //////////////////////////////////////////////////////////////////////////

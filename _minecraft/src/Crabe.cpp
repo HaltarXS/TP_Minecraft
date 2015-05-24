@@ -17,11 +17,13 @@ Crabe::Crabe(NYWorld* world, NYVert2Df spawnPos)
 	this->Speed = 30.0f;
 	this->AxeX = true;
 	this->LeftToRight = true;
-	this->MaxTimeReprod = 60.0f;
+	this->HasEat = false;
+	this->MaxTimeReprod = .0f;
 	this->Reproduction = this->MaxTimeReprod;
 	this->life = 10;
 	this->NextAttack = 0.0f;
 	this->TimeBetweenAttack = 1.0f;
+	this->lifeTime = 3600;
 	this->m_timer.start();
 	this->m_timerAttack.start();
 }
@@ -50,7 +52,12 @@ void Crabe::UpdateIA(){
 				if (ia->GetState() != STATE_Dead)
 				{
 					std::cout << "--Crabe " << this->GetID() << " lance Charge sur Gendamour " << ia->GetID() << " ! Coup critique !" << endl;
-					this->SendMsg(MSG_Attack, ia->GetID(), new int(25));
+					this->SendMsg(MSG_Attack, ia->GetID(), new int(75));
+					if (!this->HasEat)
+					{
+						this->lifeTime += 3600;
+						this->HasEat = true;
+					}
 					this->Manger();
 					this->NextAttack = TimeBetweenAttack;
 					break;
@@ -106,7 +113,7 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 
 			this->position.Z = (m_world->_MatriceHeights[(int)this->positionCube.X][(int)this->positionCube.Y] + 1) * NYCube::CUBE_SIZE;
 			this->positionCube.Z = this->position.Z / NYCube::CUBE_SIZE;
-			if (this->positionCube.Z <= 2 || this->positionCube.X < 0 || this->positionCube.Y < 0 || this->positionCube.X > 100 || this->positionCube.Y > 100)
+			if (this->positionCube.Z <= 2 || this->positionCube.Z > 11 || this->positionCube.X < 0 || this->positionCube.Y < 0 || this->positionCube.X > 100 || this->positionCube.Y > 100)
 			{
 				if (LeftToRight)
 					LeftToRight = false;
@@ -119,6 +126,11 @@ bool Crabe::States(StateMachineEvent event, MSG_Object * msg, int state){
 			if (Reproduction <= 0.0f)
 			{
 				PushState(STATE_Reproduction);
+			}
+			this->lifeTime -= elapsedTime;
+			if (this->lifeTime <= 0.0f)
+			{
+				PushState(STATE_Dead);
 			}
 		}
 	State(STATE_Reproduction)

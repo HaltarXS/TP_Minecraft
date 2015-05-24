@@ -66,6 +66,10 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	//MESSAGES
 	OnMsg(MSG_Attack)//Si le snake se fait attaquer par un vautour, il perd un bloque jusqu'à arriver à zéro
 	{
+		/*
+		 *  NOTE : TOUJOURS PAS DE VAUTOURS LE DIMANCHE 24/05/15 A 12:47
+		 *  IMPOSSIBLE DE TESTER LE BON FONCTIONNEMENT DU CODE EN CONDITIONS REELLES
+		 */
 		int * data = (int*)msg->GetMsgData();
 		
 		m_listPosition.pop_back();
@@ -110,10 +114,16 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 		else
 			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
 
-		for (int i = 0; i < m_listPosition.size(); i++){
-			if (newPosition == m_listPosition[i] && isValideMove){
-				isValideMove = false;
-				//bloque le déplacement et choisi une nouvelle direction si le snake veut se mordre la queue
+
+		//Le snake ne va pas sur la neige, si son prochain déplacement n'est pas sur de la neige, on vérifie qu'il ne se morde pas la queue
+		if (world->getCube(newPosition.X, newPosition.Y, newPosition.Z - 1)->_Type == CUBE_NEIGE){
+			isValideMove = false;
+		}
+		else{
+			for (int i = 0; i < m_listPosition.size(); i++){
+				if (newPosition == m_listPosition[i] && isValideMove){
+					isValideMove = false;
+				}
 			}
 		}
 
@@ -138,24 +148,27 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 	for (int i = 0; i < CREATURE_NUM; ++i)
 	{
 		eTypeCreature type = (eTypeCreature)i;
+		//on se mange pas entre nous
 		if (type != eTypeCreature::SNAKE) {
+			//On parcourt la liste des créatures.
 			for (int j = 0; j < (*m_entities)[type].size(); ++j)
 			{
-				//On parcourt la liste des créatures.
-
-				//Si la créature à proximité n'est pas un snake, on la mange
+				//on mange la créature à proximité
 				if (Proximity((*m_entities)[type][j]->position)) {
-					//TODO: vérifier si ça casse pas le code des autres
-					//(*m_entities).erase(advance((*m_entities).begin(),j));
+					//si c'est pas un cadavre
+					if ((*m_entities)[type][j]->GetState() != STATE_Dead){
+						SendMsg(MSG_Eat, (*m_entities)[type][j]->GetID(), new int(1000));
 
-					//Et on grandi
-					NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
-					m_listPosition.push_back(push);
+						//Et on grandi
+						NYVert3Df push = m_listPosition[m_listPosition.size() - 1];
+						m_listPosition.push_back(push);
 
-					//faire caca
-					RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
-					m_listPosition.back().X;
-					*pRessourceMgr->Create(CROTTE, NYVert3Df(m_listPosition.back().X, m_listPosition.back().Y, m_listPosition.back().Z), 1000);
+						//faire caca
+						RessourcesManager *pRessourceMgr = RessourcesManager::GetSingleton();
+						m_listPosition.back().X;
+						*pRessourceMgr->Create(CROTTE, NYVert3Df(m_listPosition.back().X, m_listPosition.back().Y, m_listPosition.back().Z), 1000);
+
+					}
 				}
 			}
 		}

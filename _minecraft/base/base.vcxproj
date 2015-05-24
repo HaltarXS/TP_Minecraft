@@ -104,6 +104,9 @@
     <ClInclude Include="..\src\world.h" />
     <ClInclude Include="..\src\Yeti.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Note.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8531C627-6452-48A0-B4A8-40CCCC6376E1}</ProjectGuid>
     <RootNamespace>udock</RootNamespace>
