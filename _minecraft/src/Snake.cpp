@@ -105,27 +105,44 @@ bool Snake::States(StateMachineEvent event, MSG_Object * msg, int state){
 		NYVert3Df newPosition;
 		bool isValideMove = true;
 
-		if (direction == 0)
-			newPosition = NYVert3Df(m_listPosition[0].X + NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
-		else if (direction == 1)
-			newPosition = NYVert3Df(m_listPosition[0].X - NYCube::CUBE_SIZE, m_listPosition[0].Y, (world->_MatriceHeights[(int)(m_listPosition[0].X - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE][(int)m_listPosition[0].Y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
-		else if (direction == 2)
-			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y + NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y + NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
-		else
-			newPosition = NYVert3Df(m_listPosition[0].X, m_listPosition[0].Y - NYCube::CUBE_SIZE, (world->_MatriceHeights[(int)m_listPosition[0].X / NYCube::CUBE_SIZE][(int)(m_listPosition[0].Y - NYCube::CUBE_SIZE) / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE);
+		int x, y, z;
 
-
-		//Le snake ne va pas sur la neige, si son prochain déplacement n'est pas sur de la neige, on vérifie qu'il ne se morde pas la queue
-		if (world->getCube(newPosition.X, newPosition.Y, newPosition.Z - 1)->_Type == CUBE_NEIGE){
-			isValideMove = false;
+		if (direction == 0){
+			x = m_listPosition[0].X + NYCube::CUBE_SIZE;
+			y = m_listPosition[0].Y;
+		}
+		else if (direction == 1){
+			x = m_listPosition[0].X - NYCube::CUBE_SIZE;
+			y = m_listPosition[0].Y;
+		}
+		else if (direction == 2){
+			x = m_listPosition[0].X;
+			y = m_listPosition[0].Y + NYCube::CUBE_SIZE;
 		}
 		else{
-			for (int i = 0; i < m_listPosition.size(); i++){
-				if (newPosition == m_listPosition[i] && isValideMove){
-					isValideMove = false;
+			x = m_listPosition[0].X;
+			y = m_listPosition[0].Y - NYCube::CUBE_SIZE;;
+		}
+
+		if ((x / NYCube::CUBE_SIZE > 0 && x / NYCube::CUBE_SIZE < MAT_SIZE) && y / NYCube::CUBE_SIZE > 0 && y / NYCube::CUBE_SIZE < MAT_SIZE){
+			z = (world->_MatriceHeights[(int)x / NYCube::CUBE_SIZE][(int)y / NYCube::CUBE_SIZE] + 0.5f)*NYCube::CUBE_SIZE;
+			newPosition = NYVert3Df(x, y, z);
+
+			//Le snake ne va pas sur la neige, si son prochain déplacement n'est pas sur de la neige, on vérifie qu'il ne se morde pas la queue
+			if (world->getCube(newPosition.X, newPosition.Y, newPosition.Z - 1)->_Type == CUBE_NEIGE){
+				isValideMove = false;
+			}
+			else{
+				for (int i = 0; i < m_listPosition.size(); i++){
+					if (newPosition == m_listPosition[i] && isValideMove){
+						isValideMove = false;
+					}
 				}
 			}
 		}
+		else
+			isValideMove = false;
+		
 
 		if (isValideMove)
 		{
