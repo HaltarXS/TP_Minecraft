@@ -249,7 +249,7 @@ void spawnCreatures()
 	//Gevaulol
 	Gevaulol::creatureMap = &g_CreatureMap;
 	for (int i(0); i < 16; i++)
-		new Gevaulol(g_world, NYVert2Df(35, 35));
+		new Gevaulol(g_world, NYVert2Df(35 + Gevaulol::randFloat() * 16, 35 + Gevaulol::randFloat() * 16));
 }
 
 /** === Mise à jour des IA ===
