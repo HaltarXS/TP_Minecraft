@@ -229,9 +229,9 @@ void spawnCreatures()
 	g_CreatureMap[BIXI].push_back(bixi);
 	
 	//Furz
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
-		Furz* pet = new Furz(g_world, NYVert2Df(rand() % 100, rand() % 100));
+		Furz* pet = new Furz(g_world, NYVert2Df(rand() % 40, rand() % 40));
 		pet->m_entities = &g_CreatureMap;
 		g_CreatureMap[FURZ].push_back(pet);
 	}
