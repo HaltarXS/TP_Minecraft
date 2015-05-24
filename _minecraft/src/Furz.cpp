@@ -105,19 +105,21 @@ void Furz::UpdateIA()
 				_distanceDeplacement = 3;
 			}
 			int _direction = rand() % 4;
-			if (_direction == 0){
-				setPosition((int)(positionCube.X + _distanceDeplacement), (int)positionCube.Y, (int)m_world->_MatriceHeights[(int)positionCube.X + _distanceDeplacement][(int)positionCube.Y]);
+			if ((int)(positionCube.X - _distanceDeplacement >= 0 && (int)(positionCube.Y - _distanceDeplacement) >= 0)){
+				if (_direction == 0){
+					setPosition((int)(positionCube.X + _distanceDeplacement), (int)positionCube.Y, (int)m_world->_MatriceHeights[(int)positionCube.X + _distanceDeplacement][(int)positionCube.Y]);
+				}
+				else if (_direction == 1){
+					setPosition((int)(positionCube.X - _distanceDeplacement), (int)positionCube.Y, (int)m_world->_MatriceHeights[(int)positionCube.X - _distanceDeplacement][(int)positionCube.Y]);
+				}
+				else if (_direction == 2){
+					setPosition((int)positionCube.X, (int)(positionCube.Y + _distanceDeplacement), (int)m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y + _distanceDeplacement]);
+				}
+				else if (_direction == 3){
+					setPosition((int)positionCube.X, (int)(positionCube.Y - _distanceDeplacement), (int)m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y - _distanceDeplacement]);
+				}
 			}
-			else if (_direction == 1){
-				setPosition((int)(positionCube.X - _distanceDeplacement), (int)positionCube.Y, (int)m_world->_MatriceHeights[(int)positionCube.X - _distanceDeplacement][(int)positionCube.Y]);
-			}
-			else if (_direction == 2){
-				setPosition((int)positionCube.X, (int)(positionCube.Y + _distanceDeplacement), (int)m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y + _distanceDeplacement]);
-			}
-			else if (_direction == 3){
-				setPosition((int)positionCube.X, (int)(positionCube.Y - _distanceDeplacement), (int)m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y - _distanceDeplacement]);
-			}
-
+		
 			_fartFrequency = 3 + rand() % 3;//Reset du temps avant le prochain pet
 			_timeFartBomb.start();//On reset le temps depuis le dernier pet
 			_fartCounter++;//On incremente le compteur de pet
