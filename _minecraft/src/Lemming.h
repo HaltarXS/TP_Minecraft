@@ -32,16 +32,12 @@ public:
 
 	bool IsDancing();	// Return true if the lemming is dancing
 
-	bool SnowIsVisible(NYVert2Df & _snowPos);	// Any snow visible? (return the position of the snow in the snowPos)
-
 	void SetEntities(std::map<eTypeCreature, std::vector<IABase *>> * _entities);
 
 	// Variable :
 	// Draw/Print debug
 	bool m_printDebug = false;
 	bool m_drawDebug = false;
-
-	bool st = false;
 
 private:
 	// Variables :
@@ -78,7 +74,7 @@ private:
 	Path m_path;	// Path of the lemming
 	NYVert3Df m_destination;	// The destination of the player
 	Pathfinding * m_pathfind;	// Pointer on the pathfind singleton
-	int m_currentPathIndex;	// Index of the lemming
+	int m_currentPathIndex;	// Index on the path
 	std::map<eTypeCreature, std::vector<IABase *>> * m_entities;	// All entities of the game
 
 	// Functions :
