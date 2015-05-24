@@ -1,7 +1,7 @@
 #include "Gevaulol.h"
 
 std::map<eTypeCreature, std::vector<IABase*>>* Gevaulol::creatureMap;
-const float Gevaulol::breedingWaitTime(32), Gevaulol::breedingRadius(8);
+const float Gevaulol::breedingWaitTime(32), Gevaulol::breedingRadius(NYCube::CUBE_SIZE);
 
 Gevaulol::Gevaulol(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld){
 	(*creatureMap)[GEVAULOL].push_back(this);
@@ -20,9 +20,9 @@ Gevaulol::Gevaulol(NYWorld *pWorld, NYVert2Df pos) : IABase(pWorld){
 	repulsionFactor = 2;
 	orientationFactor = 1;
 	attractionFactor = 4;
-	repulsionRadius = 8;
-	orientationRadius = 32;
-	attractionRadius = 64;
+	repulsionRadius = NYCube::CUBE_SIZE;
+	orientationRadius = 4 * NYCube::CUBE_SIZE;
+	attractionRadius = 16 * NYCube::CUBE_SIZE;
 	maxSpeed = 16;
 	m_timer.start();
 	m_lastbreeding.start();
@@ -48,24 +48,25 @@ float Gevaulol::mutate(float a, float b){
 		return a*w + b*(1.f - w); // Random interpolation
 	}
 	else{
-		float f(1+randFloat()*.25f); // 25% max modification
+		float f(1 + randFloat()*.25f); // 25% max modification
 		return f*((a + b) / 2); // Take average as starting value
 	}
 }
 
 void Gevaulol::UpdateIA(){
-	if (m_currentState == STATE_Dead) return; // Stop right there if dead
+	if (GetState() == STATE_Dead) return; // Stop right there if dead
+	//else if (randFloat() > .999f) PushState(STATE_Dead);
 	float delta(m_timer.getElapsedSeconds());
 	m_timer.start();
 	position += speed*delta;
 	positionCube = position / NYCube::CUBE_SIZE;
 	for (int i(0); i<(*creatureMap)[GEVAULOL].size(); i++){ // For all gevaulols
 		Gevaulol* gevaulol((Gevaulol*)(*creatureMap)[GEVAULOL][i]);
-		if (gevaulol != this){ // Except this gevaulol
+		if (gevaulol != this && gevaulol->GetState() != STATE_Dead){ // Except this gevaulol and dead gevaulols
 			float distance((position - gevaulol->position).getSize());
 			NYVert3Df toOther(gevaulol->position - position);
 			toOther.normalize();
-			if (direction.scalProd(toOther) > -.5f){
+			if (direction.scalProd(toOther) > -.5f){ // Can't see behind (duh)
 				if (distance < repulsionRadius) // Repulsion
 					speed -= toOther*delta*repulsionFactor;
 				else if (distance < orientationRadius) // Orientation
@@ -87,9 +88,9 @@ void Gevaulol::UpdateIA(){
 		speed.Y = -abs(speed.Y);
 	/*
 	else if (m_world->getCube(positionCube.X, positionCube.Y, positionCube.Z)->isSolid()){ // Collision with cube
-		speed = NYVert3Df((rand() % 200) - 100, (rand() % 200) - 100, 50);
-		speed.normalize();
-		speed *= 8;
+	speed = NYVert3Df((rand() % 200) - 100, (rand() % 200) - 100, 50);
+	speed.normalize();
+	speed *= 8;
 	}*/
 	else if (positionCube.Z < m_world->_MatriceHeights[(int)positionCube.X][(int)positionCube.Y] + 2) // Too low
 		speed.Z = abs(speed.Z);
@@ -101,9 +102,11 @@ void Gevaulol::UpdateIA(){
 	}
 	direction = speed; // Compute direction
 	direction.normalize();
+
+	Update(); // Update state machine
 }
 void Gevaulol::Draw(){
-	if (m_currentState == STATE_Dead) return; // Stop right there if dead
+	if (GetState() == STATE_Dead) return; // Stop right there if dead
 	glColor3f(255, 0, 128);
 	glPushMatrix();
 	glTranslatef(position.X, position.Y, position.Z);
@@ -111,5 +114,23 @@ void Gevaulol::Draw(){
 	glPopMatrix();
 }
 bool Gevaulol::States(StateMachineEvent event, MSG_Object *msg, int state){
-	return false;
+	BeginStateMachine
+
+		//Receive attack
+		OnMsg(MSG_Attack)
+	{
+		int *pData = (int*)msg->GetMsgData();
+		life -= *pData;
+		delete pData;
+
+		if (life <= 0)
+		{
+			PushState(STATE_Dead);
+		}
+	}
+	State(STATE_Initialize)
+
+		State(STATE_Dead)
+
+		EndStateMachine
 }
