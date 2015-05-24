@@ -244,7 +244,6 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		m_attack = true;
 		// on augmente la vitesse
 		m_speed = 60.0f;
-		cout << "Griffonkitu is attacking !" << endl;
 	}
 		OnUpdate{
 		m_positionTarget = position - m_target->position;
@@ -268,7 +267,6 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 		State(STATE_Dead)
 
 		OnEnter{
-		cout << "Griffonkitu is dead !" << endl;
 	}
 		OnUpdate{
 	}
@@ -279,7 +277,7 @@ bool Griffonkitu::States(StateMachineEvent event, MSG_Object *msg, int state)
 void Griffonkitu::CheckTarget() {
 // normalement le GRIFFONKITU chasse le GLACEGOUILLE et le BIXI, mais comme il y a un probléme avec ces bestiole j'ai commenté et je remplace par le 	WASTEDOSAURE
 
-/*	for (size_t i = 0; i < (*m_entities)[GLACEGOUILLE].size(); i++)
+	for (size_t i = 0; i < (*m_entities)[GLACEGOUILLE].size(); i++)
 	{
 		NYVert3Df lengthVector = this->position - (*m_entities)[GLACEGOUILLE][i]->position;
 		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
@@ -299,21 +297,6 @@ void Griffonkitu::CheckTarget() {
 		NYVert3Df lengthVector = this->position - (*m_entities)[BIXI][i]->position;
 		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
 			setTarget((*m_entities)[BIXI][i]);
-			m_path.Clear();
-			m_currentIndex = 0;
-			// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
-			if (BresenhamRayCast(m_XWorldMap, m_YWorldMap, position.Z / NYCube::CUBE_SIZE, m_target->position.X / NYCube::CUBE_SIZE, m_target->position.Y / NYCube::CUBE_SIZE, m_target->position.Z / NYCube::CUBE_SIZE))
-			{
-				PushState(STATE_Attack);
-				break;
-			}
-		}
-	}*/
-	for (size_t i = 0; i < (*m_entities)[WASTEDOSAURE].size(); i++)
-	{
-		NYVert3Df lengthVector = this->position - (*m_entities)[WASTEDOSAURE][i]->position;
-		if (lengthVector.getSize() < 50 * NYCube::CUBE_SIZE) {
-			setTarget((*m_entities)[WASTEDOSAURE][i]);
 			m_path.Clear();
 			m_currentIndex = 0;
 			// Si il ya un Wastedosaure à porté, on regarde si il est directement visible par le griffon
