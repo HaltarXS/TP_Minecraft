@@ -201,7 +201,9 @@ void Yeti::Draw()
 	else{
 		glColor3f(0.0f, 0.0f, 1.0f);
 	}
-
+	if (infected) {
+		glColor3f(0.0f, 0.0f, 0.0f);
+	}
 	glTranslatef(position.X, position.Y, position.Z);
 
 	if (m_currentState != STATE_Dead)
